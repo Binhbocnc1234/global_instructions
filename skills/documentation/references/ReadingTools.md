@@ -7,9 +7,8 @@ This reference explains how to use the bundled Python scripts located under `scr
 Before reading full markdown documents:
 1. **Query metadata** using `query_docs_frontmatter.py` to identify candidate documents.
 2. **Inspect headings** using `get_markdown_headers.py` to map out sections.
-3. **Read section slices** using `read_markdown_section.py` to retrieve only the needed text.
-4. **Follow links** using `find_related_docs.py` to traverse prerequisites or related topics.
-5. **Validate frontmatter** using `validate_docs_frontmatter.py` after writing or editing documents.
+3. **Follow links** using `find_related_docs.py` to traverse prerequisites or related topics.
+4. **Validate frontmatter** using `validate_docs_frontmatter.py` after writing or editing documents.
 
 ---
 
@@ -52,17 +51,7 @@ H2    YAML Frontmatter [81,126]
 
 ---
 
-## 3. Read a Specific Section
-
-Use `read_markdown_section.py` to load only a specific range of lines. This avoids loading large files and keeps context windows clean.
-
-```powershell
-python .\.agents\skills\documentation\scripts\read_markdown_section.py .\Documentation\en\how-to\style\HowToDocumentation.md "[81,126]"
-```
-
----
-
-## 4. Find Related Documents (Link Traversal)
+## 3. Find Related Documents (Link Traversal)
 
 Use `find_related_docs.py` to find documents linked directly through the `related_docs` or `prerequisite_docs` fields.
 
@@ -76,7 +65,7 @@ python .\.agents\skills\documentation\scripts\find_related_docs.py --id testing 
 
 ---
 
-## 5. Validate Documentation Frontmatter
+## 4. Validate Documentation Frontmatter
 
 Use `validate_docs_frontmatter.py` after editing or creating any documentation. It validates all markdown files under a specified directory.
 
