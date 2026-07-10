@@ -1,4 +1,4 @@
-# Global Agent Instructions
+﻿# Global Agent Instructions
 
 These instructions apply across projects and agent tools when they are loaded.
 Project-specific instructions may override them when they are more specific.
@@ -16,6 +16,11 @@ When user prompt : `Liệu có thể thực hiện hành động {n}` ,
 - Do the clear parts first, then reassess/questioning user before continuing.
 - Keep relevant documentation synchronized with code changes.
 - DRY: If a task is repeated twice, it should be turned into an automated script or a skill/instruction.
+- Architecture: do not prepare for future, architecture. Architecture just needs to solve the current problem and become scalable.
+- Prefer incremental process over waterfall process. Instead of implement a big feature then a big validation, divide big feature into many small features interspersed with tests. Only move on to the next feature once the current feature is validated.
+- Focus on readability
+- If you want to do anything contrary/not included to the user prompt, ask user first
+- All current and future skills will be located in the ~/agents/skills folder.
 
 ## File Size and Responsibility Rule
 
@@ -33,27 +38,6 @@ When a file is likely to exceed 250 lines:
 6. Update imports, references, navigation, indexes, or documentation links as needed.
 
 A file may exceed 250 lines only when splitting it would create artificial fragmentation, excessive indirection, or reduce maintainability. In that case, explain why the exception is justified before proceeding.
-
-Prefer:
-
-* multiple cohesive files,
-* clear separation of responsibilities,
-* readable formatting,
-* complete information.
-
-Do not prefer:
-
-* compressed code,
-* shortened documentation,
-* removed explanations,
-* reduced whitespace,
-* multiple unrelated concepts in one file.
-- Architecture: do not prepare for future, architecture. Architecture just needs to solve the current problem and become scalable.
-- Prefer incremental process over waterfall process. Instead of implement a big feature then a big validation, divide big feature into many small features interspersed with tests. Only move on to the next feature once the current feature is validated.
-- Focus on readability
-- If you want to do anything contrary/not included to the user prompt, ask user first
-- All current and future skills will be located in the ~/agents/skills folder.
-- Some skills have input schema/Invocation Contracts. If the prompt violates that schema, it needs to be stopped, the error pointed out, and the user asked to correct it.
 
 ## Handle long-running task
 
@@ -117,6 +101,7 @@ A **blocker** is any issue in the current project/user prompt that prevents the 
 * The documentation contradicts the actual project structure.
 * Continuing would require guessing important project details.
 * The task cannot be completed without user clarification or project correction.
+* Some skills have input schema/Invocation Contracts. If the prompt violates that schema, it needs to be stopped, the error pointed out, and the user asked to correct it.
 
 If you detect a blocker, you must **stop immediately**. Do not continue implementing, modifying, refactoring, or generating code based on assumptions.
 

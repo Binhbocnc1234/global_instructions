@@ -172,7 +172,7 @@ requirements:
 
 ### 4. Explanations (Understanding-Oriented)
 
-*   **Scope:** High-level discussions focusing on architecture, design choices, rationale, background context, and design trade-offs. Use diagrams (like Mermaid) to represent flows.
+*   **Scope:** High-level discussions focusing on architecture, design choices, rationale, background context, and design trade-offs. Use diagrams (like PlantUML) to represent flows.
 *   **Completeness Checklist:**
     *   **Architectural Overview:** The big picture of the system.
     *   **Core Concepts:** Terms, concepts, or algorithms involved.
@@ -188,12 +188,18 @@ requirements:
     
     Unit death is handled asynchronously to separate visual feedback (animations) from the gameplay state (grid registry).
     
-    ```mermaid
-    graph TD
-        A[Health reaches 0] --> B[UnitHealth triggers Death]
-        B --> C[Trigger Grid Removal]
-        B --> D[Play Particle & Sound FX]
-        B --> E[Execute Death Animation]
+    ```plantuml
+    @startuml
+    participant UnitHealth
+    participant DeathController
+    participant GridSystem
+    
+    UnitHealth -> DeathController : Health reaches 0 (trigger death)
+    activate DeathController
+    DeathController -> GridSystem : Remove unit from registry
+    DeathController -> Visuals : Play death animations & FX
+    deactivate DeathController
+    @enduml
     ```
     
     ## Design Decisions & Trade-offs

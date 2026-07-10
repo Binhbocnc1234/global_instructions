@@ -30,7 +30,9 @@ Choose one primary Diataxis document type before writing or editing. Do not mix 
 ## Consistency & Naming Rules
 
 ### Avoid Duplication
+
 Two documents must not describe the same logic or workflow. When cross-referencing is needed, use an explicit relative Markdown link: `See [EntitySystem](../../explanation/gameplay/EntitySystem.md)`.
+Documentation inside a project should be project-specific, not simply rehashing what has already been covered in the skill.
 
 ### Negative Rules
 *   **Avoid Placing Files in the Wrong Section:** Never place an explanation file under a reference folder, or a how-to guide under a tutorial folder. Choose the folder path and file location based strictly on its Diataxis classification.
