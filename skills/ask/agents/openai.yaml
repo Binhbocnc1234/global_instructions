@@ -1,0 +1,4 @@
+interface:
+  display_name: Ask
+  short_description: Check context sufficiency before answering or advising.
+  default_prompt: Answer this after checking whether you need more context first.

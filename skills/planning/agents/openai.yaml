@@ -1,0 +1,4 @@
+interface:
+  display_name: Planning
+  short_description: Research and write concise implementation plans.
+  default_prompt: Create a concise implementation plan for this task.

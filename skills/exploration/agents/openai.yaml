@@ -1,0 +1,4 @@
+interface:
+  display_name: Exploration
+  short_description: Quickly inspect codebases and find reusable context.
+  default_prompt: Explore the relevant codebase context and report concise findings.

@@ -1,0 +1,4 @@
+# Raw source extracts are local-only and may contain copyrighted or private content.
+# Ignore everything in this directory except this rule, matching local cache folders.
+*
+!.gitignore
