@@ -94,6 +94,36 @@ class DocsFrontmatterValidatorTests(unittest.TestCase):
 
         self.assertEqual(2, self.validate())
 
+    def test_duplicate_filenames_fail(self) -> None:
+        common = (
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+        )
+        self.write_doc("folder1/Architecture.md", f"{common}description: Doc 1\n")
+        self.write_doc("folder2/Architecture.md", f"{common}description: Doc 2\n")
+
+        self.assertEqual(2, self.validate())
+
+    def test_link_matching_by_basename_and_without_extension_passes(self) -> None:
+        common = (
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+        )
+        self.write_doc("subfolder/Architecture.md", f"{common}description: Defines architecture.\n")
+        self.write_doc(
+            "Feature.md",
+            f"{common}"
+            "description: Explains a feature.\n"
+            "prerequisite_docs:\n"
+            "  - Architecture\n", # stem only (no extension, no relative folder path)
+        )
+
+        self.assertEqual(0, self.validate())
+
 
 if __name__ == "__main__":
     unittest.main()

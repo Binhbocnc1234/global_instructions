@@ -81,6 +81,19 @@ def main() -> int:
     requirement_ids = collect_requirement_ids(root)
     issues: list[tuple[str, str, str]] = []
 
+    by_language_and_name: dict[tuple[str, str], list[Path]] = {}
+    for path in iter_markdown_docs(root):
+        lang = infer_language_from_path(path) or "unknown"
+        filename = path.name.lower()
+        by_language_and_name.setdefault((lang, filename), []).append(path)
+
+    for (lang, filename), paths in by_language_and_name.items():
+        if len(paths) > 1:
+            for p in paths:
+                relative_path = str(p.relative_to(root))
+                other_paths = [str(o.relative_to(root)) for o in paths if o != p]
+                issues.append((relative_path, "filename", f"duplicate filename '{p.name}' found in language '{lang}'; other occurrences: {', '.join(other_paths)}"))
+
     for path in iter_markdown_docs(root):
         frontmatter, error = parse_frontmatter(path)
         relative_path = str(path.relative_to(root))

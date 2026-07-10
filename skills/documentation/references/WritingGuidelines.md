@@ -14,9 +14,9 @@ status: draft | active | deprecated
 language: en | vi
 description: Explains the current AI system flow, simulator contract, scoring model, and tests.
 prerequisite_docs:
-  - ../../explanation/gameplay/DesignPrinciples.md
+  - DesignPrinciples.md
 related_docs:
-  - ../../explanation/gameplay/ExecutionPaths.md
+  - ExecutionPaths
 related_code:
   - Assets/Scripts/Battlefield/AI
 related_tests:
@@ -44,7 +44,8 @@ requirements:
 | `requirements` | Stable requirement IDs (e.g., `MVP-FUN-002`, `RULE-COMBAT-004`) for impact and validation tracking. |
 
 ### Reference/Link Formatting Rules
-*   **Document References (`prerequisite_docs`, `related_docs`):** Always use explicit relative Markdown paths with file extensions (e.g., `../explanation/Architecture.md` or `../../reference/ApiDetails.md`). This ensures robust link rendering and direct navigation on code platforms (such as VS Code or GitHub) and tools.
+*   **Unique Filename Validation Rule:** Every documentation Markdown file name (excluding folders and language prefixes) must be globally unique per language. The validator enforces this to prevent naming collisions.
+*   **Document References (`prerequisite_docs`, `related_docs`):** To avoid verbosity, do not write full relative folder paths. Specify only the filename of the target markdown file (with or without the `.md` extension, e.g., `Architecture.md` or `Architecture`). Since all filenames are unique per language, the tools will automatically resolve them correctly.
 *   **Path References (`related_code`, `related_tests`, `related_assets`):** Always specify paths relative to the project root directory (e.g., `Assets/Scripts/Combat` or `src/components/Button.tsx`).
 
 ---
@@ -142,7 +143,7 @@ requirements:
     *   **Field/Option Specifications:** Direct description of allowed ranges, types, and defaults.
     *   **Configuration / Implementation Code Snippets:** Short examples showing usage.
 *   **Template & Structure:**
-    ```markdown
+    ````markdown
     # Unit Attributes Configuration Reference (Game Project Example)
     
     Configuration schemas and boundaries for unit attributes.
@@ -166,7 +167,7 @@ requirements:
       "defense": 5
     }
     ```
-    ```
+    ````
 
 ---
 
@@ -179,7 +180,7 @@ requirements:
     *   **Design Choices & Trade-offs:** Rationale behind decisions (why a certain solution was picked, trade-offs made).
     *   **Flowcharts / Sequence Diagrams:** Visual representation of logic or state changes.
 *   **Template & Structure:**
-    ```markdown
+    ````markdown
     # Unit Death Flow Explanation (Game Project Example)
     
     This document explains the architecture and state synchronization of unit death in combat.
@@ -207,4 +208,4 @@ requirements:
     - **Instant Grid Deregistration:** The unit is immediately removed from the grid registry before the death animation finishes. 
       * *Rationale:* Prevents other units from selecting a dying unit as a target, avoiding synchronization bugs.
       * *Trade-off:* Requires holding a visual dummy object in the scene during the death animation, which slightly increases active object overhead.
-    ```
+    ````

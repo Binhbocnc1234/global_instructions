@@ -115,8 +115,7 @@ def doc_identifiers(doc: MarkdownDoc) -> set[str]:
 
 
 def is_doc_path_reference(value: str) -> bool:
-    path = Path(value)
-    return path.suffix.lower() == ".md" or "/" in value or "\\" in value
+    return "/" in value or "\\" in value
 
 
 def doc_link_points_to(link: str, source: MarkdownDoc, target: MarkdownDoc) -> bool:
@@ -128,7 +127,11 @@ def doc_link_points_to(link: str, source: MarkdownDoc, target: MarkdownDoc) -> b
     if is_doc_path_reference(link):
         return (source.path.parent / link).resolve() == target.path.resolve()
 
-    return normalize_doc_id(link) in doc_identifiers(target)
+    clean_link = link
+    if link.lower().endswith(".md"):
+        clean_link = link[:-3]
+
+    return normalize_doc_id(clean_link) in doc_identifiers(target)
 
 
 def related_target_exists(related_name: str, source: MarkdownDoc, docs: list[MarkdownDoc]) -> bool:
