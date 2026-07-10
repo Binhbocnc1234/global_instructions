@@ -1,4 +1,4 @@
-﻿# Global Agent Instructions
+# Global Agent Instructions
 
 These instructions apply across projects and agent tools when they are loaded.
 Project-specific instructions may override them when they are more specific.
@@ -102,6 +102,7 @@ A **blocker** is any issue in the current project/user prompt that prevents the 
 * Continuing would require guessing important project details.
 * The task cannot be completed without user clarification or project correction.
 * Some skills have input schema/Invocation Contracts. If the prompt violates that schema, it needs to be stopped, the error pointed out, and the user asked to correct it.
+* The developer's prompt requires project changes, but the git working tree is dirty with changes unrelated to the current prompt/task. In this case, you must stop immediately and ask the developer to resolve or commit those dirty changes before proceeding.
 
 If you detect a blocker, you must **stop immediately**. Do not continue implementing, modifying, refactoring, or generating code based on assumptions.
 
