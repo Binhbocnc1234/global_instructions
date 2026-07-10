@@ -124,6 +124,91 @@ class DocsFrontmatterValidatorTests(unittest.TestCase):
 
         self.assertEqual(0, self.validate())
 
+    def test_missing_required_fields_fail(self) -> None:
+        self.write_doc(
+            "Feature.md",
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+            # description is missing
+        )
+        self.assertEqual(2, self.validate())
+
+    def test_invalid_metadata_values_fail(self) -> None:
+        common = (
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+            "description: Test\n"
+        )
+        # Invalid type
+        self.write_doc("Feature1.md", f"type: invalid_type\n{common}")
+        self.assertEqual(2, self.validate())
+
+    def test_language_path_mismatch_fails(self) -> None:
+        self.write_doc(
+            "Feature.md",
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: vi\n"  # mismatches "en" folder path
+            "description: Test\n"
+        )
+        self.assertEqual(2, self.validate())
+
+    def test_path_validation_failures(self) -> None:
+        common = (
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+            "description: Test\n"
+        )
+        # Absolute path in related_code
+        self.write_doc("Feature1.md", f"{common}related_code:\n  - /absolute/path\n")
+        self.assertEqual(2, self.validate())
+        
+        # Path escaping root
+        self.write_doc("Feature2.md", f"{common}related_code:\n  - ../escaped\n")
+        self.assertEqual(2, self.validate())
+
+        # Path not found
+        self.write_doc("Feature3.md", f"{common}related_code:\n  - Assets/NonExistent\n")
+        self.assertEqual(2, self.validate())
+
+    def test_requirement_id_missing_in_body_fails(self) -> None:
+        self.write_doc(
+            "Feature.md",
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+            "description: Test\n"
+            "requirements:\n"
+            "  - MVP-DEV-1234\n",
+            "No requirement ID in this body text."
+        )
+        self.assertEqual(2, self.validate())
+
+    def test_missing_doc_link_fails(self) -> None:
+        self.write_doc(
+            "Feature.md",
+            "type: technical\n"
+            "audience: developer\n"
+            "status: active\n"
+            "language: en\n"
+            "description: Test\n"
+            "prerequisite_docs:\n"
+            "  - NonExistentDoc.md\n",
+        )
+        self.assertEqual(2, self.validate())
+
+    def test_malformed_frontmatter_fails(self) -> None:
+        path = self.root / "Documentation" / "en" / "Feature.md"
+        path.write_text("type: technical\nno delimiters here", encoding="utf-8")
+        self.assertEqual(2, self.validate())
+
 
 if __name__ == "__main__":
     unittest.main()
