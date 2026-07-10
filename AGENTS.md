@@ -1,4 +1,4 @@
-﻿# Global Agent Instructions
+# Global Agent Instructions
 
 These instructions apply across projects and agent tools when they are loaded.
 Project-specific instructions may override them when they are more specific.
@@ -14,9 +14,40 @@ When user prompt : `Liệu có thể thực hiện hành động {n}` ,
 - Read relevant local context before making non-trivial changes.
 - Break large tasks into smaller sequential tasks.
 - Do the clear parts first, then reassess/questioning user before continuing.
-- Avoid files(document and code) over 250 lines. If a concept/class cannot be described with fewer than 250 lines, you should divide that concept into multiple files, rather than compressing the file to reduce the number of lines at the cost of readability.
 - Keep relevant documentation synchronized with code changes.
 - DRY: If a task is repeated twice, it should be turned into an automated script or a skill/instruction.
+
+## File Size and Responsibility Rule
+
+Keep source-code and documentation files at or below 250 lines whenever practical.
+
+The 250-line limit is a signal to split responsibilities, not a target to satisfy through compression.
+
+When a file is likely to exceed 250 lines:
+
+1. Do not reduce readability by removing comments, collapsing formatting, shortening meaningful names, combining unrelated logic, or writing denser code.
+2. Do not omit necessary information merely to stay below the limit.
+3. Identify distinct responsibilities, concepts, sections, or components within the file.
+4. Extract those responsibilities into separate, clearly named files.
+5. Keep each resulting file cohesive and understandable on its own.
+6. Update imports, references, navigation, indexes, or documentation links as needed.
+
+A file may exceed 250 lines only when splitting it would create artificial fragmentation, excessive indirection, or reduce maintainability. In that case, explain why the exception is justified before proceeding.
+
+Prefer:
+
+* multiple cohesive files,
+* clear separation of responsibilities,
+* readable formatting,
+* complete information.
+
+Do not prefer:
+
+* compressed code,
+* shortened documentation,
+* removed explanations,
+* reduced whitespace,
+* multiple unrelated concepts in one file.
 - Architecture: do not prepare for future, architecture. Architecture just needs to solve the current problem and become scalable.
 - Prefer incremental process over waterfall process. Instead of implement a big feature then a big validation, divide big feature into many small features interspersed with tests. Only move on to the next feature once the current feature is validated.
 - Focus on readability
