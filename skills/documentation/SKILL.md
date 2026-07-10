@@ -39,6 +39,7 @@ Documentation inside a project should be project-specific, not simply rehashing 
 *   **Avoid Multi-Purpose Files:** A single file must not attempt to serve multiple Diataxis purposes (e.g., combining high-level architecture explanations with dense reference API tables). Split them into separate files (e.g. `Architecture.md` for explanation, `ApiReference.md` for reference) and link them.
 
 ### File Naming
+
 Follow the project's naming convention. If the project has no convention, use PascalCase for Markdown file names.
 *   *PascalCase Examples:* `HowToDocumentation.md`, `Architecture.md`, `DesignPrinciples.md`.
 *   *Legacy mismatch fix:* Do not use kebab-case or mixed casing like `How-to-documentation.md` unless the project specifically mandates it.
