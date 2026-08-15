@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software Development"
+  short_description: "Evidence-led implementation, debugging, and testing"
+  default_prompt: "Use $software-development to implement this change with scoped planning, verification, documentation, and commit discipline."
