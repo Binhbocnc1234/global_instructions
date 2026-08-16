@@ -46,6 +46,7 @@ Skip a formal plan for a small, self-contained change whose implementation and v
 - Treat required initialized dependencies as invariants. Fix broken construction or wiring instead of adding silent fallbacks, no-ops, or legacy behavior.
 - Do not extract a method merely to label a few statements when keeping them inline makes lifecycle or ordering clearer.
 - Comment non-obvious reasons, invariants, units, ordering, external constraints, and deliberate trade-offs. Do not restate the code.
+- Make a value's unit or representation explicit in its identifier when omission could cause misuse. Follow the project's naming convention with names such as `duration_seconds`, `DurationSeconds`, or `limit_fraction`.
 - Do not opportunistically fix unrelated technical debt. Report it when it blocks the requested work or violates an applicable stop policy.
 
 ## 4. Select Valuable Tests
@@ -160,5 +161,9 @@ Lead with the outcome. Include only sections that add value:
 - **Verification:** exact evidence and remaining manual ownership.
 - **Deferred work:** only work genuinely blocked by an unmade decision or unavailable dependency.
 - **Questions:** place last and include only risky decisions that must be answered before continuing.
+
+Do not defer authorized work merely because the user has not repeated “go.” When the request already supplies the decision and scope, complete that work in the same turn.
+
+A blocking question is only for a decision that would be expensive to reverse, such as a large refactor, data migration, or discarded work. Include a recommended option and explain what it costs or protects. Do not continue past an unanswered blocking question.
 
 State inherited failures and unrelated dirty files explicitly without presenting them as failures caused by the change.
