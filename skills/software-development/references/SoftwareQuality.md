@@ -40,7 +40,7 @@ Use these attributes to assess the static and dynamic properties of the system.
 | Performance efficiency | Timing behavior | Frame time stays below 16.6 ms while 200 bullets are active. |
 | Performance efficiency | Resource utilization | The build stays below 400 MB of RAM on a 2 GB Android phone. |
 | Performance efficiency | Capacity | The save format still loads when the inventory holds 5,000 items. |
-| Compatibility | Coexistence | The game holds 60 FPS while the Discord overlay and OBS run on the same machine. |
+| Compatibility | Coexistence | The game requests shared audio output, so Discord voice chat still works while the game plays music. |
 | Compatibility | Interoperability | An achievement unlock reaches the Steam client through Steamworks and appears on the player profile. |
 | Usability | Appropriateness recognizability | A visitor reads the store page and knows within 30 seconds that this is a turn-based roguelike, not an action game. |
 | Usability | Learnability | A new player completes the tutorial and defeats the first enemy without opening a wiki. |
@@ -50,7 +50,7 @@ Use these attributes to assess the static and dynamic properties of the system.
 | Usability | Accessibility | Subtitles scale to 150%, and no state is signalled by red-versus-green alone. |
 | Reliability | Maturity | A 4-hour automated soak run produces zero unhandled exceptions. |
 | Reliability | Availability | The online leaderboard answers 99% of requests, and the game still starts when it answers none. |
-| Reliability | Fault tolerance | A corrupted `settings.json` falls back to defaults instead of blocking the main menu. |
+| Reliability | Fault tolerance | Power loss during a settings write leaves `settings.json` truncated. The next launch falls back to defaults instead of blocking the main menu. |
 | Reliability | Recoverability | A crash during a level returns the player to the last autosave, losing at most 60 seconds of play. |
 | Security | Confidentiality | The Steam Web API key is read from an environment variable. It is absent from committed source and from the shipped build. |
 | Security | Integrity | The save file carries an HMAC, so a hand-edited gold value is rejected on load. |
@@ -58,7 +58,7 @@ Use these attributes to assess the static and dynamic properties of the system.
 | Security | Authenticity | An IAP receipt is validated against the store server before the item is granted, so a forged receipt fails. |
 | Maintainability | Modularity | Assembly `MvA.Bullet` compiles without referencing UI assemblies, so a HUD change cannot break bullets. |
 | Maintainability | Reusability | One object-pool component serves bullets, particles, and damage numbers, with no per-type copy. |
-| Maintainability | Modifiability | Changing the enemy spawn delay means editing one ScriptableObject field, not five prefabs. |
+| Maintainability | Modifiability | Changing the enemy spawn delay means editing one field, not five prefabs. |
 | Maintainability | Testability | Damage calculation is a pure C# method, so an EditMode test calls it without loading a scene. |
 | Portability | Adaptability | The HUD stays readable at 16:9 and at 20:9 without a separate scene per aspect ratio. |
 | Portability | Installability | The APK installs on Android 8 and later, and reports a clear message on earlier versions. |
