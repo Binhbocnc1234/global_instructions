@@ -15,6 +15,8 @@ description: "Use when choosing or improving a software process; engineering req
 
 ## Core Decision Rules
 
+- Quantify every verification: define a pass/fail threshold, scope, and measurement method; replace qualitative checks such as "keep files short" with verifiable limits such as "keep each source file at or below 250 lines."
+- Automate repeatable checks with a runnable script and execute it before reporting completion; use [verify-file-lengths.ps1](scripts/verify-file-lengths.ps1) for the 250-line source-file limit.
 - Define stakeholder value, observable behavior, constraints, and quality before committing to implementation.
 - Adapt process rigor to uncertainty and risk while preserving required evidence and cross-cutting quality work.
 - Use prototypes and increments as decision instruments; every experiment needs criteria and a continue, redirect, rebuild, or stop decision.

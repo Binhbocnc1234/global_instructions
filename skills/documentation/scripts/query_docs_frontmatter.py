@@ -7,10 +7,29 @@ import sys
 from docs_tool_lib import load_docs, value_list
 
 
+Row = tuple[str, str, str, str, str, str]
+
+
 def field_matches(value: object, expected: str | None) -> bool:
     if not expected:
         return True
     return expected in value_list(value)
+
+
+def print_readable(rows: list[Row]) -> None:
+    for index, row in enumerate(rows):
+        path, doc_type, _, _, _, description = row
+        if index > 0:
+            print()
+        print(f"Path: {path}")
+        print(f"Type: {doc_type}")
+        print(f"Description: {description}")
+
+
+def print_tsv(rows: list[Row]) -> None:
+    print("Path\tType\tAudience\tStatus\tLanguage\tDescription")
+    for row in rows:
+        print("\t".join(row))
 
 
 def main() -> int:
@@ -18,17 +37,23 @@ def main() -> int:
         sys.stdout.reconfigure(encoding="utf-8")
 
     parser = argparse.ArgumentParser(description="Query markdown documents by YAML frontmatter.")
-    parser.add_argument("--root", default="./Documentation", help="Documentation root.")
+    parser.add_argument("--root", default=".", help="Markdown root.")
     parser.add_argument("--type")
     parser.add_argument("--audience")
     parser.add_argument("--status")
     parser.add_argument("--language")
     parser.add_argument("--description-contains")
+    parser.add_argument(
+        "--format",
+        choices=("readable", "tsv"),
+        default="readable",
+        help="Output format. Defaults to readable document blocks.",
+    )
     args = parser.parse_args()
 
     root = Path(args.root)
     if not root.exists():
-        print(f"Documentation root not found: {root}")
+        print(f"Markdown root not found: {root}")
         return 1
 
     rows = []
@@ -55,9 +80,10 @@ def main() -> int:
             description,
         ))
 
-    print("Path\tType\tAudience\tStatus\tLanguage\tDescription")
-    for row in rows:
-        print("\t".join(row))
+    if args.format == "tsv":
+        print_tsv(rows)
+    else:
+        print_readable(rows)
 
     return 0
 

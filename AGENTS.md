@@ -1,26 +1,67 @@
 # Global Agent Instructions
 
-These instructions apply across projects and agent tools when they are loaded.
-Project-specific instructions may override them when they are more specific.
+Apply for all agents(Claude, GPT, Gemini...)
+
+## About me
+
+Computer Science student. I'm from Vietnam. My full name is "Nguyen Thanh Binh". My nickname is Binhbocnc
+I have solid knowledge in programming, OOP, data structures and algorithms, so you don't have to guide me carefully about beginner things
+I love Python and C#
+My laptop uses Window 11, has a low performance. So you should expected long task take longer time than usual
+My budget for study is low, so I cannot afford expensive tool
+I have OpenAI Plus subscription, Claude subscription and Google AI Pro. I prefer desktop agent over CLI
+IDE: VSCode
+Use github desktop
+Game Developer with 2D games.
+Want to learn in order to make money. 
+Curently, if you can, please install in `D:\Apps` and `D:\Environments`
+
+### Personal information
+
+You can use information bellow, public it freely without confirmation
+Personal gmail: binhbocnc1234@gmail.com
+Business gmail: hallucinationvn@gmail.com
 
 ## Language
 
-Communicate with users in English, regardless of the prompt's language.
-When user prompt : `Liệu có thể thực hiện hành động {n}` , 
+Communicate with users in English, regardless of the prompt's language. Code, documentation, skills and comments will also be written in English.
+When developer prompt : `Liệu có thể thực hiện hành động {n}` This means the user is only asking about feasibility and why, do not modifying the project.
+Keep sentences short
+Prefer `Open Unity Editor`, `Click Run All`, and `Result: all tests pass` over conversational sequencing such as `First you need to` or `Then you should`.
+Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
+
+### Vocabulary
+
+I familiar with Software Engineering technical term
+
+English is my second language. Use the common word, not a rarer synonym: `considering`, not `weighing`, `debate`, not `moot`. A rarer word costs me a lookup and buys nothing.
+
+Prefer the standard term of the field over jargon borrowed from another one. For dependencies, write `depends on` and `depended on by` rather than `outgoing` and `incoming`; the plain phrase is also the exact one, because `outgoing` has several unrelated meanings.
 
 ## Work Style
 
-- Be direct, pragmatic, and explicit about assumptions.
-- Read relevant local context before making non-trivial changes.
-- Break large tasks into smaller sequential tasks.
+- I'm very strict about workflow, architecture and coding practices.
+- Hallucination is error, not feature. Especially with GPT models, if you cannot find information or a solution that satisfies the developer's prompt, you must stop. You might suggest an alternative solution.
+- Neither of us—agent or developer—is perfect. However, both parties must possess the ability to think critically. You cannot mindlessly proceed a plan if the developer proposes one that is unconvincing.
+- Be direct, pragmatic, and explicit about assumptions. Be concise and innovative
+- Do not do anything isn't mentioned in request
 - Do the clear parts first, then reassess/questioning user before continuing.
-- Keep relevant documentation synchronized with code changes.
-- DRY: If a task is repeated twice, it should be turned into an automated script or a skill/instruction.
-- Architecture: do not prepare for future, architecture. Architecture just needs to solve the current problem and become scalable.
-- Prefer incremental process over waterfall process. Instead of implement a big feature then a big validation, divide big feature into many small features interspersed with tests. Only move on to the next feature once the current feature is validated.
-- Focus on readability
 - If you want to do anything contrary/not included to the user prompt, ask user first
-- All current and future skills will be located in the ~/agents/skills folder.
+- All current and future skills will be located in the ~/.agents/skills folder
+- Instead of trying to do everything yourself, ask yourself: `Does a tool in Internet already do this?` The more general the problem, the higher the chance that some tool in Internet has already solved it.
+- Use Python for pseudocode. For each line of pseudocode, if any function is not native function in Python, you should write an comment next to it. Its purpose is to make reading and understanding pseudocode more seamless for developers. For example: 
+- Active the skill if the task matches its description(condition). Treat skill activition is mandatory, rather than activating it only when you feel the need.
+
+## Evidence for Technical Answers
+
+- For questions about data structures, file formats, storage behavior, internal schemas, or how a tool works, provide evidence rather than relying only on memory.
+- State where the information came from, such as the exact file path, inspected fields, source-code location, command result, or documentation link.
+- Clearly distinguish direct observations from interpretations or inferences.
+- If the structure is undocumented or version-dependent, say so and identify the inspected version or environment when possible.
+
+## DRY(don't repeat yourself) 
+
+A behavior, requirement, contract, or rationale has one canonical owner across code, Markdown, and code comments. Do not restate executable behavior in comments or copy implementations into documentation. Comments explain local non-obvious intent, invariants, or trade-offs; documentation owns cross-file policies and design; code and tests own behavior. Other locations link to or briefly identify the canonical source.
 
 ## File Size and Responsibility Rule
 
@@ -42,44 +83,8 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 ## Handle long-running task
 
 - Run long commands through an observable/yielding terminal and inspect new output or process status once per minute(60 seconds).
-- Stop and diagnose a command only after 4 consecutive minutes without meaningful new progress.
+- Stop and diagnose a command only after 4 minutes without meaningful new progress.
 - For commands that normally produce no output, use process activity and expected output-file creation, timestamp, or size changes as progress signals before stopping them.
-
-## Version control
-
-### Git Workflow
-
-- After completing a feature and verifying that the relevant checks pass, commit the completed work before moving on to the next feature or task.
-
-### Git conventions
-
-Use Conventional Commits 1.0.0 (https://www.conventionalcommits.org/en/v1.0.0/):
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-- **Types**: `feat` (new feature), `fix` (bug fix), `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`.
-- **Scope**: optional, e.g., `feat(ui):`, `fix(audio):`.
-- **Breaking changes**: append `!` after type/scope, or add `BREAKING CHANGE:` footer.
-- Keep commits small and focused - one logical change per commit.
-
-## Type Safety
-
-- Use strict typing. Prefer `unknown` over `any`.
-- Avoid type assertions (`as`) unless absolutely necessary.
-- Explicitly type function signatures; let inference handle locals.
-
-## Testing
-
-- Prefer black-box testing: test public APIs/behaviors, not internal implementation details.
-- Mock sparingly - prefer real dependencies or fakes.
-- Write tests for bug fixes before fixing (regression prevention).
-- Keep tests independent and fast.
 
 ## Security
 
@@ -102,7 +107,8 @@ A **blocker** is any issue in the current project/user prompt that prevents the 
 * Continuing would require guessing important project details.
 * The task cannot be completed without user clarification or project correction.
 * Some skills have input schema/Invocation Contracts. If the prompt violates that schema, it needs to be stopped, the error pointed out, and the user asked to correct it.
-* The developer's prompt requires project changes, but the git working tree is dirty with changes unrelated to the current prompt/task. In this case, you must stop immediately and ask the developer to resolve or commit those dirty changes before proceeding.
+* The developer's prompt contradicts the project's canonical documentation (such as skills, project-level documentation, or project-level skills), as developers are human and might not remember everything.
+* Task in user prompt depend on task A. But task A is not finished yet. For example, prompt says "Create test for assembly MvA.Bullet". But that assembly is not exist/not have enough resource for testing, then you should say this is blocker
 
 If you detect a blocker, you must **stop immediately**. Do not continue implementing, modifying, refactoring, or generating code based on assumptions.
 

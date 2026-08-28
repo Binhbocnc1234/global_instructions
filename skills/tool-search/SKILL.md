@@ -10,9 +10,11 @@ Use the bundled CLI for repeatable, token-efficient Exa searches. Treat its JSON
 ## Preflight
 
 1. Run commands from the repository root.
-2. Confirm Python can import `exa_py`.
-3. Confirm `EXA_API_KEY` exists without printing its value.
-4. If the package or key is missing, stop and tell the user exactly what must be configured. Never read keys from project files or include them in logs.
+2. Resolve the bundled CLI from the skill installation directory under `$env:USERPROFILE\.agents\skills\tool-search`.
+3. Run every Python preflight and Exa search command with a timeout of at least 60 seconds. Python startup and the first `exa_py` import can be slow on lower-performance machines. If the tool supports yielding, yield after approximately 10 seconds and continue waiting on the same process instead of treating the yield as a timeout.
+4. Confirm Python can import `exa_py`.
+5. Confirm `EXA_API_KEY` exists without printing its value.
+6. If the package or key is missing, stop and tell the user exactly what must be configured. Never read keys from project files or include them in logs.
 
 ```powershell
 python -c "import exa_py"
@@ -28,20 +30,20 @@ if ($env:EXA_API_KEY) { "EXA_API_KEY configured" } else { "EXA_API_KEY missing" 
 5. Answer from the retrieved evidence, link the supporting sources, and distinguish verified facts from inference.
 
 ```powershell
-python .agents/skills/tool-search/scripts/search.py "<query>" --num-results 15
+python "$env:USERPROFILE\.agents\skills\tool-search\scripts\search.py" "<query>" --num-results 15
 ```
 
 Useful variants:
 
 ```powershell
 # Focus on GitHub repositories
-python .agents/skills/tool-search/scripts/search.py "<task> open source repository" --include-domain github.com
+python "$env:USERPROFILE\.agents\skills\tool-search\scripts\search.py" "<task> open source repository" --include-domain github.com
 
 # Use deeper retrieval for difficult comparisons
-python .agents/skills/tool-search/scripts/search.py "<comparison query>" --type deep --num-results 15
+python "$env:USERPROFILE\.agents\skills\tool-search\scripts\search.py" "<comparison query>" --type deep --num-results 15
 
 # Exclude a low-value domain
-python .agents/skills/tool-search/scripts/search.py "<query>" --exclude-domain example.com
+python "$env:USERPROFILE\.agents\skills\tool-search\scripts\search.py" "<query>" --exclude-domain example.com
 ```
 
 Repeat `--include-domain` or `--exclude-domain` to pass multiple domains. Read `references/exa-api.md` before changing the script, using advanced SDK features, or troubleshooting API parameters.

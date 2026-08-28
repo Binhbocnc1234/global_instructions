@@ -1,0 +1,32 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "binh-local",
+  "description": "Personal Claude Code plugins for this laptop",
+  "owner": {
+    "name": "Nguyen Thanh Binh",
+    "email": "binhbocnc1234@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "csharp-lsp-auto",
+      "description": "C# language server pinned to the workspace-root solution",
+      "version": "1.0.0",
+      "author": {
+        "name": "Nguyen Thanh Binh"
+      },
+      "source": "./plugins/csharp-lsp-auto",
+      "category": "development",
+      "lspServers": {
+        "csharp-ls": {
+          "command": "cmd",
+          "args": ["/c", "csharp-ls-auto.cmd"],
+          "extensionToLanguage": {
+            ".cs": "csharp"
+          },
+          "startupTimeout": 120000,
+          "diagnostics": true
+        }
+      }
+    }
+  ]
+}

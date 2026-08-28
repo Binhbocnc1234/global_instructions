@@ -1,0 +1,8 @@
+{
+  "name": "csharp-lsp-auto",
+  "description": "C# language server pinned to the workspace-root solution",
+  "version": "1.0.0",
+  "author": {
+    "name": "Nguyen Thanh Binh"
+  }
+}

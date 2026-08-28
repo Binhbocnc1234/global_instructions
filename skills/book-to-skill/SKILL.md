@@ -1,6 +1,6 @@
 ---
 name: book-to-skill
-description: "Convert books and documents (PDF, EPUB, DOCX, HTML, Markdown, text, RTF, MOBI/AZW) into structured agent skills. Use when the user wants to analyze source documents, generate or update a reusable knowledge skill, apply an author's frameworks, or build an indexed knowledge base from files."
+description: "Convert books and documents (PDF, EPUB, DOCX, HTML, Markdown, text, RTF, MOBI/AZW) into structured agent skills."
 ---
 
 # Book-to-Skill Converter

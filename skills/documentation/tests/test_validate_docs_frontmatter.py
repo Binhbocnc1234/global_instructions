@@ -43,7 +43,7 @@ class DocsFrontmatterValidatorTests(unittest.TestCase):
     def test_typed_frontmatter_with_file_and_folder_paths_passes(self) -> None:
         common = (
             "type: technical\n"
-            "audience: [developer, agent]\n"
+            "audience: developer\n"
             "status: active\n"
             "language: en\n"
         )
@@ -79,6 +79,18 @@ class DocsFrontmatterValidatorTests(unittest.TestCase):
         )
 
         self.assertEqual(0, self.validate())
+
+    def test_multiple_audiences_fail(self) -> None:
+        self.write_doc(
+            "Feature.md",
+            "type: technical\n"
+            "audience: [developer, agent]\n"
+            "status: active\n"
+            "language: en\n"
+            "description: Explains a feature.\n",
+        )
+
+        self.assertEqual(2, self.validate())
 
     def test_legacy_related_field_fails(self) -> None:
         self.write_doc(

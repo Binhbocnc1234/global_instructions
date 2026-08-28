@@ -68,12 +68,12 @@ def main() -> int:
         sys.stdout.reconfigure(encoding="utf-8")
 
     parser = argparse.ArgumentParser(description="Validate markdown YAML frontmatter.")
-    parser.add_argument("--root", default="./Documentation", help="Documentation root or subdirectory.")
+    parser.add_argument("--root", default=".", help="Markdown root or subdirectory.")
     args = parser.parse_args()
 
     root = Path(args.root)
     if not root.exists():
-        print(f"Documentation root not found: {root}")
+        print(f"Markdown root not found: {root}")
         return 1
 
     all_docs = load_docs(root)
@@ -114,7 +114,11 @@ def main() -> int:
         if doc_type and doc_type not in VALID_TYPES:
             issues.append((relative_path, "type", f"invalid value '{doc_type}'"))
 
-        for audience in value_list(frontmatter.get("audience")):
+        audience_vals = value_list(frontmatter.get("audience"))
+        if len(audience_vals) > 1:
+            issues.append((relative_path, "audience", f"only a single audience is allowed, found: {', '.join(audience_vals)}"))
+        elif len(audience_vals) == 1:
+            audience = audience_vals[0]
             if audience not in VALID_AUDIENCES:
                 issues.append((relative_path, "audience", f"invalid value '{audience}'"))
 

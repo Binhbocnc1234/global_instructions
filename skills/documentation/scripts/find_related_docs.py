@@ -13,12 +13,12 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description="Find outgoing and incoming typed document links.")
     parser.add_argument("--id", required=True, help="Document id or file stem.")
-    parser.add_argument("--root", default="./Documentation", help="Documentation root.")
+    parser.add_argument("--root", default=".", help="Markdown root.")
     args = parser.parse_args()
 
     root = Path(args.root)
     if not root.exists():
-        print(f"Documentation root not found: {root}")
+        print(f"Markdown root not found: {root}")
         return 1
 
     docs = load_docs(root)

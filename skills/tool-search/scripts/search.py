@@ -95,7 +95,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Exa search failed: {error}", file=sys.stderr)
         return 1
 
-    print(json.dumps(results, indent=2, ensure_ascii=False))
+    # ASCII JSON remains readable and works in legacy Windows cp1252 consoles.
+    print(json.dumps(results, indent=2, ensure_ascii=True))
     return 0
 
 
