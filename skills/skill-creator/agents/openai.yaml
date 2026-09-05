@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Creator"
+  short_description: "Author and validate new agent skills"
+  default_prompt: "Use $skill-creator to author a new skill, or restructure an existing one, following the house layout, frontmatter, and validation rules."

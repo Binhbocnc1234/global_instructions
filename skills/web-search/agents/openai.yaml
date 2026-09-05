@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Search"
+  short_description: "Search the web with Exa and native search, then compare"
+  default_prompt: "Use $web-search to research this question with both engines and compare the results."

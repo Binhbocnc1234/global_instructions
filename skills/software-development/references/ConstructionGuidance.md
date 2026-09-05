@@ -14,7 +14,6 @@ description: Defines the curated construction and guard-placement guidance for s
 - Use explicit types where the language and project policy require them. Do not hide uncertainty behind dynamic escape types. For example, do not use dynamic types or implicit typing, such as the `var` keyword in C#.
 - Fix broken construction or wiring instead of adding silent fallbacks, no-ops, or legacy behavior.
 - Do not extract a method merely to label a few statements when keeping them inline makes lifecycle or ordering clearer.
-- Comment non-obvious reasons, invariants, units, ordering, external constraints, and deliberate trade-offs. Do not restate the code.
 - Make a value's unit or representation explicit in its identifier when omission could cause misuse. Follow the project's naming convention with names such as `duration_seconds`, `DurationSeconds`, or `limit_fraction`.
 
 ## Guard Placement
@@ -38,3 +37,11 @@ private void OnGameOver()
     enabled = false;
 }
 ```
+
+## Comment rules
+
+- Comment non-obvious reasons, invariants, units, ordering, external constraints, and deliberate trade-offs. Do not restate the code.
+
+- Example:
+```csharp
+

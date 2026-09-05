@@ -64,6 +64,8 @@ Use these attributes to assess the static and dynamic properties of the system.
 | Portability | Installability | The APK installs on Android 8 and later, and reports a clear message on earlier versions. |
 | Portability | Replaceability | Replacing the analytics SDK touches one wrapper class, because gameplay code depends on `IAnalytics`. |
 
+My experience: In 2D games, performance is rarely a problem.
+
 ## Quality in Use
 
 Evaluate these attributes with a specific user, task, and context rather than inferring them from product properties.

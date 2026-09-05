@@ -1,4 +1,0 @@
-interface:
-  display_name: "Tool Search"
-  short_description: "Search and evaluate current technical tools"
-  default_prompt: "Use $tool-search to find and compare current tools for my technical task."
