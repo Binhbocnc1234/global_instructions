@@ -49,9 +49,3 @@ When a document cannot be applied at all without another one, link it in the ope
 ```markdown
 This workflow assumes the module layout defined in [Architecture](../technical/Architecture.md).
 ```
-
-# AGENTS.md
-
-- Use `AGENTS.md` for context that appear almost every request. For example: development process or documentation index
-
-- Use `AGENTS.md` as a temporary inbox for recurring agent-process, tool, or verification rules whose canonical owner is not yet clear. Move the rule to canonical documentation or automation once its owner becomes clear.

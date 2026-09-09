@@ -224,13 +224,7 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 
 ## Security
 
-- Never hardcode secrets (API keys, connection strings, tokens, passwords) in source code.
-- Use environment variables, `.env` files (in `.gitignore`), or platform Secret Managers.
-- When refactoring or moving code, verify no secrets are dragged along.
-- Never commit `.env`, `*.key`, `credentials.*`, or any file containing secrets.
-- If a value looks like a secret (key, token, password) — stop and ask the user before using or exposing it.
-- MUST NOT copy private keys or credentials into cloud storage — OneDrive, Google Drive, Dropbox, or any synced folder. This covers backups and archives: an archive holding `~/.ssh`, a `*.key`, or a credential file MUST stay on local or offline storage. Use an external drive or an encrypted volume, and name the destination when reporting.
-- Sanitize log output: don't log request bodies, auth headers, or connection strings.
+- Never commit any file containing secrets.
 - For Unity/Games: treat Steam Web API keys, PlayFab titles/secrets, IAP receipt keys, and DB connection strings as highly sensitive.
 
 ## Blocker Detection and Stop Policy
