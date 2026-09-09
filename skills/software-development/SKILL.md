@@ -84,7 +84,7 @@ Agent-performed verification is sufficient evidence for committing. Manual or de
 1. Inspect the worktree and the diff.
 2. Stage only files belonging to the completed change. Leave unrelated edits unstaged.
 3. Run a staged diff check when available.
-4. Commit using a focused Conventional Commit message. Apply Commit Scope, Commit Message, you don't need description for commit.
+4. Commit using a focused Conventional Commit message. Apply Commit Scope and Commit Message. The message is a header line only, with no description body.
 5. Verify the resulting commit and the remaining worktree state.
 
 Do not omit the commit merely because the worktree is dirty; make a scoped commit. Do not commit when the user or the project explicitly forbids it, when agent-required verification failed, when the change is incomplete, or when an explicit approval gate requires stopping before commit. A requirement for later developer or manual verification is not such a gate.
@@ -127,6 +127,10 @@ There is no rule about
 Write the scope as the affected component, taken from the project vocabulary, such as an assembly, a module, or a system name. Omit the scope when the change has no single owner.
 
 Write the subject in the imperative mood, and name the resulting behavior instead of the activity: `fix(input): keep jump buffered across a frame drop`, not `fixed some input stuff`.
+
+MUST NOT write a description body. The commit is the header line and nothing else. Reasoning, evidence, trade-offs, and consequences belong in the response to the developer, who is reading them right now, not in a commit message nobody opens again. A change that feels too large to fit in one header line is two commits, not one commit with an essay attached; apply Commit Scope instead of writing a body.
+
+The single exception is `revert`, whose body carries `This reverts commit <sha>.` and nothing more.
 
 
 <!-- ## Final response format
