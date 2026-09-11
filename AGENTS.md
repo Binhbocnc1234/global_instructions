@@ -14,7 +14,7 @@ IDE: VSCode
 Use github desktop
 Game Developer with 2D games.
 Ambitious, seek to power. Want to learn in order to make money. 
-`D:\dev` contains project made by developer. Types of project: software(harness, game) and learning-material(how LLM work)
+`D:\dev`(Window environment) and `~\dev`(Linux) contains projects made by developer. Types of project: software(harness, game) and learning-material(how LLM work)
 C drive contains packages or (python, C++, UnityEngine)
 
 ### Personal information
@@ -27,6 +27,7 @@ Business gmail: hallucinationvn@gmail.com
 
 Communicate with users in English, regardless of the prompt's language. Code, documentation, skills and comments will also be written in English.
 When developer prompt : `Liệu có thể thực hiện hành động {n}` This means the user is only asking about feasibility and why, do not modifying the project.
+"Skip" = mark the tasks as deferred, agent won't actively execute it in future, except when developer say that
 Keep sentences short
 Prefer `Open Unity Editor`, `Click Run All`, and `Result: all tests pass` over conversational sequencing such as `First you need to` or `Then you should`.
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
@@ -226,6 +227,20 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 
 - Never commit any file containing secrets.
 - For Unity/Games: treat Steam Web API keys, PlayFab titles/secrets, IAP receipt keys, and DB connection strings as highly sensitive.
+
+### Store API keys in a file, not in environment variables
+
+Every API key an agent or a skill reads belongs in `~/.config/agents/secrets.env`, one `export NAME="value"` per line, sourced from `~/.bashrc`. On Windows the same file lives at `%USERPROFILE%\.config\agents\secrets.env`.
+
+The reason is migration. A key set through the OS environment editor cannot be read back out, so moving to a new machine means finding and reissuing every key. A file is copied once and every key moves with it.
+
+Rules:
+
+- Binhbocnc writes the values. An agent MUST NOT type, paste, echo, or otherwise handle a key value. An agent MAY create the file, add a commented placeholder line, and wire up the sourcing.
+- `chmod 600` the file and `chmod 700` its directory.
+- The path sits outside every git repository on purpose. MUST NOT move it inside one, and MUST NOT add a copy to a dotfiles repository.
+- To check a key is set, test that the variable is non-empty. MUST NOT print its value.
+- A skill that needs a key reads it from the environment. The skill documents which variable it needs; this file owns where the value lives.
 
 ## Blocker Detection and Stop Policy
 
