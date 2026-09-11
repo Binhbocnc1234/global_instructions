@@ -1,0 +1,77 @@
+#!/bin/bash
+# Reads agent API keys out of the GNOME login keyring, which the lock-screen
+# password unlocks at login. Values never touch a file or the shell history.
+#
+#   agent-keys set EXA_API_KEY    prompts once, stores it
+#   agent-keys list               shows which keys exist, never their values
+#   agent-keys export             prints export lines, for eval in a shell
+#   agent-keys rm EXA_API_KEY     deletes one
+
+set -u
+ATTR_SERVICE="agent-api-key"
+
+have_keyring() {
+    dbus-send --session --print-reply --dest=org.freedesktop.secrets \
+        /org/freedesktop/secrets org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1
+}
+
+# Shows the shape of the expected value, so a wrong paste is obvious before storing.
+hint_for() {
+    case "$1" in
+        EXA_API_KEY)       echo "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" ;;
+        OPENAI_API_KEY)    echo "sk-proj-XXXXXXXXXXXXXXXXXXXXXXXX" ;;
+        ANTHROPIC_API_KEY) echo "sk-ant-apiXX-XXXXXXXXXXXXXXXXXXXX" ;;
+        GEMINI_API_KEY|GOOGLE_API_KEY) echo "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" ;;
+        *_TOKEN)           echo "the token string, no surrounding quotes" ;;
+        *)                 echo "the raw key, no surrounding quotes and no export prefix" ;;
+    esac
+}
+
+# The names to look for. Add a key here after storing it.
+KEYS_FILE="$HOME/.config/agent-keys.list"
+
+case "${1:-}" in
+  set)
+    [ $# -eq 2 ] || { echo "usage: agent-keys set NAME" >&2; exit 2; }
+    have_keyring || { echo "No unlocked keyring on this session." >&2; exit 1; }
+    printf 'Value for %s\n' "$2" >&2
+    printf '  example: %s\n' "$(hint_for "$2")" >&2
+    printf '  input is hidden, nothing is echoed or kept in shell history\n' >&2
+    printf '  > ' >&2
+    IFS= read -rs value; printf '\n' >&2
+    [ -n "$value" ] || { echo "empty value, nothing stored" >&2; exit 1; }
+    printf '%s' "$value" | secret-tool store --label="$2" service "$ATTR_SERVICE" name "$2" || exit 1
+    unset value
+    mkdir -p "$(dirname "$KEYS_FILE")"; touch "$KEYS_FILE"
+    grep -qxF "$2" "$KEYS_FILE" || echo "$2" >> "$KEYS_FILE"
+    echo "stored $2"
+    ;;
+  list)
+    [ -s "$KEYS_FILE" ] || { echo "(no keys recorded)"; exit 0; }
+    while read -r n; do
+      [ -n "$n" ] || continue
+      if secret-tool lookup service "$ATTR_SERVICE" name "$n" >/dev/null 2>&1; then
+        echo "  $n  present"
+      else
+        echo "  $n  MISSING from keyring"
+      fi
+    done < "$KEYS_FILE"
+    ;;
+  export)
+    have_keyring || exit 0          # no keyring: stay silent, export nothing
+    [ -s "$KEYS_FILE" ] || exit 0
+    while read -r n; do
+      [ -n "$n" ] || continue
+      v=$(secret-tool lookup service "$ATTR_SERVICE" name "$n" 2>/dev/null) || continue
+      [ -n "$v" ] && printf 'export %s=%q\n' "$n" "$v"
+    done < "$KEYS_FILE"
+    ;;
+  rm)
+    [ $# -eq 2 ] || { echo "usage: agent-keys rm NAME" >&2; exit 2; }
+    secret-tool clear service "$ATTR_SERVICE" name "$2"
+    [ -f "$KEYS_FILE" ] && sed -i "/^$2\$/d" "$KEYS_FILE"
+    echo "removed $2"
+    ;;
+  *)
+    echo "usage: agent-keys {set|list|export|rm} [NAME]" >&2; exit 2 ;;
+esac

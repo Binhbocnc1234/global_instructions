@@ -233,20 +233,7 @@ After any kill, confirm by name — `pgrep -a <name>` — not by checking that t
 
 - Never commit any file containing secrets.
 - For Unity/Games: treat Steam Web API keys, PlayFab titles/secrets, IAP receipt keys, and DB connection strings as highly sensitive.
-
-### Store API keys in a file, not in environment variables
-
-Every API key an agent or a skill reads belongs in `~/.config/agents/secrets.env`, one `export NAME="value"` per line, sourced from `~/.bashrc`. On Windows the same file lives at `%USERPROFILE%\.config\agents\secrets.env`.
-
-The reason is migration. A key set through the OS environment editor cannot be read back out, so moving to a new machine means finding and reissuing every key. A file is copied once and every key moves with it.
-
-Rules:
-
-- Binhbocnc writes the values. An agent MUST NOT type, paste, echo, or otherwise handle a key value. An agent MAY create the file, add a commented placeholder line, and wire up the sourcing.
-- `chmod 600` the file and `chmod 700` its directory.
-- The path sits outside every git repository on purpose. MUST NOT move it inside one, and MUST NOT add a copy to a dotfiles repository.
-- To check a key is set, test that the variable is non-empty. MUST NOT print its value.
-- A skill that needs a key reads it from the environment. The skill documents which variable it needs; this file owns where the value lives.
+- API keys live in the GNOME login keyring, reached through `agent-keys`. [docs/agent-keys.md](docs/agent-keys.md) owns the commands, the keyring schema and the limits. Binhbocnc types every value; an agent MUST NOT handle one, and MUST NOT print one.
 
 ## Blocker Detection and Stop Policy
 
