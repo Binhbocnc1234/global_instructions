@@ -220,8 +220,14 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 ## Handle long-running task
 
 - Run long commands through an observable/yielding terminal and inspect new output or process status once per minute(60 seconds).
-- Stop and diagnose a command only after 4 minutes without meaningful new progress.
+- **Kill a command after 2 minutes without meaningful new output, then diagnose why.** Report what the last output was and what the process was doing when it was killed. MUST NOT restart it unchanged and hope.
 - For commands that normally produce no output, use process activity and expected output-file creation, timestamp, or size changes as progress signals before stopping them.
+
+### Confirm the kill landed
+
+`kill <pid>` on the pid a shell reports often hits a wrapper shell, not the program. The program keeps running, keeps holding its lock, its API quota or its port, and the next attempt fails for a reason that looks unrelated.
+
+After any kill, confirm by name — `pgrep -a <name>` — not by checking that the pid is gone. A process in `D` state ignores `SIGTERM`; escalate to `kill -9`.
 
 ## Security
 
