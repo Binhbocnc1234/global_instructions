@@ -136,6 +136,63 @@ If yes, use the simpler wording.
 - Instead of trying to solve the request your self, ask yourself: `Does a tool in Internet already do this?` The more general the problem, the higher the chance that some tool in Internet has already solved it. For example: `Create a skill named skill-creator for me`, agent should use the `web-search` skill, which runs Exa and the harness native web search and compares the two result sets, then output the result
 - Use Python for pseudocode. For each line of pseudocode, if any function is not native function in Python, you should write an comment next to it. Its purpose is to make reading and understanding pseudocode more seamless for developers. For example: 
 
+## Task Management
+
+A project MAY contain a `delivery/` folder at its root. It is the canonical source for tasks that last longer than one request.
+
+- `delivery/unfinished/` holds a task with at least one `- [ ]` or `- [-]` item.
+- `delivery/finished/` holds a task whose items are all `- [x]`.
+- 1 task = 1 Markdown file. The file name is the task ID: PascalCase, unique across both folders.
+- Checkboxes are canonical. The folder MUST match them: move the file in the same change that ticks its last item or reopens one.
+- Refer to a task by its ID, never by its file path, because the file moves between folders.
+- A task file MUST NOT own anything that outlives its task. A durable contract, rule, or workflow belongs in project documentation, and the task file links to it.
+
+### Request Budget
+
+One request has a budget of 15 minutes of agent work. The budget lets the developer check the result and correct it before work continues.
+
+Create a task file only when you estimate that the work does not fit one request budget. Work that needs the developer between steps (an approval, a playtest, a reboot, a physical device) never fits, because each approval ends a request. The number of items does not decide it: a mechanical change over many files can fit.
+
+Also create a task file when the budget ends a request with work left, so the work survives a closed laptop.
+
+| Request | Task file | Reason |
+|---|---|---|
+| "Add this rule to AGENTS.md: kill a command after 2 minutes without output" | No | One edit, checked by reading the diff |
+| "Rename 30 documentation files to PascalCase and fix their links" | No | Mechanical, a few minutes |
+| "Fix the crash when the player dies during a pause" | No | One bug and one regression test |
+| "Is the `cooldown` field redundant?" | No | A question |
+| "Migrate this game from Unity to Godot" | Yes | Many systems, and the developer playtests each slice |
+| "Install Linux beside Windows and restore my tools" | Yes | Reboots, firmware checks, and long installs |
+| "Sync 20 GB of files to cloud storage and verify them" | Yes | Waits hours on an outside process |
+| "Build an editor plugin in six steps, each checked by hand" | Yes | The developer approves every step |
+| "Fix this bug", and the budget ends before the fix is verified | Yes | The budget ended with work left |
+
+### Task File Format
+
+```markdown
+## Why
+Plain paragraphs: the reason, the criteria, and the decisions of the task.
+
+## Import the prefabs
+Plain paragraphs MAY record decisions and evidence.
+- [x] #1 Convert the prefab files
+- [-] #2 Convert the unused legacy prefabs
+- [ ] #3 Run the unit tests
+- [ ] #4 Manual testing: open each prefab in the editor
+
+## Migrate the scenes
+- [ ] #1 Convert the scene files
+- [ ] #2 Manual testing: play level 1-1
+```
+
+- A `##` section with checkboxes is a step. A `##` section without checkboxes holds context.
+- MUST NOT use `###` or deeper headings in a task file.
+- Step names are unique inside one file. Item numbers restart at `#1` in each step. One item is one line.
+- `- [-]` marks a deferred item.
+- Size a step to fit one request budget, and end it with its testing items.
+- Refer to an item as `<TaskID> <step name>#<n>`, e.g. `GodotPrefabMigration Import the prefabs#3`. Omit the task ID when the conversation already names the task.
+- When a task file would exceed 250 lines, split it into sibling task files that share an ID prefix, e.g. `GodotMigrationPrefabs` and `GodotMigrationScenes`. Create every sibling at once, so work not started yet stays visible. No parent file.
+
 ## Reviewing Developer Changes
 
 Developers often edit files without explicitly telling you in request, so if you see unusual changes (e.g. removing a feature, removing a seemingly unnecessary null check) in the git diff, it's because of the developer.
