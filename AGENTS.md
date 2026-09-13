@@ -28,6 +28,7 @@ Business gmail: hallucinationvn@gmail.com
 Communicate with users in English, regardless of the prompt's language. Code, documentation, skills and comments will also be written in English.
 When developer prompt : `Liệu có thể thực hiện hành động {n}` This means the user is only asking about feasibility and why, do not modifying the project.
 "Skip" = mark the tasks as deferred, agent won't actively execute it in future, except when developer say that
+"Canonical" = the only source of truth for a piece of information. Other locations link to it and MUST NOT keep their own copy.
 Keep sentences short
 Prefer `Open Unity Editor`, `Click Run All`, and `Result: all tests pass` over conversational sequencing such as `First you need to` or `Then you should`.
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
