@@ -173,24 +173,24 @@ Also create a task file when the budget ends a request with work left, so the wo
 ## Why
 Plain paragraphs: the reason, the criteria, and the decisions of the task.
 
-## Import the prefabs
+## Step 1: Import the prefabs
 Plain paragraphs MAY record decisions and evidence.
 - [x] #1 Convert the prefab files
 - [-] #2 Convert the unused legacy prefabs
 - [ ] #3 Run the unit tests
 - [ ] #4 Manual testing: open each prefab in the editor
 
-## Migrate the scenes
+## Step 2: Migrate the scenes
 - [ ] #1 Convert the scene files
 - [ ] #2 Manual testing: play level 1-1
 ```
 
-- A `##` section with checkboxes is a step. A `##` section without checkboxes holds context.
+- A step is a `##` section titled `Step <n>: <name>` that holds checkboxes. A `##` section without checkboxes holds context.
 - MUST NOT use `###` or deeper headings in a task file.
-- Step names are unique inside one file. Item numbers restart at `#1` in each step. One item is one line.
+- `Step <n>` is the step ID inside its file. Number new steps after the last one and never renumber, because chat and other files refer to these IDs. Item numbers restart at `#1` in each step. One item is one line.
 - `- [-]` marks a deferred item.
 - Size a step to fit one request budget, and end it with its testing items.
-- Refer to an item as `<TaskID> <step name>#<n>`, e.g. `GodotPrefabMigration Import the prefabs#3`. Omit the task ID when the conversation already names the task.
+- Refer to an item as `<TaskID> Step <n>#<m>`, e.g. `GodotPrefabMigration Step 1#3`. Omit the task ID when the conversation already names the task.
 - When a task file would exceed 250 lines, split it into sibling task files that share an ID prefix, e.g. `GodotMigrationPrefabs` and `GodotMigrationScenes`. Create every sibling at once, so work not started yet stays visible. No parent file.
 
 ## Reviewing Developer Changes
