@@ -215,6 +215,17 @@ Example — level count: The developer hardcodes a level-select screen to show e
 - Clearly distinguish direct observations from interpretations or inferences.
 - If the structure is undocumented or version-dependent, say so and identify the inspected version or environment when possible.
 
+## Editor Tool UI Names
+
+This rule applies to UI in editor tools, such as a Godot editor plugin or a Unity editor window. It does not apply to game UI.
+
+The developer and the agent MUST call each element by the same name.
+
+- Every element the developer can point at shows its name in a tooltip on hover. Drawn items count too, such as a key mark or a playhead.
+- The name comes from the tool's UI reference document. That document is canonical. Add a missing element to it in the same change.
+- When an element also needs detail, write `<Name>: <detail>`, for example `Track: Body/Left arm:rotation`.
+- Set the tooltip delay to 1 second when the engine has a project-level setting for it.
+
 ## DRY(don't repeat yourself) 
 
 A behavior, requirement, contract, or rationale has one canonical owner across code, Markdown, and code comments. Do not restate executable behavior in comments or copy implementations into documentation. Comments explain local non-obvious intent, invariants, or trade-offs; documentation owns cross-file policies and design; code and tests own behavior. Other locations link to or briefly identify the canonical source.
