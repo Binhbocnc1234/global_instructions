@@ -149,7 +149,7 @@ A project MAY contain a `delivery/` folder at its root. It is the canonical sour
 
 ### Request Budget
 
-One request has a budget of 15 minutes of agent work. The budget lets the developer check the result and correct it before work continues.
+One request has a budget of 15 minutes of agent work. The budget lets the developer check the result and correct it before work continues. In Claude Code, the hook [request_budget.py](scripts/request_budget.py) enforces it.
 
 Create a task file only when you estimate that the work does not fit one request budget. Work that needs the developer between steps (an approval, a playtest, a reboot, a physical device) never fits, because each approval ends a request. The number of items does not decide it: a mechanical change over many files can fit.
 
