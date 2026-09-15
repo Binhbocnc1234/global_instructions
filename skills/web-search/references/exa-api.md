@@ -18,7 +18,15 @@ Use this reference only for advanced searches, script changes, or troubleshootin
 
 It emits a JSON array containing `title`, `url`, `score`, `published_date`, `author`, and `highlights`. It writes failures to stderr and returns a nonzero exit code.
 
-## Supported CLI Options
+`scripts/fetch.py` calls `Exa.get_contents` with:
+
+- one or more positional URLs;
+- `text={"max_characters": N}`, where `--max-characters` defaults to 20000;
+- `max_age_hours`, only when `--max-age-hours` is set.
+
+It emits a JSON object with `pages` (`title`, `url`, `published_date`, `text`) and `failures` (`url`, `status`, `source`). Exa reports an unreadable URL in `statuses`, not as an exception. The script returns exit code 2 when `failures` is not empty, and 1 when the request fails.
+
+## Supported `search.py` Options
 
 | Option | Purpose |
 |---|---|
@@ -36,7 +44,7 @@ Use the Python SDK directly, or extend the script with tests, when the task requ
 - full page text or summaries instead of highlights;
 - publication or crawl date filters;
 - content freshness controls;
-- `/contents` retrieval for already-known URLs;
+- `/contents` summaries, subpages, and link extras;
 - `/answer` for question-first grounded responses.
 
 Keep highlights as the default for agent workflows because they constrain token usage. Set a maximum character count whenever requesting full text.

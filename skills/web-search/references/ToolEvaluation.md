@@ -39,7 +39,7 @@ Return a compact ranked list. Prefer three strong candidates over a long unfilte
 - maintenance or integration risk: last release date, open issue backlog, license, platform support;
 - the page that verified each of the claims above.
 
-Name the engine only when native search supplied a candidate, because that fallback must be announced. See [Fall Back to Native Search](../SKILL.md#fall-back-to-native-search).
+Name the tool only when `WebFetch` verified a claim, because that exception must be announced. See [Native Tools](../SKILL.md#native-tools).
 
 ## Common Failure
 

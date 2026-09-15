@@ -1,15 +1,15 @@
 ---
 name: web-search
-description: "Search the live web with the bundled Exa CLI, the primary engine for every web question, and fall back to the harness native web search only when Exa comes up short. Use when a request needs current or external information: find a tool or library for a task, compare software options, check a version, release date, price, or API change, research a niche or fast-moving technical topic, or verify a claim with linked sources."
+description: "Search the live web and read known pages with the bundled Exa CLI, the only search engine. Harness native web search is disabled. Use when a request needs current or external information: find a tool or library for a task, compare software options, check a version, release date, price, or API change, research a niche or fast-moving technical topic, or verify a claim with linked sources."
 ---
 
 # Web Search
 
-Exa is the engine. Run it for every web question. Answer from the pages it retrieves, never from memory.
+Exa is the engine. Use it for every capability it has: search, and reading a known URL. Answer from the pages it retrieves, never from memory.
 
-Exa retrieves by meaning, so it reaches the canonical page that keyword ranking buries. That is why it is primary. It is a single engine, so nothing cross-checks it automatically. Verification comes from opening the canonical source, not from a second engine.
+Exa retrieves by meaning, so it reaches the canonical page that keyword ranking buries. The developer observed that Exa gave better results than native web search in every comparison. It is a single engine, so nothing cross-checks it automatically. Verification comes from opening the canonical source, not from a second engine.
 
-The harness native web search is a fallback, not a second opinion. See [Fall Back to Native Search](#fall-back-to-native-search).
+Native web search is disabled. See [Native Tools](#native-tools).
 
 ## Preflight
 
@@ -32,11 +32,14 @@ Run every Python command with a timeout of at least 60 seconds. Python startup a
    - Strong: `open source sprite sheet packer command line Unity 2D`
 2. Run the Exa CLI.
 3. Judge the result set. See the next section.
-4. Open the sources that carry the answer. Highlights and snippets are excerpts, not pages. Fetch the full page before stating a fact that the excerpt only implies.
+4. Open the sources that carry the answer with the Exa fetch CLI. Highlights and snippets are excerpts, not pages. Fetch the full page before stating a fact that the excerpt only implies.
 5. Answer from the retrieved evidence. Link every source. Separate a verified fact from an inference.
 
 ```powershell
 python "$env:USERPROFILE\.agents\skills\web-search\scripts\search.py" "the query" --num-results 10
+
+# Read one or more known URLs; exit code 2 means at least one URL is in "failures"
+python "$env:USERPROFILE\.agents\skills\web-search\scripts\fetch.py" "https://example.com/changelog" --max-characters 20000
 ```
 
 MUST NOT run a second search round when the result set already answers the question.
@@ -57,25 +60,22 @@ Several results repeating one press release are still one source. Collapse them,
 
 Report which claim came from which page. A reader who cannot tell a verified fact from an inference cannot use the answer.
 
-## Fall Back to Native Search
+## Native Tools
 
-Run the harness native web search only when Exa comes up short:
+Native web search is disabled in the harness configuration. The Exa CLI replaces it for every search.
 
-- Exa returns an empty or thin result set after one requery;
-- the Exa CLI is unavailable (missing key, import failure, API error).
+| Harness | Native web search | Where it is disabled |
+|---|---|---|
+| Claude Code | `WebSearch` | `permissions.deny` in `~/.claude/settings.json` |
+| Codex | built-in web search | `web_search = "disabled"` in `~/.codex/config.toml` |
 
-MUST announce the fallback to the developer in the answer. Name the reason. Never substitute native search silently, because the developer chose Exa as the engine and needs to know when that choice did not hold.
+MUST NOT use a native search tool, even when a harness still exposes one.
 
-Example of the announcement: "Exa returned three unrelated pages for this query after a requery, so the two sources below came from native search instead."
+Native page fetch (`WebFetch` in Claude Code) stays enabled for one case only: `fetch.py` listed that URL in `failures`. MUST announce it in the answer and name the reason.
 
-| Harness | Native web search tool |
-|---|---|
-| Claude Code | `WebSearch`, plus `WebFetch` for a URL that is already known |
-| Codex CLI | the built-in web search, when the sandbox enables it |
-| Gemini CLI | `google_web_search`, plus `web_fetch` |
-| Other | Search the tool list for a search tool before deciding that none exists |
+Example of the announcement: "Exa could not read the changelog page (status `error`), so it was read with `WebFetch`."
 
-STOP when Exa is unavailable and the harness exposes no native search. Report which check failed and why. Do not answer a current-information question from memory.
+STOP when the Exa CLI is unavailable (missing key, import failure, API error, rate limit). Report which check failed and why. Do not answer a current-information question from memory or from native search.
 
 ## Escalate When the Result Set Shows a Gap
 
@@ -84,8 +84,8 @@ Escalate once. Report what is still missing after that.
 | Symptom | Next action |
 |---|---|
 | The result set is thin | Make the query more specific. Remove domain filters. |
-| Versions, dates, or prices conflict across pages | Go to the canonical page directly: release notes, changelog, registry page, vendor documentation. Use Exa `/contents` or the harness fetch tool. |
-| The result set is empty | Widen the query. Drop the jargon. Use the term the vendor itself uses. Then fall back to native search. |
+| Versions, dates, or prices conflict across pages | Go to the canonical page directly: release notes, changelog, registry page, vendor documentation. Read it with `fetch.py`. |
+| The result set is empty | Widen the query. Drop the jargon. Use the term the vendor itself uses. If it is still empty, report the gap. |
 | The question is a multi-source comparison | Run Exa again with `--type deep`. |
 
 ## Exa CLI Options
@@ -115,7 +115,7 @@ Use a domain filter only when the answer must come from an authoritative or repo
 
 - Missing key: ask the user to configure `EXA_API_KEY`, then restart the agent process.
 - Import failure: report that `exa-py==2.14.0` is required. Do not install packages silently.
-- Exa refused or rate-limited: announce it, then fall back to native search.
+- Exa refused or rate-limited: STOP and report it.
 - API mismatch: consult the official Exa documentation linked from [Exa API](references/exa-api.md), then report the stale local guidance.
 - Search failure: report the error. Never print environment variables, headers, or request secrets.
 
@@ -132,4 +132,4 @@ Use a domain filter only when the answer must come from an authoritative or repo
 | Task | Read |
 |---|---|
 | Rank tools, libraries, or repositories for a task | [Tool Evaluation](references/ToolEvaluation.md) |
-| Change `scripts/search.py`, use an SDK feature the CLI does not expose, or debug an API parameter | [Exa API](references/exa-api.md) |
+| Change `scripts/search.py` or `scripts/fetch.py`, use an SDK feature the CLI does not expose, or debug an API parameter | [Exa API](references/exa-api.md) |
