@@ -52,6 +52,20 @@ Before writing, ask:
 
 If yes, use the simpler wording.
 
+## Anchor a Project Noun to Code
+
+A noun that names something inside the project MUST carry the code symbol that defines it, the first time a response or a document uses it: a file, a type, a member, or an asset path. This holds in a headline, a proposal title, and a checklist item, because those are the lines that get read alone.
+
+The test is one question: can the developer open the thing from what I wrote? A noun that resolves only because the agent knows which class it meant is vague, and the developer pays for it with a round trip.
+
+For example, "Let a description read a stat" names two things the project never defines. Write "Let the effect tooltip print a stat: `Effect.Description()` formats the `effect_description` entry with the effect instance and `EffectBars.SetupIcon` shows the result, so a placeholder resolves public members only". The second form names the member, the data, and the constraint.
+
+An invented name costs more than a vague one. "The description system" and "the tooltip pipeline" read as project vocabulary, so the developer searches for something that does not exist. Use the symbol, or say plainly that the code has no name for it.
+
+[Evidence for Technical Answers](#evidence-for-technical-answers) fires after a claim and says where the claim came from. This rule fires on the noun itself, so a response can carry full evidence and still leave the reader unable to find what it is about.
+
+Why: the developer asked what a description was, after a response that cited the file it lived in. Evidence was present and the subject was still unnamed, so the answer cost an extra request.
+
 ## Explaining a Technique
 
 This section applies to every explanation: an agent response in chat, a document, a skill, and learning material. Example request: "explain how ext4 finds a file".
