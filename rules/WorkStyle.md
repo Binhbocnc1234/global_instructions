@@ -52,6 +52,35 @@ Why: most failed work is not wrong code, it is work that continued past the poin
 + SOLID, Singleton and PascalCase is well-documented concept in the Internet so you don't need to specify what is SOLID.
 + Developer may accept ambiguity if they feel that requirements elicitation is too time-consuming and want some exploration
 
+## Route Through the Documentation Index
+
+When to apply: at the start of every task in a project that carries documentation.
+
+1. Read the project's documentation index in full. The project `AGENTS.md` records its path.
+2. Open only the indexed documents whose description matches the request.
+3. Follow an inline link out of those documents only when the link affects the task.
+
+MUST NOT list a documentation folder, grep it for a keyword, or open a document to learn what it holds. Each of those searches for a document that the index already names, and each one costs context that the task needs. [Documentation Index](Authoring.md#documentation-index) owns generating and updating the index.
+
+Why: the index costs one read and names every document. Discovering the same set by opening files costs one read per candidate, and the candidates that turn out to be irrelevant stay in context for the rest of the session.
+
+## An Unrelated File Opened Is a Routing Defect
+
+When to apply: you read a file, and it held nothing the task needed.
+
+Two causes produce that read: the agent chose badly, or the project routes badly. Treat the second as the cause, because it is the one that can be fixed. A routing defect is one of:
+
+- The project has no documentation index, so the only way to learn what a document holds was to open it.
+- The index entry's description does not describe the document, or it is stale.
+- The document serves two Diataxis purposes, so one sentence cannot describe it. See [Markdown Document Purpose](Authoring.md#markdown-document-purpose).
+- `AGENTS.md` or a document links to a file that was renamed, moved, split, or deleted.
+
+Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](SoftwareDevelopment.md#reusable-knowledge).
+
+For example, a task about card cost ends with the agent reading `Documentation/en/reference/technical/EntityStats.md`, which holds no cost rule. The index describes it as "Entity reference", a description that fits four documents. The fix is one sentence in that document's `description` frontmatter field naming what it holds, followed by regenerating the index.
+
+For example, a task about the build pipeline ends with the agent opening six files under `tools/` because no document names which one runs first. Nothing is stale; the routing simply does not exist. The fix is an entry in `AGENTS.md` naming the entry point.
+
 ## Be unethical
 
 Consider two cases:

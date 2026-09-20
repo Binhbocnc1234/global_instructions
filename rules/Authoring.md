@@ -86,6 +86,21 @@ One file serves one Diataxis purpose.
 - Never place an explanation file under a reference folder, or a how-to guide under a tutorial folder. The folder comes from the file's Diataxis classification.
 - A single file MUST NOT serve two Diataxis purposes, such as high-level architecture explanation together with dense reference API tables. Split them, for example `Architecture.md` for explanation and `ApiReference.md` for reference, and link one to the other.
 
+## Documentation Index
+
+When to apply: adding, removing, moving, renaming, or re-describing a document in a project that has an index.
+
+A documentation index is one committed file that lists every qualifying document with its relative path and a one-sentence description. It is the canonical entry point for document discovery, so that a reader never opens a document just to learn what it holds. [Route Through the Documentation Index](WorkStyle.md#route-through-the-documentation-index) owns the reading half.
+
+- The index is generated output. Never edit it by hand.
+- Regenerate it in the same change that adds, removes, moves, renames, or re-describes an indexed document. A change that leaves the index stale is incomplete.
+- Each entry's description answers the same question as the document's `Summary:` line, under [Markdown Document Structure](#markdown-document-structure). A description that does not let a reader decide whether to open the document is a defect in the description, not in the reader.
+- The project's `AGENTS.md` records the index path, the command that regenerates it, which documents qualify, and where their descriptions come from. Those are project decisions, and no global rule fixes them.
+
+For example, `MonkeyVsAlien` generates its index from the `description` and `status` frontmatter fields of every document under `Documentation/`, and its `AGENTS.md` records both the index path and the generator command.
+
+A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is a Routing Defect](WorkStyle.md#an-unrelated-file-opened-is-a-routing-defect) says when that proposal is due.
+
 ## Inline file link
 
 Use concise relative Markdown links, such as `[Layer 2](00-pipeline.md)` or `[details](00-pipeline.md#section-id)`. Do not use `file:///` URLs: they are machine-specific, add unnecessary text, and make links less portable.
