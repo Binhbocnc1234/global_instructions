@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Claude Code hook that enforces the request budget from Task Management in ~/.agents/AGENTS.md.
+"""Claude Code hook that enforces the request budget from ~/.agents/rules/TaskManagement.md.
 
 UserPromptSubmit records when a request starts. PreToolUse denies tool calls once the budget is spent,
 except the calls an agent needs to save progress: reading files and editing task files under `delivery/`.

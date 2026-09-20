@@ -1,11 +1,3 @@
----
-type: technical
-audience: agent
-status: active
-language: en
-description: Defines the curated workflow for fixing bugs from evidence.
----
-
 # Fix Bugs from Evidence
 
 Collect the smallest useful report:

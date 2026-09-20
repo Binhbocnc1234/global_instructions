@@ -1,17 +1,7 @@
----
-type: technical
-audience: agent
-status: active
-language: en
-description: Defines the curated construction and guard-placement guidance for software changes.
----
-
 # Construct the Change
 
-- Implement the smallest complete correction that satisfies the requirement.
 - Keep each domain invariant owned by the object whose state it constrains. Do not duplicate or query that invariant from a behavior that merely requests a state change. For example, `Knockback` must not check whether a displaced `Entity` position is valid when `Entity` owns team/grid boundaries; it should request displacement through an operation such as `entity.apply_knockback(delta)`, and `Entity` must enforce the invariant by clamping position. Treat the opposite design as misplaced responsibility or domain-invariant leakage: it violates encapsulation and the Tell, Don't Ask principle.
-- Prefer readable, cohesive code over compression, performance or cleverness.
-- Use explicit types where the language and project policy require them. Do not hide uncertainty behind dynamic escape types. For example, do not use dynamic types or implicit typing, such as the `var` keyword in C#.
+- Use explicit types where the language and project policy require them. Do not hide uncertainty behind dynamic escape types. For example, do not use `var` keyword in C#.
 - Fix broken construction or wiring instead of adding silent fallbacks, no-ops, or legacy behavior.
 - Do not extract a method merely to label a few statements when keeping them inline makes lifecycle or ordering clearer.
 - Make a value's unit or representation explicit in its identifier when omission could cause misuse. Follow the project's naming convention with names such as `duration_seconds`, `DurationSeconds`, or `limit_fraction`.
@@ -38,10 +28,33 @@ private void OnGameOver()
 }
 ```
 
+## Method Extraction
+
+Do not extract a method that is called once merely to label one to five statements. Keep those statements at the call site when seeing them inline makes the lifecycle, dependency, or execution order clearer.
+
+## Required Dependency Policy: No Fallbacks
+
+Treat serialized scene references, required components, initialized gameplay behaviours, and mandated effects as runtime invariants. Access them directly.
+
+- Do not add `null` checks or early returns that silently skip required runtime dependencies.
+- Do not mask a missing dependency with a fallback object, default value, warning, legacy behavior, or no-op.
+- Let software report its normal runtime error when an invariant is broken so the debugger identifies the offending object and stack trace.
+- Fix the scene, serialized data, initialization order, or caller contract that violated the invariant. Do not make the consumer tolerate the defect.
+- Do not write required-dependency handling like this:
+```gdscript
+if dependency != null:
+    use_dependency()
+else:
+    use_legacy_behavior()
+```
+- Right solution:
+```gdscript
+use_dependency()
+```
+That's it. You don't need to check for that error
+
 ## Comment rules
 
 - Comment non-obvious reasons, invariants, units, ordering, external constraints, and deliberate trade-offs. Do not restate the code.
 
-- Example:
-```csharp
 

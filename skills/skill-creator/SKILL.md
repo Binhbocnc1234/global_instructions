@@ -63,7 +63,7 @@ Use `MUST`, `MUST NOT`, and `STOP` only for constraints where violating them bre
 
 Keep `SKILL.md` at or below 250 lines. When it would run longer, split by responsibility into `references/`, never by compressing prose or deleting comments.
 
-One canonical owner per rule. If another skill already owns a rule (writing style, Markdown conventions, question-asking sufficiency), link to it instead of restating it. This skill does exactly that for three rules: style is owned by `asd-ste100`, Markdown and document rules by `documentation`, question sufficiency by `ask`.
+One canonical owner per rule. If another skill already owns a rule (writing style, Markdown conventions, question-asking sufficiency), link to it instead of restating it. This skill does exactly that for three rules: style is owned by `asd-ste100`, Markdown and document rules by the global `rules/Authoring.md`, question sufficiency by `ask`.
 
 Write everything in English, regardless of the skill's subject.
 

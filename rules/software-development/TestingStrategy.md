@@ -1,11 +1,3 @@
----
-type: technical
-audience: agent
-status: active
-language: en
-description: Defines the curated test-selection, test-execution, and verification-selection guidance.
----
-
 # Select Valuable Tests
 
 Do not create a permanent automated test merely because production code changed. Add or update one when it has unique detection value and manual verification is expensive, unreliable, or unable to cover the relevant state spaces.

@@ -1,14 +1,14 @@
 ---
-type: technical
-audience: agent
-status: active
-language: en
-description: Defines the software-quality model, one concrete example per attribute, and the evidence needed to apply it.
+name: software-quality
+description: Select, write, and evidence non-functional requirements with the ISO/IEC 25010 quality model. Use when a request names a quality attribute or a non-functional target — performance budget, frame time, memory, reliability, security, accessibility, usability, maintainability, portability — or asks "is this fast/reliable/maintainable enough?", "what acceptance criteria should this have?", "how do I measure it?", or "which quality attributes matter here?". Also use before committing to a quality target in a design, and when judging whether evidence proves a quality claim.
 ---
 
 # Software Quality Model
 
-Use this reference to select and operationalize product-quality and quality-in-use requirements. It retains the ISO/IEC 25010 model summarized in the archived `software-engineering` skill's source: *Software Engineering: A Practitioner's Approach*, 9th edition, Chapter 15, pp. 313–314. It is not a substitute for a current standard, legal requirement, or platform-specific accessibility guidance.
+Summary: the ISO/IEC 25010 product-quality and quality-in-use attributes, one concrete example per attribute, and the evidence each one needs.
+Why: a quality target stated without a metric, a context, and an evidence method cannot be verified, so it is not a requirement.
+
+Source: *Software Engineering: A Practitioner's Approach*, 9th edition, Chapter 15, pp. 313-314. This model is not a substitute for a current standard, a legal requirement, or platform-specific accessibility guidance.
 
 ## How to Read the Tables
 
@@ -64,7 +64,7 @@ Use these attributes to assess the static and dynamic properties of the system.
 | Portability | Installability | The APK installs on Android 8 and later, and reports a clear message on earlier versions. |
 | Portability | Replaceability | Replacing the analytics SDK touches one wrapper class, because gameplay code depends on `IAnalytics`. |
 
-My experience: In 2D games, performance is rarely a problem.
+Binhbocnc's experience: in 2D games, performance is rarely a problem.
 
 ## Quality in Use
 

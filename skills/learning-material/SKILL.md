@@ -13,7 +13,7 @@ Design material so the intended learner can understand a concept or gain a pract
   - `Prerequisite knowledge`: Stating explicit background assumed (e.g., DSA and OOP).
   - `Contents`: A dependency-ordered navigation table with three columns: `File`, `Covers`, and `Depends on`.
 - `GLOSSARY.md`: Defines terms that appear across multiple resources, serving as a unified reference index.
-- **Python Pseudocode**: All pseudocode MUST be written in Python. Include explicit type annotations (`int`, `list[int]`, `Float[Tensor, "N d"]`) whenever they carry semantic meaning.
+- **Explanation rules**: [Explaining a Technique](../../rules/Communication.md#explaining-a-technique) owns reason-first, Python pseudocode, type annotations, and concrete traces. Apply it to every resource.
 - **Trust Labels**: Classify claims as **Documented**, **Observable**, or **Inferred** when that distinction affects trust or action.
 - **Self-Check Checks**: Add self-check questions, diagnosis scenarios, or executable verification steps when they expose and resolve common misconceptions.
 
@@ -31,18 +31,7 @@ Design material so the intended learner can understand a concept or gain a pract
 
 ## Pedagogical Rules for Resources
 
-### 1. Prerequisite & No-Unintroduced-Concept Rule
+### Prerequisite & No-Unintroduced-Concept Rule
 
 - **Define Prerequisites First:** If a developer has read up to line $n$, assume they understand only lines $1$ to $n-1$ and prerequisite documents.
 - **No Unintroduced Concepts:** Never require the reader to encounter, interpret, or reason about a concept that has not already been defined. This applies to explanations, examples, code snippets, syntax, formulas, diagrams, and terminology alike (e.g., in Python learning material, teaching about `Integer` while introducing a code snippet containing an `Array`/`List` that hasn't been covered yet).
-
-### 2. Motivation Before Mechanics (Teleology Rule)
-
-- Always explain **why** an algorithm, mechanism, or architectural choice exists before detailing **how** it calculates.
-- Introduce the motivating problem, ambiguity, or failure mode of previous approaches first (e.g., polysemy of words, pronoun ambiguity, memory decay in sequential tapes) so the algorithm is understood as a necessary solution.
-
-### 3. Pair Abstractions with Concrete Examples (Mental Unit Tests)
-
-- Never present abstract formulas, mathematical descriptions, or complex interfaces in isolation.
-- Always pair them with a concrete, traceable walkthrough (with real inputs, intermediate calculations, and expected outputs). Concrete examples act as "mental unit tests" that anchor abstract interfaces and reduce working memory load.
-

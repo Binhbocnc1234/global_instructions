@@ -55,7 +55,7 @@ Use `type="number"` for ordered steps or rules, `type="bullet"` for unordered po
 Concretely, a summary should carry at least one of:
 
 * the reason the member exists at all - the problem it solves, or what would break without it;
-* an invariant callers can rely on (see the **Guard Placement** rule in AGENTS.md: state the guarantee at the source so consumers never re-check it);
+* an invariant callers can rely on, stated at the source so consumers never re-check it;
 * a constraint on how it may be used, and the consequence of getting it wrong;
 * a non-obvious ordering, lifetime, or threading requirement;
 * why the obvious simpler approach was not taken.
