@@ -48,7 +48,34 @@ Capture only evidence-based facts that would otherwise need rediscovery:
 
 Do not record obvious behavior, speculation, temporary debugging observations, or stale intermediate conclusions.
 
-<!-- Need examples -->
+### Examples
+
+For example, a test passes alone and fails in a suite because GUT reuses the scene tree between tests, so a node the test creates must be freed in `after_each`. Write the reason on the `free()` call: `# GUT reuses the scene tree between tests, so a node left alive leaks into the next test.` Without it, the next reader deletes a call that looks redundant. This is a local invariant, so a code comment owns it.
+
+For example, you find that a `Resource` loaded from disk is shared by every scene that loads it, so an `Entity` must duplicate its behaviour resource before mutating it. Two systems depend on this and neither owns it, so it is a cross-component contract: it belongs in the project document that owns entity configuration, and the code links to that document.
+
+For example, a `--headless` run rotates `godot.log` and destroys the log the developer was reading. No source file owns the log, and the next agent hits the same trap on the next headless run, so the project `AGENTS.md` owns it.
+
+For example, a new debugging document needs the log path that `AGENTS.md` already records. Link to that section. A second copy of the path is a second thing to update when the snap revision changes, and the copy is the one that will be missed.
+
+Do not record these:
+
+- `# returns the player's health` above `func get_health() -> int`. The code already says it.
+- `The bug is probably in the input buffer`, written after the cause turned out to be the state machine. A stale intermediate conclusion sends the next reader down the path you already rejected.
+- `This will break when we add multiplayer`, when no multiplayer is planned. That is speculation, under [Reviewing Developer Changes](WorkStyle.md#reviewing-developer-changes).
+- `Printed the index here to check the loop bounds`. A temporary debugging observation dies with the session.
+
+### A rational complaint is a trigger
+
+When the developer says the result is wrong and the complaint is right, ask one question before fixing anything: what would the next session have to know to not repeat this? When a fact answers it, record that fact first. The fix repairs this session; the record repairs every session after it.
+
+A complaint records nothing when no missing fact sits behind it. A typo, a misread line, or a step skipped once is a mistake, not knowledge.
+
+For example, the developer says a GUT suite the agent reported as passing never ran. The cause is that `-gtest=` takes a path relative to the project root, and the agent passed a path relative to the test folder, so the runner exited 0 with zero tests. The missing fact is a verification trap that no source file owns: record in the project `AGENTS.md` that a GUT result counts as evidence only when the printed test count is nonzero.
+
+For example, the developer says the agent placed a new document in the wrong folder for the third time. The missing fact is not about that document; it is that the folder rule is not reachable from where documents get written. Record the rule where the writer passes, not in the response.
+
+For example, the developer says an entity's knockback was clamped twice. The agent had already found and fixed the duplicate clamp last week, in another file. Nothing was recorded, so the second site was rediscovered. The missing fact is the invariant: `Entity` owns position clamping, and a behaviour requests displacement instead of validating it. It belongs in a comment on the owning method.
 
 ## Commit
 
