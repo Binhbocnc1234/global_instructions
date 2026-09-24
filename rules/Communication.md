@@ -66,6 +66,29 @@ An invented name costs more than a vague one. "The description system" and "the 
 
 Why: the developer asked what a description was, after a response that cited the file it lived in. Evidence was present and the subject was still unnamed, so the answer cost an extra request.
 
+## Name the Relation Between Sentences
+
+When to apply: a sentence relates to the one before it by contrast, cause, consequence, or example. The same applies to a list item and the item before it.
+
+Start the second sentence with the connector that names the relation. Without a connector, the reader finishes the second sentence and then goes back to guess how it relates to the first. With a connector, the reader knows the relation before reading the content.
+
+| Relation | Connector |
+|---|---|
+| Two cases that behave differently | `By contrast`, `In contrast` |
+| A fact that opposes or limits the previous one | `However`, `But` |
+| Cause | `because`, `since` |
+| Consequence | `so`, `As a result` |
+| Example | `For example` |
+| Two events at the same time | `Meanwhile` |
+
+Choose the connector by its literal meaning. `Meanwhile` means "during the same time", so use it only when time links the two sentences. Do not add `Also`, `Additionally`, or `Furthermore` to a sentence that simply continues the one before it. Those connectors name no relation and only add words.
+
+For example, without a connector: "In a real window, a tab that is not its window's active tab does not paint. `Page.captureScreenshot` waits for a painted frame, so it can hang while that page is idle. Headless paints the tab." The last sentence could be read as a cause, a fix, or a contrast.
+
+For example, with the exact connector: "... so it can hang while that page is idle. By contrast, headless paints the tab."
+
+Why: the developer understood the second version faster and could not say why. The reason is that the connector removed the guess about how the sentences relate.
+
 ## Explaining a Technique
 
 This section applies to every explanation: an agent response in chat, a document, a skill, and learning material. Example request: "explain how ext4 finds a file".
