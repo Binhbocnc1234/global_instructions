@@ -12,6 +12,18 @@ Do not add a permanent test that sets a developer-only overlay's debug flag to `
 
 When a test verifies a production timing, threshold, or limit, reference the owning production constant. Keep test-only tolerances and timing margins explicitly named. A test must still pass when a production parameter changes for game balance.
 
+## Tests Own Their Inputs
+
+When to apply: a test reads a file, folder, or setting that exists for another purpose, such as the developer's config, skills, rules, save files, or editor settings.
+
+Copy that input into a fixture inside the repository and point the code under test at the fixture. The test then reads a file that changes only when the test changes. Reading live state is allowed only in a check whose purpose is to verify that live state, and the check's name says so.
+
+For example, a Godot test reads `user://settings.cfg` to check key rebinding. The developer rebinds a key while playing, and the test fails although the code did not change. A fixture `settings.cfg` under `test/fixtures/` fixes it.
+
+For example, a test for an agent harness loads a skill from the developer's skills folder and expects its heading. Renaming that skill fails the test with an error that points at the skill, not at the harness.
+
+Why: a test that reads live state fails when the developer edits their own files, so a red run no longer means the code broke.
+
 ## Execute Tests by Default
 
 Agents own automated test execution by default. Run the relevant fixture first and expand only when risk or focused failures justify it.
