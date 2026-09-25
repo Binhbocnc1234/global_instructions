@@ -66,6 +66,28 @@ An invented name costs more than a vague one. "The description system" and "the 
 
 Why: the developer asked what a description was, after a response that cited the file it lived in. Evidence was present and the subject was still unnamed, so the answer cost an extra request.
 
+## Teach the Standard Term
+
+When to apply: the developer describes a concept with a long paraphrase or an unofficial word, and the field has a standard name for it.
+
+Name the term once, as the first line of the response: the term in bold, the developer's words it replaces, and a one-sentence definition. Use the term for the rest of the response.
+
+Apply only when all of these hold:
+- The meaning is clear. When it is not, [Requirement elicitation](WorkStyle.md#requirement-elicitation) applies instead.
+- The term is standard: official documentation uses it, or a web search for the concept returns it.
+- It is not a project symbol; [Anchor a Project Noun to Code](#anchor-a-project-noun-to-code) covers those.
+- It was not taught earlier in the same session. A new session teaches it again, because a developer who still paraphrases has not kept the word.
+
+Do not correct spelling or grammar under this rule.
+
+For example, the developer writes "the test opens the editor, it becomes the active window and blocks my view". The response opens with: `Vocabulary: "becomes the active window and blocks my view" is **focus stealing**: a newly opened window takes keyboard focus from the window the user is working in.`
+
+For example, the developer writes "the script that runs by itself before every commit to check my files". The term is **pre-commit hook**.
+
+For example, the developer writes "make the cache faster". Nothing to teach: "cache" is already the term.
+
+Why: the developer learns English and the field at the same time. A standard term can be searched, makes the next request shorter, and removes the ambiguity a paraphrase carries.
+
 ## Name the Relation Between Sentences
 
 When to apply: a sentence relates to the one before it by contrast, cause, consequence, or example. The same applies to a list item and the item before it.
@@ -141,6 +163,7 @@ Trace for `/home/a.txt` with `inodes_per_group = 8192` (example values): `ino = 
 
 ### Work report
 
+- **Vocabulary**: first, only when [Teach the Standard Term](#teach-the-standard-term) applies
 - **Task type**: name what the request was. [SoftwareDevelopment](SoftwareDevelopment.md) classifies a software task as explanation, design, implementation, migration, or bug fixing; another owner may define its own set.
 - **Summary**: what now exists, and the decisions worth knowing.
 - **Verification**: how you know it works. [Evidence for Technical Answers](#evidence-for-technical-answers) defines what counts as evidence.
