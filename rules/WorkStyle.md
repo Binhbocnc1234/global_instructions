@@ -156,8 +156,6 @@ Why: a fix repairs this session, a rule repairs every session after it. Without 
 ## Handle long-running task
 
 - If you think running the terminal takes three minutes or more, you need to launch it so the developer can monitor the process.
-- **Kill a command after 2 minutes without meaningful new output, then diagnose why.** Report what the last output was and what the process was doing when it was killed. MUST NOT restart it unchanged and hope. The reason this rule exists is to help agents and developers monitor whether progress is steady, preventing situations where a command runs for an hour without producing output or terminating [observed]
-- For commands that normally produce no output, use process activity and expected output-file creation, timestamp, or size changes as progress signals before stopping them.
 
 ### Confirm the kill landed
 
