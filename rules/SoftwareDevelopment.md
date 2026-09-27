@@ -72,7 +72,7 @@ Commit after you complete the request(bug-fixing/implementation/migration) and i
 Agent-performed verification is sufficient evidence for committing. Manual or developer verification, visual review, Play Mode confirmation, physical-device checks, usability review, and release approval may remain outstanding; report them as post-commit verification or approval rather than withholding the commit solely for their absence.
 
 1. Inspect the worktree and the diff.
-2. Stage only files belonging to the completed change. Leave unrelated edits unstaged.
+2. Stage only files belonging to the completed change. Leave unrelated edits unstaged. The developer may have staged files of their own, and a plain `git commit` records everything in the index. Commit with `git commit -- <paths>`, or first confirm that `git diff --cached --stat` lists only your files.
 3. Run a staged diff check when available.
 4. Commit using a focused Conventional Commit message. Apply Commit Scope and Commit Message. The message is a header line only, with no description body.
 5. Verify the resulting commit and the remaining worktree state.
