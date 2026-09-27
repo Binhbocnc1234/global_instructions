@@ -88,6 +88,31 @@ One file serves one Diataxis purpose.
 - Never place an explanation file under a reference folder, or a how-to guide under a tutorial folder. The folder comes from the file's Diataxis classification.
 - A single file MUST NOT serve two Diataxis purposes, such as high-level architecture explanation together with dense reference API tables. Split them, for example `Architecture.md` for explanation and `ApiReference.md` for reference, and link one to the other.
 
+## Documentation Audit
+
+When to apply: auditing a document, or deciding whether a sentence belongs in one.
+
+**Use case.** Name at least one realistic request, from the developer or an agent, that needs the document and that code, data or a task file cannot answer. When there is none, delete the whole document. The document's description states why it exists, so a later audit starts from it.
+
+A sentence stays when that request needs it. The common reasons it is needed, and where the sentence goes:
+
+| Sentence | Where it goes |
+|---|---|
+| **Reason** that no code shows. A product goal counts: the audience and the intended experience are the reason behind every design that serves them | An ADR, the project's product-vision document for a product goal, or a code comment when only one file is affected |
+| **Principle** that every instance of a kind must follow and that no code or lint checks. For example, the art style every character image follows | Its document, or the project `AGENTS.md` when almost every request needs it |
+| **Future spec**, still planned and not built | A task in `delivery/deferred/`, under [Task Management](TaskManagement.md#task-management). A reason attached to it stays in a document. |
+
+**Delete** (no link replaces it; name the symbol directly instead):
+- Anything code or data shows, including a flow across several files and "feature X is not used".
+- Dead design.
+- A copy of another document.
+- Rule IDs that no code or test uses.
+- Task steps and status. Open steps move to a task file.
+
+For example, a reference document lists every module with its folder and layer, copied from the manifest that the boundary lint reads. The manifest holds the list, so the table is deleted. The reason one layer exists stays, because no manifest shows it.
+
+Why: a document that restates code drifts from it without any check failing, and every reader pays to open it. A document that holds only what code cannot say stays true, and stays short enough to read.
+
 ## Documentation Index
 
 When to apply: adding, removing, moving, renaming, or re-describing a document in a project that has an index.
