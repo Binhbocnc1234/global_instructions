@@ -6,6 +6,8 @@ Summary: How do I write the artifact? Source code, Markdown documents, comments
 
 A behavior, requirement, contract, or rationale has one canonical owner across code, Markdown, and code comments. Do not restate executable behavior in comments or copy implementations into documentation. Comments explain local non-obvious intent, invariants, or trade-offs; documentation owns cross-file policies and design; code and tests own behavior. Other locations link to or briefly identify the canonical source.
 
+For example, a highlight effect already flickers a UI button, and a request adds a game character as a second thing to highlight. The agent writes a second function with the same timing and colour for the character. Now two functions own one effect, and a change to the flicker speed must be made twice. Instead, generalise the existing mechanism so that it accepts both kinds of target, and delete the copy.
+
 Do not add a rule that is a direct consequence or a restatement of a rule that already exists. Add a subordinate rule only when it carries an independent constraint, or prevents a failure that has happened before. Adding an example to an existing rule is not a new rule.
 
 The other half of DRY is about doing the same work twice, not storing the same fact twice. It fires while the agent executes, so [Automate Repeated Work](WorkStyle.md#automate-repeated-work) owns it.
