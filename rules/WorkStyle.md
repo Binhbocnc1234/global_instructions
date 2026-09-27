@@ -33,6 +33,19 @@ You will see that many rules above this is a narrow branch of DRY:
 
 Why: repeated work hides its own cost. Each manual pass looks small, so the total is never compared against the one-time cost of the mechanism, and the mechanism is also the only artifact that survives the task.
 
+## Scratch Files Go in `tmp/`
+
+When to apply: the agent writes a file that serves only the current task, such as a probe, a driver scene, a one-off check or conversion script, a log, or an intermediate output.
+
+- Put it in the harness scratchpad when the program that uses it can read a path outside the project.
+- Put it in `tmp/<topic>/` at the project root when it must live inside the project, for example an engine script that loads project resources by project path (`res://` in Godot). Git MUST ignore `tmp/`. When the project does not ignore it yet, add `/tmp/` to `.gitignore` in the same change.
+- MUST NOT write it at the project root, or inside a folder that holds source, assets, data, tests or documentation. No file outside `tmp/` references a file inside it.
+- A check worth running again is not scratch. Move it into the project's tools or tests, where it gets a name and an owner.
+
+For example, a Godot script that loads every model scene and prints duplicate node names needs `res://` paths, so it goes in `tmp/model-probes/AllModelsCheck.gd`, not in `probe_all_models_tmp.gd` at the project root.
+
+Why: a scratch file at the root appears in the editor and in `git status` next to the developer's own untracked work, so the developer cannot tell whether it is safe to delete, and git cannot restore it after deletion. Inside an ignored `tmp/`, the folder name says the file is disposable and git never offers it for a commit.
+
 ## Requirement elicitation
 
 - Rules and requirements are sometimes ambiguous and contains qualitative adjective. If that is true, agent must clarify the request by suggesting one or some precise requirement to the reader. Do not proceed the task if requirements are not clear. 
