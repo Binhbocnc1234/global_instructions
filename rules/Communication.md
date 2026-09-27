@@ -81,7 +81,7 @@ For example, the same problem written without the rule:
 
 > Let a description read a stat — the description system can't see effect stats, which is limiting.
 
-Why: that second form cost a round trip, because the developer could not tell which of `piece_skill_description`, `augmentation_description`, or `effect_description` the word "description" meant. By constrast, with first example, if developers forget symbol's meaning, they can search to know what is this
+Why: that second form cost a round trip, because the developer could not tell which of `piece_skill_description`, `augmentation_description`, or `effect_description` the word "description" meant. By constrast, with first example, if developers forget symbol's meaning, they can search in project to know what is this(tracebility in response)
 
 ## Teach the Standard Term
 
