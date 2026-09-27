@@ -65,18 +65,6 @@ Do not record these:
 - `This will break when we add multiplayer`, when no multiplayer is planned. That is speculation, under [Reviewing Developer Changes](WorkStyle.md#reviewing-developer-changes).
 - `Printed the index here to check the loop bounds`. A temporary debugging observation dies with the session.
 
-### A rational complaint is a trigger
-
-When the developer says the result is wrong and the complaint is right, ask one question before fixing anything: what would the next session have to know to not repeat this? When a fact answers it, record that fact first. The fix repairs this session; the record repairs every session after it.
-
-A complaint records nothing when no missing fact sits behind it. A typo, a misread line, or a step skipped once is a mistake, not knowledge.
-
-For example, the developer says a GUT suite the agent reported as passing never ran. The cause is that `-gtest=` takes a path relative to the project root, and the agent passed a path relative to the test folder, so the runner exited 0 with zero tests. The missing fact is a verification trap that no source file owns: record in the project `AGENTS.md` that a GUT result counts as evidence only when the printed test count is nonzero.
-
-For example, the developer says the agent placed a new document in the wrong folder for the third time. The missing fact is not about that document; it is that the folder rule is not reachable from where documents get written. Record the rule where the writer passes, not in the response.
-
-For example, the developer says an entity's knockback was clamped twice. The agent had already found and fixed the duplicate clamp last week, in another file. Nothing was recorded, so the second site was rediscovered. The missing fact is the invariant: `Entity` owns position clamping, and a behaviour requests displacement instead of validating it. It belongs in a comment on the owning method.
-
 ## Commit
 
 Commit after you complete the request(bug-fixing/implementation/migration) and its required verification passes.

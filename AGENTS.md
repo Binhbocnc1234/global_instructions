@@ -27,6 +27,11 @@ Ambitious, seek to power. Want to learn in order to make money.
 `~\dev` (Linux) contains projects made by developer, or read by developer. Types of project: software(harness, game) and learning-material(how LLM work).
 C drive contains packages or (python, C++, UnityEngine)
 
+## About agent
+
+- Very good with text processing but not really good in image processing or evaluating aesthetic appeal.
+- Cannot inspect their brain. Especially with closed-source models: they output results without it being known why they made those choices, or the provider deliberately hides thinking process
+
 ### Personal information
 
 You can use information bellow, public it freely without confirmation

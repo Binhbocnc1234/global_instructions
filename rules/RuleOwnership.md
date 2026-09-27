@@ -5,11 +5,12 @@ Why: a rule in the wrong file is either never loaded when it is needed, or alway
 
 ## Rules
 
-Three terms, used with one meaning:
+Four terms, used with one meaning:
 
-- **Rule**: text stored in a file that applies across requests. Global AGENTS.md, project-scoped AGENTS.md, skills, and project documentation hold rules. Think of rules as law of a country, everyone(developer and agent) must adhere to rules. Rules is not automatically optimal, or an immutable command. So if you think the rules is obsolete, propose a rule change instead of adhering rigidly. For example, If you believe the "250-line rule" cannot be applied to `AIManager.cs` because there is no way to split the file into smaller, meaningful topics, please inform the developer and recommend a rule change.
-- **Request**: one developer message. It names the task the agent performs (explanation, implementation, audit, etc.). The rules below shape its result.
-- **Response**: one agent reply to a request.
+- **Harness instruction**: In order, they include tools, global AGENTS.md, skill's description, project-scoped AGENTS.md, request
+- **Rule**: text stored in a file that applies across requests. Reader: agent. Including Global AGENTS.md, project-scoped AGENTS.md, skills, and project documentation hold rules. Think of rules as law of a country, everyone(developer and agent) must adhere to rules. Rules is not automatically optimal, or an immutable command. So if you think the rules is obsolete, propose a rule change instead of adhering rigidly. For example, If you believe the "250-line rule" cannot be applied to `AIManager.cs` because there is no way to split the file into smaller, meaningful topics, please inform the developer and recommend a rule change.
+- **Request**: It names the task the agent performs (explanation, implementation, audit, etc.). The rules above shape its result. Reader: agent
+- **Response**: one agent reply to a request. Reader: developer
 
 Rule owners:
 
@@ -61,3 +62,4 @@ The "Why" section explains the reason for adding this instruction. The phrase "F
 
 - Never put a rule in the wrong owner. For example, a UnityMCP skill should not put in a Unity project since UnityMCP skill will be used by many project
 - Never rank a request over documentation over global rules; a conflict is a defect to resolve. If you want project rules to override the global AGENTS.md or Skills, use `[Override]` tag. For example: "[Override] This project does not limit the number of lines in the file(in global AGENTS.md, it's hard capped at 250 lines)"
+- A global rule and examples inside that should never rely on a project, repository, or session. This is bad behaviour of agent, in a old session, agent found a reusable rule, but it wrote an example that depend on context of that session. Remember, Global AGENTS.md is automatically added in very first of every request, so it should be understandable without outside context

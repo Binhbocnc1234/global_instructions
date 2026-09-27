@@ -17,7 +17,7 @@ Then:
 
 1. Inspect the cheapest evidence that distinguishes likely defect classes.
 2. Classify the defect as deterministic logic, lifecycle/integration, persisted wiring, visual/usability, or device/performance.
-3. Capture runtime state only when runtime behavior matters. Do not resume or mutate a paused session without authorization.
+3. Capture runtime state only when runtime behavior matters. Do not resume or mutate a paused session without authorization. When that state is what a GUI draws, read it through the channel in [Query the GUI Before Asking the Developer to Look](TestingStrategy.md#query-the-gui-before-asking-the-developer-to-look).
 4. Write a regression test before the fix when it passes the unique-value test and can reproduce the actual entry route.
 5. Apply the smallest correction addressing the cause.
 6. Verify the changed artifact and relevant neighboring contracts.
