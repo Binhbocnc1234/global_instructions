@@ -130,6 +130,17 @@ scripts themselves contain no hardcoded paths.
 - `--tables` relies on ruled lines. A table drawn with whitespace alignment and
   no borders will not be detected, and the page falls back to plain text.
 - Images are not extracted; only alt text survives.
+- Mathematics is not reconstructed. A formula comes out as scattered glyphs
+  over several lines, and the words of a line can run together. For a PDF
+  whose value is in its formulas (a scientific paper, lecture notes), convert
+  with `rustypaper convert paper.pdf --out paper.md --assets figs/` instead
+  (install: `cargo install rustypaper`; CPU-only, measured 0.6 s and 34 MB for
+  a 32-page paper). It gives clean prose, headings, linked references and
+  figure crops. Its display equations are not reliable: on that paper it
+  dropped summation signs, `\mathcal` letters and square roots, glued inline
+  math to the next word, and left some numbered equations out. Check every
+  equation a result rests on against an image of its page (`pdftoppm -r 110
+  -png -f N -l N file.pdf out`), and read only those pages as images.
 - `.doc` conversion opens a real Office process: several seconds per file, and
   it needs an interactive Windows session. It will not work headless or over
   plain SSH.
