@@ -97,18 +97,18 @@ For example, `Summary: How do I proceed? How the agent decides, executes, and st
 
 ## Markdown Document Kind
 
-When to apply: creating a documentation file, choosing its folder, or adding a section to one.
+When to apply: creating a documentation file, or adding a section to one.
 
-A file has one main kind: the question its reader holds when opening it. The folder comes from that kind.
+A file has one main kind: the question its reader holds when opening it. The kind decides how the file is written, not which folder it goes in. The folder comes from the topic the file serves, under [16 child rule](#16-child-rule).
 
 | Kind | Reader's question | Holds |
 |---|---|---|
 | How-to | How do I do this task? | Ordered steps for one kind of work, and the stop conditions met during them |
 | Rules | What must hold, or what is the exact value? | Rules and contracts, each with its reason next to it, and lookup tables |
-| Explanation | Why is it shaped this way? | Decisions, architecture, product vision, and the premise behind a design |
+| Explanation | Why is it shaped this way? | Architecture, product vision, and the premise behind a design |
 
 - The main kind is the kind that most of the file's sections answer. A section of another kind stays when the reader needs it at that point: the reason next to a rule, the command that runs a rule's check, a stop condition inside a step.
-- When the main kind differs from the folder's kind, move the file.
+- A decision record's main kind is Rules: its Decision section states what must hold, and its Why section is the reason next to it.
 - When a group of sections of another kind is read by a request that does not need the rest of the file, split that group into its own file and link to it.
 - A project MAY add kinds for material these three do not cover, such as lessons or task records, and names them in its `AGENTS.md`.
 
