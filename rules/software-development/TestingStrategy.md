@@ -40,7 +40,7 @@ The agent MUST test every behavior that produces text it can read: return values
 
 The agent MAY hand the developer only checks that need sight or taste: layout, readability, and whether a game looks or feels good. Whether an element is on screen is not one of them: [Query the GUI Before Asking the Developer to Look](#query-the-gui-before-asking-the-developer-to-look) owns that case.
 
-Before asking for a manual test, state what the agent already verified as text. Ask the developer only for the visual part that is left.
+Before asking for a manual test, state what the agent already verified as text. Ask the developer only for the visual part that is left, delivered as a capture under [Capture Visual Evidence for the Developer](#capture-visual-evidence-for-the-developer) when the project has a route.
 
 For example, in a VSCodium chat extension that runs Claude through the Agent SDK, the check is "Claude answers, and the Read tool runs":
 
@@ -74,6 +74,28 @@ Hand over only what needs sight or taste: whether a layout reads well, whether a
 
 Why: the agent cannot see a screen, so it treated every visual question as the developer's. Most of them are not visual; they are queries against a tree the agent can read directly, and each hand-over costs a round trip and arrives as a picture the agent cannot act on.
 
+## Capture Visual Evidence for the Developer
+
+When to apply: a change has a visual part that the developer would otherwise check by launching the product and reaching the state by hand, such as a new character, an animation, an effect, a layout, or a UI flow.
+
+Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals](#agent-tests-logic-developer-judges-visuals). Then capture the visual part and send it with the harness's file-sending tool, so the developer judges it without launching anything. The capture replaces the developer's manual session, not the logic test. Whether an element is drawn at all is a query under [Query the GUI Before Asking the Developer to Look](#query-the-gui-before-asking-the-developer-to-look), not a capture.
+
+- **Image or video.** An image shows a state: a layout, a colour, a label. A video shows change over time: an animation, a transition, a sequence of steps. Send an image when nothing in the check moves.
+- **Drive it through the production path.** A driver (a script, a scene, a test entry point) reaches each state through the code path the product uses. It also stages states that are slow or impossible to reach by hand, such as a skill with a long cooldown or a failed network call.
+- **Off the developer's screen.** Render into a virtual display or an off-screen renderer. A headless mode that draws no frames captures nothing, so prove the renderer draws before relying on it. When no off-screen route exists, [Ask Before Taking the Developer's Machine](../WorkStyle.md#ask-before-taking-the-developers-machine) applies.
+- **Own state only.** The driver runs on its own profile, save file, and settings, under [Tests Own Their Inputs](#tests-own-their-inputs), because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](../WorkStyle.md#scratch-files-go-in-tmp).
+- **Mark each behavior.** The driver prints one line per behavior it shows, with its time in the video. Build the caption from those lines, so the developer knows where to look.
+- **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
+- **Check before sending.** The file has the expected size and duration, it plays in the chat panel (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
+
+The project owns the route, reached from its `AGENTS.md`: the capture mode, the virtual display, the driver's entry point, and the encoder command. A project with a GUI and no route gets one proposed.
+
+For example, a new game character: the driver spawns it beside an enemy, then shows its walk, an attack, its skill, a hit, and its death in one 15-second video.
+
+For example, a new button in an editor's side panel: the driver opens the panel, and one screenshot of it answers whether the button looks right. A video adds nothing, because nothing moves.
+
+Why: checking a visual by hand costs the developer a launch, a route through menus, and a staged state, and some states cannot be staged by hand at all. A capture costs seconds of looking, and the driver reaches every state the same way each time.
+
 ## Verification Selection
 
 | Defect or change | First verification method |
@@ -81,7 +103,7 @@ Why: the agent cannot see a screen, so it treated every visual question as the d
 | Deterministic rule, calculation, serialization, or data error | Focused unit or integration regression when it has unique value; otherwise the smallest static or manual check |
 | Lifecycle, scene/view flow, coroutine, event, physics, or input error | Runtime integration test reproducing the real hierarchy and required frames, or a focused manual scenario |
 | Configuration, dependency, prefab, scene, or resource wiring | Inspect persisted configuration and runtime wiring; add a wiring test only for stable recurring contracts |
-| Visual clarity, animation, audio, usability, balance, or comprehension | Focused manual review; automate only an underlying deterministic rule |
+| Visual clarity, animation, audio, usability, balance, or comprehension | A capture under [Capture Visual Evidence for the Developer](#capture-visual-evidence-for-the-developer) for what an image or video shows; focused manual review for feel and usability; automate only an underlying deterministic rule |
 | Performance, memory, interruption, or device-specific behavior | Measure the affected scenario in the relevant environment or device |
 
 Test the entry route named in the report. Do not bypass the defective route with a helper or alternate setup.
