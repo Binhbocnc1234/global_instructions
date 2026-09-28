@@ -101,9 +101,10 @@ A sentence stays when that request needs it. The common reasons it is needed, an
 | **Reason** that no code shows. A product goal counts: the audience and the intended experience are the reason behind every design that serves them | An ADR, the project's product-vision document for a product goal, or a code comment when only one file is affected |
 | **Principle** that every instance of a kind must follow and that no code or lint checks. For example, the art style every character image follows | Its document, or the project `AGENTS.md` when almost every request needs it |
 | **Future spec**, still planned and not built | A task in `delivery/deferred/`, under [Task Management](TaskManagement.md#task-management). A reason attached to it stays in a document. |
+| **Flow** that no single place shows: it spans 3 or more source files, crosses a process or repository boundary, or its source is out of reach (an LLM, an operating system kernel) | Pseudocode under [Explaining a Technique](Communication.md#explaining-a-technique), in the document that owns the design. Name the real files and functions, so a reader can check the pseudocode against the code. |
 
 **Delete** (no link replaces it; name the symbol directly instead):
-- Anything code or data shows, including a flow across several files and "feature X is not used".
+- Anything code or data shows, including "feature X is not used". A flow that 1 or 2 source files hold counts as shown; the Flow row keeps the rest.
 - Dead design.
 - A copy of another document.
 - Rule IDs that no code or test uses.
