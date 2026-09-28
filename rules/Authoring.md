@@ -90,7 +90,7 @@ A file has one main kind: the question its reader holds when opening it. The fol
 | Kind | Reader's question | Holds |
 |---|---|---|
 | How-to | How do I do this task? | Ordered steps for one kind of work, and the stop conditions met during them |
-| Reference | What must hold, or what is the exact value? | Rules and contracts, each with its reason next to it, and lookup tables |
+| Rules | What must hold, or what is the exact value? | Rules and contracts, each with its reason next to it, and lookup tables |
 | Explanation | Why is it shaped this way? | Decisions, architecture, product vision, and the premise behind a design |
 
 - The main kind is the kind that most of the file's sections answer. A section of another kind stays when the reader needs it at that point: the reason next to a rule, the command that runs a rule's check, a stop condition inside a step.
@@ -98,11 +98,11 @@ A file has one main kind: the question its reader holds when opening it. The fol
 - When a group of sections of another kind is read by a request that does not need the rest of the file, split that group into its own file and link to it.
 - A project MAY add kinds for material these three do not cover, such as lessons or task records, and names them in its `AGENTS.md`.
 
-For example, a document holds three rules for how the save file is written, each with its reason, and the command that checks them. Its main kind is reference, and the reasons and the command stay in it.
+For example, a document holds three rules for how the save file is written, each with its reason, and the command that checks them. Its main kind is rules, and the reasons and the command stay in it.
 
-For example, a migration guide holds nine fidelity rules and seven slice steps. A code review reads the rules without the steps, so the rules move into their own reference file and the guide links to it.
+For example, a migration guide holds nine fidelity rules and seven slice steps. A code review reads the rules without the steps, so the rules move into their own rules file and the guide links to it.
 
-Why: a rule and its reason are read together. A framework that files the rule under reference and its reason under explanation makes the reader open two files to apply one rule, and after [Documentation Audit](#documentation-audit) most documents that remain are rules with their reasons.
+Why: a rule and its reason are read together. A layout that files the rule and its reason under two different kinds makes the reader open two files to apply one rule, and after [Documentation Audit](#documentation-audit) most documents that remain are rules with their reasons.
 
 ## Documentation Audit
 
@@ -126,7 +126,7 @@ A sentence stays when that request needs it. The common reasons it is needed, an
 - Rule IDs that no code or test uses.
 - Task steps and status. Open steps move to a task file.
 
-For example, a reference document lists every module with its folder and layer, copied from the manifest that the boundary lint reads. The manifest holds the list, so the table is deleted. The reason one layer exists stays, because no manifest shows it.
+For example, a rules document lists every module with its folder and layer, copied from the manifest that the boundary lint reads. The manifest holds the list, so the table is deleted. The reason one layer exists stays, because no manifest shows it.
 
 Why: a document that restates code drifts from it without any check failing, and every reader pays to open it. A document that holds only what code cannot say stays true, and stays short enough to read.
 

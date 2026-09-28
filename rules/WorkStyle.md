@@ -110,7 +110,7 @@ Two causes produce that read: the agent chose badly, or the project routes badly
 
 Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](SoftwareDevelopment.md#reusable-knowledge).
 
-For example, a task about card cost ends with the agent reading `Documentation/en/reference/technical/EntityStats.md`, which holds no cost rule. The index describes it as "Entity reference", a description that fits four documents. The fix is one sentence in that document's `description` frontmatter field naming what it holds, followed by regenerating the index.
+For example, a task about card cost ends with the agent reading `Documentation/en/rules/technical/EntityStats.md`, which holds no cost rule. The index describes it as "Entity reference", a description that fits four documents. The fix is one sentence in that document's `description` frontmatter field naming what it holds, followed by regenerating the index.
 
 For example, a task about the build pipeline ends with the agent opening six files under `tools/` because no document names which one runs first. Nothing is stale; the routing simply does not exist. The fix is an entry in `AGENTS.md` naming the entry point.
 
