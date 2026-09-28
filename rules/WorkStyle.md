@@ -105,7 +105,7 @@ Two causes produce that read: the agent chose badly, or the project routes badly
 
 - The project has no documentation index, so the only way to learn what a document holds was to open it.
 - The index entry's description does not describe the document, or it is stale.
-- The document serves two Diataxis purposes, so one sentence cannot describe it. See [Markdown Document Purpose](Authoring.md#markdown-document-purpose).
+- The document mixes kinds, so one sentence cannot describe it. See [Markdown Document Kind](Authoring.md#markdown-document-kind).
 - `AGENTS.md` or a document links to a file that was renamed, moved, split, or deleted.
 
 Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](SoftwareDevelopment.md#reusable-knowledge).

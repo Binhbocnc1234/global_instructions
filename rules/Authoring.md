@@ -81,12 +81,28 @@ For example, `Summary: How do I proceed? How the agent decides, executes, and st
 - Use PascalCase for Markdown file names: `HowToDocumentation.md`, `Architecture.md`, `DesignPrinciples.md`.
 - Every documentation Markdown file name, excluding folders and language prefixes, is unique across the project per language. The validator enforces this to prevent naming collisions.
 
-## Markdown Document Purpose
+## Markdown Document Kind
 
-One file serves one Diataxis purpose.
+When to apply: creating a documentation file, choosing its folder, or adding a section to one.
 
-- Never place an explanation file under a reference folder, or a how-to guide under a tutorial folder. The folder comes from the file's Diataxis classification.
-- A single file MUST NOT serve two Diataxis purposes, such as high-level architecture explanation together with dense reference API tables. Split them, for example `Architecture.md` for explanation and `ApiReference.md` for reference, and link one to the other.
+A file has one main kind: the question its reader holds when opening it. The folder comes from that kind.
+
+| Kind | Reader's question | Holds |
+|---|---|---|
+| How-to | How do I do this task? | Ordered steps for one kind of work, and the stop conditions met during them |
+| Reference | What must hold, or what is the exact value? | Rules and contracts, each with its reason next to it, and lookup tables |
+| Explanation | Why is it shaped this way? | Decisions, architecture, product vision, and the premise behind a design |
+
+- The main kind is the kind that most of the file's sections answer. A section of another kind stays when the reader needs it at that point: the reason next to a rule, the command that runs a rule's check, a stop condition inside a step.
+- When the main kind differs from the folder's kind, move the file.
+- When a group of sections of another kind is read by a request that does not need the rest of the file, split that group into its own file and link to it.
+- A project MAY add kinds for material these three do not cover, such as lessons or task records, and names them in its `AGENTS.md`.
+
+For example, a document holds three rules for how the save file is written, each with its reason, and the command that checks them. Its main kind is reference, and the reasons and the command stay in it.
+
+For example, a migration guide holds nine fidelity rules and seven slice steps. A code review reads the rules without the steps, so the rules move into their own reference file and the guide links to it.
+
+Why: a rule and its reason are read together. A framework that files the rule under reference and its reason under explanation makes the reader open two files to apply one rule, and after [Documentation Audit](#documentation-audit) most documents that remain are rules with their reasons.
 
 ## Documentation Audit
 
