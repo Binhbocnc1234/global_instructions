@@ -151,6 +151,7 @@ When to apply: adding, removing, moving, renaming, or re-describing a document i
 A documentation index is one committed file that lists every qualifying document with its relative path and a one-sentence description. It is the canonical entry point for document discovery, so that a reader never opens a document just to learn what it holds. [Route Through the Documentation Index](WorkStyle.md#route-through-the-documentation-index) owns the reading half.
 
 - The index is generated output. Never edit it by hand.
+- A document that states rules names them in its description. `Records the decision to ...` describes an event, so a reader who is about to act skips it. Write `Rules for which values go in a data file and which stay as constants in code, with the reasons` instead.
 - Regenerate it in the same change that adds, removes, moves, renames, or re-describes an indexed document. A change that leaves the index stale is incomplete.
 - Each entry's description answers the same question as the document's `Summary:` line, under [Markdown Document Structure](#markdown-document-structure). A description that does not let a reader decide whether to open the document is a defect in the description, not in the reader.
 - The project's `AGENTS.md` records the index path, the command that regenerates it, which documents qualify, and where their descriptions come from. Those are project decisions, and no global rule fixes them.
