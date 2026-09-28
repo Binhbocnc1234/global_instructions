@@ -132,7 +132,7 @@ Why: developer can understand paragraph faster and more accurate. As soon as the
 
 ## Explaining a Technique
 
-This section applies to every explanation: an agent response in chat, a skill, learning material, and a project document. In a project document, it applies only to a flow that [Documentation Audit](Authoring.md#documentation-audit) keeps; a flow that 1 or 2 source files hold is named by its function, not retold. Example request: "explain how ext4 finds a file".
+This section applies to every explanation: an agent response in chat, a skill, learning material, and a project document. In a project document, it applies only to a flow that [Documentation Audit](Authoring.md#documentation-audit) keeps; a flow the reader can follow from one function is named by that function, not retold. Example request: "explain how ext4 finds a file".
 
 1. **Pseudocode is the main explanation.** A technique with 2 or more ordered steps MUST be explained with Python pseudocode. Prose frames the code; it does not replace it. A diagram MAY supplement the code.
 2. **Type annotations** go on every value where the type carries meaning: `int`, `list[int]`, `bytes`, `Float[Tensor, "N d"]`.
