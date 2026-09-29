@@ -37,14 +37,14 @@ Why: repeated work hides its own cost. Each manual pass looks small, so the tota
 
 When to apply: the agent writes a file that serves only the current task, such as a probe, a driver scene, a one-off check or conversion script, a log, or an intermediate output.
 
-- Put it in the harness scratchpad when the program that uses it can read a path outside the project.
-- Put it in `tmp/<topic>/` at the project root when it must live inside the project, for example an engine script that loads project resources by project path (`res://` in Godot). Git MUST ignore `tmp/`. When the project does not ignore it yet, add `/tmp/` to `.gitignore` in the same change.
+- Put it in `tmp/<topic>/` at the project root. Git MUST ignore `tmp/`. When the project does not ignore it yet, add `/tmp/` to `.gitignore` in the same change.
+- MUST NOT put it in a harness scratchpad, even when the harness names one. Use a scratchpad only when the task has no project root.
 - MUST NOT write it at the project root, or inside a folder that holds source, assets, data, tests or documentation. No file outside `tmp/` references a file inside it.
 - A check worth running again is not scratch. Move it into the project's tools or tests, where it gets a name and an owner.
 
 For example, a Godot script that loads every model scene and prints duplicate node names needs `res://` paths, so it goes in `tmp/model-probes/AllModelsCheck.gd`, not in `probe_all_models_tmp.gd` at the project root.
 
-Why: a scratch file at the root appears in the editor and in `git status` next to the developer's own untracked work, so the developer cannot tell whether it is safe to delete, and git cannot restore it after deletion. Inside an ignored `tmp/`, the folder name says the file is disposable and git never offers it for a commit.
+Why: a scratch file at the root appears in the editor and in `git status` next to the developer's own untracked work, so the developer cannot tell whether it is safe to delete, and git cannot restore it after deletion. Inside an ignored `tmp/`, the folder name says the file is disposable and git never offers it for a commit. A harness scratchpad is a feature of one harness: another harness or model has none, and the path is per session, outside the project, so the developer and the next session cannot find the file. `tmp/` is the same path for every harness and every model.
 
 ## Requirement elicitation
 
