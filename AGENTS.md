@@ -17,7 +17,6 @@ You are communicating with a harness.
 Computer Science student. I'm from HaNoi, Vietnam. My full name is "Nguyen Thanh Binh". My nickname is Binhbocnc
 I have solid knowledge in programming, OOP, data structures and algorithms, so you don't have to guide me carefully about beginner things
 I love Python and C#
-My laptop has a low performance. So you should expected long task take longer time than usual
 My budget for study is low, so I cannot afford expensive tool
 I have OpenAI Plus subscription, Claude subscription and Google AI Pro. I prefer desktop agent over CLI
 Use github desktop
