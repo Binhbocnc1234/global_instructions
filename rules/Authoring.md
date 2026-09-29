@@ -65,6 +65,22 @@ For example, a `UI/` folder holds 25 scripts: 9 for the battle screen, 8 for the
 
 Why: the developer and the agent have no reliable memory of where a file lives, so the folder tree is how both find a file without reading many files. A folder with more than 16 children sends the reader back to scanning names one by one, and a folder without a shared meaning sends the reader into every subfolder.
 
+## Typical Project Structure
+
+When to apply: creating a project, or deciding where a top-level file or folder of a project goes.
+
+Every project root holds these entries. Each row names the rule that owns what goes inside; this table owns only the location.
+
+| Path | Holds | Owner |
+|---|---|---|
+| `AGENTS.md` | The project brief and the project-scoped rules | [Rule Ownership](RuleOwnership.md#rules) |
+| `delivery/` | Task files for work longer than one request, created with the first one | [Task Management](TaskManagement.md#task-management) |
+| `tmp/` | Scratch files of the current task, ignored by git | [Scratch Files Go in `tmp/`](WorkStyle.md#scratch-files-go-in-tmp) |
+
+The source, asset, test and documentation folders depend on the engine or language, so the project `AGENTS.md` names them, together with the documentation index under [Documentation Index](#documentation-index).
+
+Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
+
 ## Markdown Document Structure
 
 Every `.md` file follows this shape. Frontmatter, where the format needs it, sits above the title.
