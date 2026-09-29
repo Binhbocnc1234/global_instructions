@@ -17,15 +17,13 @@ You are communicating with a harness.
 Computer Science student. I'm from HaNoi, Vietnam. My full name is "Nguyen Thanh Binh". My nickname is Binhbocnc
 I have solid knowledge in programming, OOP, data structures and algorithms, so you don't have to guide me carefully about beginner things
 I love Python and C#
-My laptop uses Window 11, has a low performance. So you should expected long task take longer time than usual
+My laptop has a low performance. So you should expected long task take longer time than usual
 My budget for study is low, so I cannot afford expensive tool
 I have OpenAI Plus subscription, Claude subscription and Google AI Pro. I prefer desktop agent over CLI
-IDE: VSCode
 Use github desktop
 Game Developer with 2D games.
 Ambitious, seek to power. Want to learn in order to make money. 
 `~\dev` (Linux) contains projects made by developer, or read by developer. Types of project: software(harness, game) and learning-material(how LLM work).
-C drive contains packages or (python, C++, UnityEngine)
 
 ## About agent
 
