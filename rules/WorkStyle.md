@@ -228,6 +228,8 @@ Action: Do not try another workaround, this is defect and should be fixed
 
 For example, the Read tool fails, and the agent writes the file with a Python one-liner instead. The task looks done, the defect stays, and every later session pays for it again. This is the execution half of the coding rule [No Fallbacks](software-development/ConstructionGuidance.md#required-dependency-policy-no-fallbacks).
 
+A route the harness allows in general is still a workaround when the agent takes it because a dedicated tool failed. For example, Claude Code in auto mode allows reading and editing files through the shell instead of Read, Edit, and Write. That permission covers a choice made before the first call. It does not cover switching after the Read tool returned an error.
+
 1. Record the failure: the tool, its input, and the full error text.
 2. When the harness can start a separate session (the Claude Code desktop app: `spawn_task`), hand the defect to that session with the record from step 1. The fix needs little of this task's context, and a separate session keeps it out.
 3. Otherwise report it with the format in [Blocker Detection and Stop Policy](#blocker-detection-and-stop-policy).
