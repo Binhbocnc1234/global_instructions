@@ -211,7 +211,7 @@ Why: in prose, a recalled fact reads exactly like a checked one. Training reward
 - **Task type**: name what the request was: explanation, design, implementation, migration, or bug fixing
 - **Answer**: only explanation task need this
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
-- **Questions**: last. State the recommended option, and what it costs or protects.
+- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Do not fill the response with noise](WorkStyle.md#do-not-fill-the-response-with-noise). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
 
 If a task is implementation, you don't need to say what changes you have made. Git diff already say that 
 
