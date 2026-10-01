@@ -91,7 +91,7 @@ Why: the agent cannot see a screen, so it treated every visual question as the d
 
 When to apply: a change has a visual part that the developer would otherwise check by launching the product and reaching the state by hand, such as a new character, an animation, an effect, a layout, or a UI flow.
 
-Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals](#agent-tests-logic-developer-judges-visuals). Then capture the visual part and send it with the harness's file-sending tool, so the developer judges it without launching anything. The capture replaces the developer's manual session, not the logic test. Whether an element is drawn at all is a query under [Query the GUI Before Asking the Developer to Look](#query-the-gui-before-asking-the-developer-to-look), not a capture.
+Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals](#agent-tests-logic-developer-judges-visuals). Then capture the visual part and link it in the response as a Markdown link to its path relative to the project root, such as `[clip.mp4](tmp/video/out/clip.mp4)`, so the developer opens it with one click without launching the product. MUST NOT send it with the harness's file-sending tool: a link sits next to the caption that says where to look, and it opens in the developer's own player. The capture replaces the developer's manual session, not the logic test. Whether an element is drawn at all is a query under [Query the GUI Before Asking the Developer to Look](#query-the-gui-before-asking-the-developer-to-look), not a capture.
 
 - **Image or video.** An image shows a state: a layout, a colour, a label. A video shows change over time: an animation, a transition, a sequence of steps. Send an image when nothing in the check moves.
 - **Drive it through the production path.** A driver (a script, a scene, a test entry point) reaches each state through the code path the product uses. It also stages states that are slow or impossible to reach by hand, such as a skill with a long cooldown or a failed network call.
@@ -99,7 +99,7 @@ Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals
 - **Own state only.** The driver runs on its own profile, save file, and settings, under [Tests Own Their Inputs](#tests-own-their-inputs), because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](../WorkStyle.md#scratch-files-go-in-tmp).
 - **Mark each behavior.** The driver prints one line per behavior it shows, with its time in the video. Build the caption from those lines, so the developer knows where to look.
 - **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
-- **Check before sending.** The file has the expected size and duration, it plays in the chat panel (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
+- **Check before linking.** The file has the expected size and duration, it is a format any player opens (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
 
 The project owns the route, reached from its `AGENTS.md`: the capture mode, the virtual display, the driver's entry point, and the encoder command. A project with a GUI and no route gets one proposed.
 
