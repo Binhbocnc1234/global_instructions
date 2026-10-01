@@ -53,9 +53,11 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 
 ## 16 child rule
 
-When to apply: creating, moving, or splitting a file or folder in a project folder that the developer or an agent browses, such as source, tools, assets, data, or documentation. Generated output and git-ignored files do not count.
+When to apply: creating, moving, or splitting a file or folder in a project folder that the developer or an agent browses, such as source, tools, assets, data, or documentation.
 
-A folder holds at most 16 direct children.
+A folder holds at most 16 direct children. Only folders the developer or an agent creates count: generated output, git-ignored files, and third-party folders such as `node_modules` or a vendored library do not.
+
+[folder_child_limit.py](../scripts/folder_child_limit.py) checks the rule on a git repository and owns what counts as a child. A project lists its committed third-party folders in that script's settings file, and blocks a new violation by running the script with `--staged` from its pre-commit hook.
 
 Every folder has a meaning: the one thing that all of its children share, such as the feature they implement, the system they belong to, or the owner that edits them. The folder name states that meaning. A reader who knows what they are looking for picks the folder from its name without opening any file inside it.
 
