@@ -10,7 +10,20 @@ Test behaviour, not implementation.
 
 Do not add a permanent test that sets a developer-only overlay's debug flag to `false` and only asserts that the overlay is hidden. This covers one trivial Boolean branch, is cheap to verify manually. Add automation only when the gate has meaningful lifecycle or state combinations, is shared by multiple tools, has regressed before, or can exercise the actual release artifact.
 
-When a test verifies a production timing, threshold, or limit, reference the owning production constant. Keep test-only tolerances and timing margins explicitly named. A test must still pass when a production parameter changes for game balance.
+## Do Not Copy Tuned Numbers Into Tests
+
+When to apply: a test asserts or uses a number that someone tunes for balance, feel, or performance, such as a unit's health, a price, a cooldown, an effect's strength or duration, a spawn interval, a timeout, or a retry count.
+
+A tuned number has one owner: a named constant in production code, or an authored data file such as a Godot `.tres`, a Unity ScriptableObject, or a JSON config. It changes on every tuning pass. By contrast, the behaviour built on it stays the same: the unit attacks, the effect ends, the spawns keep their order. So a test pins the behaviour.
+
+- Assert behaviour: who survives, whether a target is hit, that an effect expires, that a retry loop stops.
+- When an assertion needs a tuned number, read it from its owner: write `assert_eq(armor, ARMOR_BONUS)`, not `assert_eq(armor, 40.0)`. Derive a value that depends on tuned numbers in the test, from the same owners: write `start_x + config.move_speed * seconds`, not a `3.0` worked out by hand.
+- When the owner is a literal inside production code, such as `damage *= 2.0`, extract a named constant first, because a test cannot reference a literal.
+- MUST NOT assert that an authored data file holds a particular value, such as `assert_eq(archer.max_health, 120.0)`. The file already is that value, so the test only repeats it.
+- MUST NOT rely on a tuned value being zero or absent without reading it. For example, a test adds 40 armor and asserts `armor == 40`, which holds only while the unit's authored armor is 0. Read the starting value first, or use a fixture the test builds.
+- A test MAY write its own numbers for inputs it owns: a fixture config it builds, the damage it deals, the grid size it creates. Keep test-only tolerances and timing margins explicitly named.
+
+Why: a test that copies a tuned number fails on a balance change while no behaviour broke. The reader learns to update the number without reading the failure, and then the test stops catching real regressions. In a game project, raising one unit's health from 120 to 200 failed a test that only repeated the data file.
 
 ## Tests Own Their Inputs
 
