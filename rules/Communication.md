@@ -134,10 +134,10 @@ Why: developer can understand paragraph faster and more accurate. As soon as the
 
 This section applies to every explanation: an agent response in chat, a skill, learning material, and a project document. In a project document, it applies only to a flow that [Documentation Audit](Authoring.md#documentation-audit) keeps; a flow the reader can follow from one function is named by that function, not retold. Example request: "explain how ext4 finds a file".
 
-1. **Pseudocode is the main explanation.** A technique with 2 or more ordered steps MUST be explained with Python pseudocode. Prose frames the code; it does not replace it. A diagram MAY supplement the code.
+1. Require Python pseudocode when the developer requests an algorithm or process explanation. A confirmation or definition does not require it. Prose frames the code; it does not replace it. A diagram MAY supplement the code.
 2. **Type annotations** go on every value where the type carries meaning: `int`, `list[int]`, `bytes`, `Float[Tensor, "N d"]`.
 3. **Comment every call that is not built into Python** on the same line, saying what it does.
-4. **Trace the code with concrete values.** Follow the pseudocode with real inputs, the intermediate values, and the output. The trace works as a unit test the reader runs in their head.
+4. Add a concrete example or trace when it makes the mechanism easier to understand. The trace must show useful intermediate values, a boundary case, or a consequence; it must not merely restate each line of code.
 
 ```python
 ROOT_INODE: int = 2 # ext4 always stores "/" in inode 2
@@ -205,14 +205,39 @@ The agent must not turn the general claim “developers need 32 GB” into `[Obs
 
 Why: in prose, a recalled fact reads exactly like a checked one. Training rewards a plausible next token, not a true one, so a hallucination appears exactly where a pattern is strong and a fact is rare. The label makes the weak claims visible before a decision rests on them. Checking a claim costs tool calls, time, and context, so the effort goes only where a wrong claim costs more than the check.
 
-## Final Response Format
+## Response Relevance
 
-- **Vocabulary**: first, only when [Teach the Standard Term](#teach-the-standard-term) applies
-- **Task type**: name what the request was: explanation, design, implementation, migration, or bug fixing
-- **Answer**: only explanation task need this
-- **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
-- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Do not fill the response with noise](WorkStyle.md#do-not-fill-the-response-with-noise). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
+When to apply: writing a chat response.
 
-If a task is implementation, you don't need to say what changes you have made. Git diff already say that 
+Lead with the answer or completed outcome. Keep task classification internal.
+
+Include information that answers the request, supports the conclusion, explains a necessary limitation, or enables the next required action.
+
+Examples are valuable when they make an abstract point concrete. Keep an example when it shows an application, boundary, or consequence that the explanation alone does not make clear.
+
+MUST NOT repeat the same information through prose, bullets, pseudocode, a trace, and a closing summary. Each representation must add something the reader needs.
+
+When delivering a document, link to it. Do not repeat its contents unless the developer requests a summary or needs a specific finding immediately.
+
+End with a question only when its answer blocks the requested work. Do not offer additional work merely to give the response an ending.
+
+Before sending, remove sentences whose deletion preserves the answer, necessary evidence, useful examples, limitations, and required actions.
+
+For example — confirmation:
+Request: "Does this SDK start the CLI?"
+Good: "Yes. The SDK starts the CLI as a child process and exchanges JSON messages through stdin and stdout."
+Noise: adding the binary size, launch flags, pseudocode, a trace, and a recap when none changes the answer.
+
+For example — explanation:
+Request: "What does rounding to whole percentages mean?"
+Good: "The displayed value changes in 1-percentage-point steps. For example, 49.2% and 49.4% both display as 49%."
+The example stays because it shows the precision the display hides.
+
+For example — document delivery:
+Request: "Record this finding in the project."
+Good: `Recorded the finding and its measurement limits in [MeasurementResults](MeasurementResults.md). Committed as abc1234.`
+Noise: repeating the document's table of contents, recounting the edits, and offering to implement another feature.
+
+Why: the developer needs enough information to understand and act. Repeated information costs reading time without adding understanding.
 
 Do not defer authorized work merely because the developer has not repeated "go". When the request already supplies the decision and the scope, finish that work in the same turn.
