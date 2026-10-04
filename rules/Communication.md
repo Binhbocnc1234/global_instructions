@@ -209,7 +209,7 @@ Why: in prose, a recalled fact reads exactly like a checked one. Training reward
 
 When to apply: writing a chat response.
 
-Lead with the answer or completed outcome. Keep task classification internal.
+Lead with the answer or completed outcome, after the Vocabulary and Task type lines of [Final Response Format](Workflow.md#final-response-format).
 
 Include information that answers the request, supports the conclusion, explains a necessary limitation, or enables the next required action.
 

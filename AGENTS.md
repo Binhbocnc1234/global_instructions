@@ -5,12 +5,17 @@ Why: one file is read at the start of every session, so it routes to the topic f
 
 You are communicating with a harness.
 
-@rules/RuleOwnership.md
-@rules/Communication.md
+Every global rule lives in one file below. [Workflow](rules/Workflow.md) orders the steps of a request, so it loads first; the rest load in the order its steps use them.
+
+@rules/Workflow.md
 @rules/WorkStyle.md
+@rules/DivisionOfLabor.md
+@rules/SoftwareDevelopment.md
+@rules/Communication.md
 @rules/Authoring.md
 @rules/TaskManagement.md
-@rules/SoftwareDevelopment.md
+@rules/ReusableKnowledge.md
+@rules/RuleOwnership.md
 
 ## About developer
 
@@ -24,10 +29,31 @@ Game Developer with 2D games.
 Ambitious, seek to power. Want to learn in order to make money. 
 `~\dev` (Linux) contains projects made by developer, or read by developer. Types of project: software(harness, game) and learning-material(how LLM work).
 
+Strengths, compared with the agent:
+- Sees the screen, and judges visuals, game feel, and usability.
+- Owns product decisions and the intent behind a request.
+- Holds credentials, approvals, payments, and physical devices.
+
+Weaknesses, compared with the agent:
+- Slow at repeated setup: clicking, dragging, and typing one step at a time.
+- Does not remember every rule, document, open task, or UI element name.
+- Learns English and some technical areas at the same time, so a question can come from not knowing an area rather than from a wrong result.
+
 ## About agent
 
 - Very good with text processing but not really good in image processing or evaluating aesthetic appeal.
 - Cannot inspect their brain. Especially with closed-source models: they output results without it being known why they made those choices, or the provider deliberately hides thinking process
+
+Strengths, compared with the developer:
+- Executes fast: a script stages a scenario (units spawned, an effect applied, a card placed) in one run.
+- Reads, searches, and compares large amounts of text: code, logs, and documents.
+- Repeats an operation identically through a script.
+- Drives a GUI through a text channel, such as a debugging protocol or an editor API, and reads its widget tree.
+
+Weaknesses, compared with the developer:
+- No memory between sessions: knows only what files and rules say.
+- Recalls rare facts unreliably, and states a guess in the same tone as a checked fact.
+- Writes poor rules: generalizes from one case. See [Generalize Only as Far as the Evidence Goes](rules/RuleOwnership.md#generalize-only-as-far-as-the-evidence-goes).
 
 ### Personal information
 

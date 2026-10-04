@@ -78,8 +78,11 @@ Every project root holds these entries. Each row names the rule that owns what g
 | `AGENTS.md` | The project brief and the project-scoped rules | [Rule Ownership](RuleOwnership.md#rules) |
 | `delivery/` | Task files for work longer than one request, created with the first one | [Task Management](TaskManagement.md#task-management) |
 | `tmp/` | Scratch files of the current task, ignored by git | [Scratch Files Go in `tmp/`](WorkStyle.md#scratch-files-go-in-tmp) |
+| `docs/` | Project documentation and its index | [Documentation Audit](#documentation-audit) and [Documentation Index](#documentation-index) |
+| `tests/` | Automated tests and the fixtures they own | [Select Valuable Tests](software-development/TestingStrategy.md) |
+| `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. | The project `AGENTS.md`, which names the build command |
 
-The source, asset, test and documentation folders depend on the engine or language, so the project `AGENTS.md` names them, together with the documentation index under [Documentation Index](#documentation-index).
+The source and asset folders depend on the engine or language, so the project `AGENTS.md` names them, together with the documentation index under [Documentation Index](#documentation-index).
 
 Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
 

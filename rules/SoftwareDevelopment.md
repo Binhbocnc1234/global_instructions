@@ -6,13 +6,9 @@ Why: skipping the evidence and verification steps costs nothing now and everythi
 
 ## Understand the Request
 
-Classify the task as explanation, design, implementation, migration(for example: convert Unity game project to Godot project), or bug fixing. One request may carry several tasks; classify each.
+Classify each task under step 1 of [Request Workflow](Workflow.md#steps); its table names the workflow of each type, and Design and Explanation do not change the project.
 
 Stop when a missing requirement, dependency, artifact, or risky decision would force an important guess. State the blocker and its evidence.
-
-There are usually 4 types of tasks: Design, Implement(Create), Explain, Bug-fixing. Design is about how a requirement(inside request) should work and be structured before fully implementing it. Implement, on the other hand, is about converting Design to playable game
-
-When the task is about Design or Explain, you don't need to follow instruction from section 2(Planning) onwards and do not mutate the project
 
 ## Identify unknown concepts
 
@@ -34,36 +30,6 @@ Example 1: `Design UI for Collection scene` Collection is capitalized, so you ne
 | Commit to a non-functional target, or judge whether evidence proves a quality claim | the `software-quality` skill |
 
 The rows above import the first three files, so they are already in context. Apply the matching one before acting, not after: a refinement read afterwards only tells you what to redo. The `software-quality` skill loads on demand, because most requests name no non-functional target.
-
-## Reusable Knowledge
-
-Record a fact where the next reader reaches it directly, so that neither of you rediscovers it or opens unrelated files to find it.
-
-Capture only evidence-based facts that would otherwise need rediscovery:
-
-- Put a local invariant or non-obvious reason in a code comment.
-- Put a cross-component contract or workflow in its canonical project document.
-- Put a recurring agent-process or verification trap in the project's agent instructions when no clearer owner exists.
-- Link to the canonical owner instead of duplicating its content.
-
-Do not record obvious behavior, speculation, temporary debugging observations, or stale intermediate conclusions.
-
-### Examples
-
-For example, a test passes alone and fails in a suite because GUT reuses the scene tree between tests, so a node the test creates must be freed in `after_each`. Write the reason on the `free()` call: `# GUT reuses the scene tree between tests, so a node left alive leaks into the next test.` Without it, the next reader deletes a call that looks redundant. This is a local invariant, so a code comment owns it.
-
-For example, you find that a `Resource` loaded from disk is shared by every scene that loads it, so an `Entity` must duplicate its behaviour resource before mutating it. Two systems depend on this and neither owns it, so it is a cross-component contract: it belongs in the project document that owns entity configuration, and the code links to that document.
-
-For example, a `--headless` run rotates `godot.log` and destroys the log the developer was reading. No source file owns the log, and the next agent hits the same trap on the next headless run, so the project `AGENTS.md` owns it.
-
-For example, a new debugging document needs the log path that `AGENTS.md` already records. Link to that section. A second copy of the path is a second thing to update when the snap revision changes, and the copy is the one that will be missed.
-
-Do not record these:
-
-- `# returns the player's health` above `func get_health() -> int`. The code already says it.
-- `The bug is probably in the input buffer`, written after the cause turned out to be the state machine. A stale intermediate conclusion sends the next reader down the path you already rejected.
-- `This will break when we add multiplayer`, when no multiplayer is planned. That is speculation, under [Reviewing Developer Changes](WorkStyle.md#reviewing-developer-changes).
-- `Printed the index here to check the loop bounds`. A temporary debugging observation dies with the session.
 
 ## Commit
 

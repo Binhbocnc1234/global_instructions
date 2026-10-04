@@ -28,7 +28,7 @@ For example, the same three shell commands run before every commit. They belong 
 MAY skip the mechanism when writing it costs more than the work that remains: the operation runs twice, or each case needs a different decision that no rule covers. Say which of the two applies before doing the work by hand.
 
 You will see that many rules above this is a narrow branch of DRY:
-- [CorrectionIsATrigger](#a-correction-is-a-trigger), write a rules so that future mistake won't appear again 
+- [CorrectionIsATrigger](ReusableKnowledge.md#a-correction-is-a-trigger), write a rules so that future mistake won't appear again
 - [UnrelatedFileOpened](#an-unrelated-file-opened-is-a-routing-defect), better project-scoped AGENTS.md, lower error chance
 
 Why: repeated work hides its own cost. Each manual pass looks small, so the total is never compared against the one-time cost of the mechanism, and the mechanism is also the only artifact that survives the task.
@@ -108,7 +108,7 @@ Two causes produce that read: the agent chose badly, or the project routes badly
 - The document mixes kinds, so one sentence cannot describe it. See [Markdown Document Kind](Authoring.md#markdown-document-kind).
 - `AGENTS.md` or a document links to a file that was renamed, moved, split, or deleted.
 
-Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](SoftwareDevelopment.md#reusable-knowledge).
+Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](ReusableKnowledge.md#reusable-knowledge).
 
 For example, a task about card cost ends with the agent reading `Documentation/en/rules/technical/EntityStats.md`, which holds no cost rule. The index describes it as "Entity reference", a description that fits four documents. The fix is one sentence in that document's `description` frontmatter field naming what it holds, followed by regenerating the index.
 
@@ -131,40 +131,6 @@ A change the developer made is deliberate. Read it to understand the current sta
 
 A risk you see in a change is reported under [Report a Risk Only With Its Failure](#report-a-risk-only-with-its-failure).
 
-
-## A Correction Is a Trigger
-
-When to apply: the developer complain about a result and it's agent fault
-
-Before fixing anything, ask: what would the next session need to know to not repeat this? Route the answer by what was missing.
-
-| What was missing | Where it goes |
-|---|---|
-| A fact about this project | A code comment, or the project document that owns it. [Reusable Knowledge](SoftwareDevelopment.md#reusable-knowledge) owns the choice. |
-| A fact about a tool or runtime used across projects | The skill that owns that tool, or a new skill. |
-| A step the agent should have taken, in any project | A global rule. Propose it; do not write it. |
-| Nothing: a typo, a misread line, a step skipped once | Nothing. Fix it and move on. |
-
-Record or propose before fixing. The fix ends the session's memory of why it was needed.
-
-Propose a global rule only when both hold:
-
-- The mistake would repeat in a project with different code. A mistake that depends on one repository is a project fact, not a rule.
-- No existing rule already forbids it. When one does, the defect is that the rule did not reach the moment it was needed: propose moving it, linking it, or editing the clause that allowed the mistake, never a second copy.
-
-A proposal names three things: the rule text, the file that owns it under [Which global file owns a rule](RuleOwnership.md#which-global-file-owns-a-rule), and the mistake it prevents. The developer accepts or rejects it. The agent MUST NOT edit a global rule file without that answer.
-
-For example, the developer says a GUT suite the agent reported as passing never ran. The cause is that `-gtest=` takes a path relative to the project root, and the agent passed a path relative to the test folder, so the runner exited 0 with zero tests. That is a fact about one project: record in its `AGENTS.md` that a GUT result counts as evidence only when the printed test count is nonzero.
-
-For example, the developer asks why the chat sessions list is empty. The agent reads the session files, the index and the viewer cache, finds all three healthy, and asks for a screenshot. The developer answers that the agent should have a way to inspect the GUI. Nothing about that repository was missing: the agent skipped a step that applies to any project with a GUI, so it becomes a global rule, [Query the GUI Before Asking the Developer to Look](software-development/TestingStrategy.md#query-the-gui-before-asking-the-developer-to-look).
-
-For example, in that same session the agent reads an element's text, reports that a filter is hiding the list, and has to correct itself because the element's computed `display` is `none`. The missing thing is one line of technique, and the GUI rule above is where it belongs. Extend that rule; do not add a second.
-
-For example, the agent mistypes a path in one sentence and corrects it in the next. A mistake, not knowledge. Record nothing.
-
-For example, inside a game project, developer tell agent to make a hero, agent does exactly what developer says. Then developer revert it because developer don't like i
-
-Why: a fix repairs this session, a rule repairs every session after it. Without the routing table the agent writes a rule for a typo and writes nothing for a method it will repeat, and both cost more than the mistake did.
 
 ## Handle long-running task
 
@@ -272,11 +238,3 @@ Example: the developer deletes a null guard. If the parameter's type forbids nul
 Example — level count: The developer hardcodes a level-select screen to show exactly 10 buttons for 10 levels. You think: "If the game grows to 50 levels this UI won't scale and needs pagination." But the current scope is 10 levels and no documentation indicates more are planned. → Speculation. Don't report it.
 
 Example — the agent's own proposal: the agent moves a future spec into a task file and reports "an agent adding the 50th entity will not see the spec". It names no failure → Noise. Don't report it
-
-## Ask Before Taking the Developer's Machine
-
-When to apply: before an action that shows a window on the developer's screen, takes keyboard or mouse focus, or holds the laptop busy for more than 30 seconds (a headful browser or editor, GUI automation, a build over 3 minutes).
-
-Say what appears or happens, for how long, and whether typing is safe during it. Wait for a yes. Prefer a headless or off-screen route first, and use the visible one only when the headless route cannot prove the behavior; name that reason when asking.
-
-Why: The developer and the agent can operate concurrently. However, if the developer accidentally clicks or types into the active window you have open, it could cause errors. 
