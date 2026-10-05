@@ -164,14 +164,18 @@ Trace for `/home/a.txt` with `inodes_per_group = 8192` (example values): `ino = 
 
 When to apply: a response or a file states a fact that a decision, a conclusion, or code rests on (a load-bearing claim). Labels go in prose, not in code.
 
-Four labels, from the strongest evidence to the weakest. The effort column is an estimate from typical tool calls, not a measurement:
+Four labels, from the strongest evidence to the weakest. The effort column is an estimate from typical tool calls, not a measurement. The last column is what the claim shows next to its label, so the reader can check it without asking:
 
-| Label | Basis | Effort to get it |
-|---|---|---|
-| `[Observed]` | A command result, a file read, a GUI query, or a measurement the agent made in this session | 1 tool call and a few seconds for a file read. Minutes for a build, a test run, or a performance measurement. |
-| `[Documented]` | A published source: official documentation, source code, a specification, a paper, a vendor page | A search and a page read: 2 to 3 tool calls, under 1 minute, and a few thousand tokens of context per page |
-| `[Inferred]` | Reasoning from premises that carry one of the two labels above. The more credible and widely accepted the premise, the more reliable the reasoning | The effort of its premises |
-| `[Experience]` | Agent memory from training, with no source checked in this session | None |
+| Label | Basis | Effort to get it | What the claim carries |
+|---|---|---|---|
+| `[Observed]` | A command result, a file read, a GUI query, or a measurement the agent made in this session | 1 tool call and a few seconds for a file read. Minutes for a build, a test run, or a performance measurement. | The command, file, or measurement, as a link or a name |
+| `[Documented]` | A published source: official documentation, source code, a specification, a paper, a vendor page | A search and a page read: 2 to 3 tool calls, under 1 minute, and a few thousand tokens of context per page | A link or a symbol |
+| `[Inferred]` | Reasoning from premises that carry one of the two labels above. The more credible and widely accepted the premise, the more reliable the reasoning | The effort of its premises | Each premise with its own label, and the step from the premises to the conclusion. A proposal or a decision is an `[Inferred]` claim: its premises say why the choice serves the request, not only what it is |
+| `[Experience]` | Agent memory from training, with no source checked in this session | None | Nothing |
+
+For example (an inference that hides its premises). A game froze while a second asset import ran, and the agent wrote: "`[Inferred]` That separate import may be why the game froze." Listing the premises shows the gap: `[Observed]` a second import was running, `[Experience]` two imports compete for CPU and disk, and nothing links the freeze to the import. The game's log was unread, so the agent reads it before sending, or says the cause is unknown. Without the premises, the developer had to ask for that log in the next message.
+
+For example (a decision that hides its premises). The agent proposed dropping old tool results from a resumed chat, and its only premise was their size. The decision needs the premises that the next request does not need them: what the resumed turn actually read, and how cheaply it can read that again.
 
 A stronger label costs more effort, so checking every claim wastes the budget of the request. Give each claim the lowest label that the cost of being wrong allows: compare what the check costs with what a wrong claim costs. A stronger label is always allowed.
 
