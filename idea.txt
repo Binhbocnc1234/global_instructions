@@ -1,0 +1,8 @@
+I believe in retrieval and implementation abilities of agent
+
+agent's disavantage:
+- Rule obligation
+- Archiecture and software-engineering: agent can create a working feature, but it may not satisfy quality attributes
+
+
+
