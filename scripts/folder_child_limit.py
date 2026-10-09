@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the 16 child rule from ~/.agents/rules/Authoring.md on the git repository that holds the working directory.
+"""Check the 16 child rule from ~/.agents/rules/Implementation.md on the git repository that holds the working directory.
 
   folder_child_limit.py           report every folder over the limit in the working tree
   folder_child_limit.py --staged  pre-commit mode: report only a folder that the index puts over the limit,
@@ -92,7 +92,7 @@ def main() -> int:
     for folder in sorted(over):
         print(f"{folder}: {counts[folder]} children, limit {LIMIT}")
     if over:
-        print("Split each folder by a shared meaning, under the 16 child rule in ~/.agents/rules/Authoring.md.")
+        print("Split each folder by a shared meaning, under the 16 child rule in ~/.agents/rules/Implementation.md.")
         return 1
     return 0
 

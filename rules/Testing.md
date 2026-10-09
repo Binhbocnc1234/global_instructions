@@ -1,10 +1,43 @@
-# Select Valuable Tests
+# Testing
+
+Summary: What does the Testing specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Why: one role owns this responsibility without copying shared principles.
+
+Use the shared foundation in [AGENTS.md](../AGENTS.md).
+
+## Responsibility
+
+Select, construct, execute, and assess verification.
+
+## Inputs Required
+
+The changed behavior, actual entry route, candidate fixtures, environment, and relevant contracts.
+
+## Workflow
+
+Select verification with detection value. Use owned inputs. Execute the intended fixture. Assess evidence and state what remains unverified.
+
+## Role-Specific Constraints
+
+## Select Valuable Tests
 
 Do not create a permanent automated test merely because production code changed. Add or update one when it has unique detection value and manual verification is expensive, unreliable, or unable to cover the relevant state spaces.
 
 Avoid tests for trivial getters, setters, constructors, passthroughs, and implementation details.
 
 Test behaviour, not implementation.
+
+## Test Only What the Branch Changes
+
+When to apply: writing a test, and dropping or reverting a change that has tests.
+
+A test stays only when it covers behaviour this branch changes. When a change is dropped or reverted, its tests go with it. A rule owned by another component, such as a shared system another developer maintains, is asserted by that component's tests, not again by a test of the code that relies on it. A test may still trigger that rule as a setup step, as long as it asserts only the branch's own behaviour.
+
+For example, a branch changes how one game piece removes its own buff at a phase change. Its tests assert that removal. They do not assert that the effect system rejects a duplicate trait or promotes the next instance, because the effect system owns those rules and its tests cover them.
+
+For example, a change to a passive is reverted after a policy merge makes it unnecessary, and the agent keeps the passive's regression tests as a separate commit. The commit adds tests for code the branch no longer changes, so it is dropped with the change.
+
+Why: a leftover test from a dropped change pins behaviour nobody on the branch changed, and a test that re-asserts another component's rule fails when that owner changes the rule on purpose. Both cost review time and history without guarding anything the branch did.
 
 ## Representative Non-Test
 
@@ -95,8 +128,8 @@ Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals
 
 - **Image or video.** An image shows a state: a layout, a colour, a label. A video shows change over time: an animation, a transition, a sequence of steps. Send an image when nothing in the check moves.
 - **Drive it through the production path.** A driver (a script, a scene, a test entry point) reaches each state through the code path the product uses. It also stages states that are slow or impossible to reach by hand, such as a skill with a long cooldown or a failed network call.
-- **Off the developer's screen.** Render into a virtual display or an off-screen renderer. A headless mode that draws no frames captures nothing, so prove the renderer draws before relying on it. When no off-screen route exists, [Ask Before Taking the Developer's Machine](../DivisionOfLabor.md#ask-before-taking-the-developers-machine) applies.
-- **Own state only.** The driver runs on its own profile, save file, and settings, under [Tests Own Their Inputs](#tests-own-their-inputs), because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](../WorkStyle.md#scratch-files-go-in-tmp).
+- **Off the developer's screen.** Render into a virtual display or an off-screen renderer. A headless mode that draws no frames captures nothing, so prove the renderer draws before relying on it. When no off-screen route exists, [Ask Before Taking the Developer's Machine](../AGENTS.md#ask-before-taking-the-developers-machine) applies.
+- **Own state only.** The driver runs on its own profile, save file, and settings, under [Tests Own Their Inputs](#tests-own-their-inputs), because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](../AGENTS.md#scratch-files-go-in-tmp).
 - **Mark each behavior.** The driver prints one line per behavior it shows, with its time in the video. Build the caption from those lines, so the developer knows where to look.
 - **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
 - **Check before linking.** The file has the expected size and duration, it is a format any player opens (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
@@ -120,3 +153,11 @@ Why: checking a visual by hand costs the developer a launch, a route through men
 | Performance, memory, interruption, or device-specific behavior | Measure the affected scenario in the relevant environment or device |
 
 Test the entry route named in the report. Do not bypass the defective route with a helper or alternate setup.
+
+## Completion Evidence
+
+Commands or fixtures, discovered test counts, outcomes, and explicit evidence limits.
+
+## Handoff Conditions
+
+Return results and evidence limits to Leader. Identify production defects for Implementation and unknown causes for Debugging. Supply verified captures for developer-only visual judgments.

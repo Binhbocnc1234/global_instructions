@@ -2,3 +2,6 @@ __pycache__/
 
 # Third-party clone, carries its own git repository
 mattpocock-skills/
+
+# Scratch files of the current task (AGENTS.md, Scratch Files Go in tmp/)
+/tmp/

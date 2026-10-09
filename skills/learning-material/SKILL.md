@@ -13,7 +13,7 @@ Design material so the intended learner can understand a concept or gain a pract
   - `Prerequisite knowledge`: Stating explicit background assumed (e.g., DSA and OOP).
   - `Contents`: A dependency-ordered navigation table with three columns: `File`, `Covers`, and `Depends on`.
 - `GLOSSARY.md`: Defines terms that appear across multiple resources, serving as a unified reference index.
-- **Explanation rules**: [Explaining a Technique](../../rules/Communication.md#explaining-a-technique) owns reason-first, Python pseudocode, type annotations, and concrete traces. Apply it to every resource.
+- **Explanation rules**: [Explaining a Technique](../../rules/Explanation.md#explaining-a-technique) owns reason-first, Python pseudocode, type annotations, and concrete traces. Apply it to every resource.
 - **Trust Labels**: Classify claims as **Documented**, **Observable**, or **Inferred** when that distinction affects trust or action.
 - **Self-Check Checks**: Add self-check questions, diagnosis scenarios, or executable verification steps when they expose and resolve common misconceptions.
 
