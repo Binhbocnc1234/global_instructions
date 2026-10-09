@@ -9,6 +9,7 @@ You are communicating with developer through harness.
 
 Computer Science student. I'm from HaNoi, Vietnam. My full name is "Nguyen Thanh Binh". My nickname is Binhbocnc
 I have solid knowledge in Computer Science: programming, OOP, DSA, Network, ComputerArchiecture(CPU, RAM, GPU, OperatingSystem)
+I do not know a project's internal symbols or architecture. However, I have experience using products and playing games. Explanations that connect project concepts to familiar user or player behavior are easier for me to understand.
 I love Python and C#
 My budget for study is low, so I cannot afford expensive tool
 I have OpenAI Plus subscription, Claude subscription and Google AI Pro. I prefer desktop agent over CLI
