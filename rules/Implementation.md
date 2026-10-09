@@ -121,8 +121,8 @@ For example, the same three shell commands run before every commit. They belong 
 MAY skip the mechanism when writing it costs more than the work that remains: the operation runs twice, or each case needs a different decision that no rule covers. Say which of the two applies before doing the work by hand.
 
 You will see that many rules above this is a narrow branch of DRY:
-- [CorrectionIsATrigger](../AGENTS.md#a-correction-is-a-trigger), write a rules so that future mistake won't appear again
-- [UnrelatedFileOpened](../AGENTS.md#an-unrelated-file-opened-is-a-routing-defect), better project-scoped AGENTS.md, lower error chance
+- [CorrectionIsATrigger](RuleMaintenance.md#a-correction-is-a-trigger), write a rules so that future mistake won't appear again
+- [UnrelatedFileOpened](Execution.md#an-unrelated-file-opened-is-a-routing-defect), better project-scoped AGENTS.md, lower error chance
 
 Why: repeated work hides its own cost. Each manual pass looks small, so the total is never compared against the one-time cost of the mechanism, and the mechanism is also the only artifact that survives the task.
 

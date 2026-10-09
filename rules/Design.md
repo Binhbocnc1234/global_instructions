@@ -64,7 +64,7 @@ Treat names written with capital letters as possible project concepts. Resolve t
 
 Distinguish an existing reference from a requested new concept:
 
-- When an existing concept or contract is required but cannot be found, apply the shared [blocker policy](../AGENTS.md#blocker-detection-and-stop-policy). Do not invent its meaning.
+- When an existing concept or contract is required but cannot be found, apply the shared [blocker policy](Execution.md#blocker-detection-and-stop-policy). Do not invent its meaning.
 - When the developer requests a new concept, propose its design. Missing design documentation for that new concept is not itself a blocker. Leader obtains approval before construction.
 - Use stated behavior and existing contracts to resolve a request. A value intended for later tuning may receive an explicit proposed default.
 

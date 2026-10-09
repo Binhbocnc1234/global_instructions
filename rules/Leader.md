@@ -15,14 +15,14 @@ The request, project instructions, current artifacts, existing approvals, and an
 
 ## Workflow
 
-1. Identify the requested outcome and existing approvals. Read the project documentation index under [documentation routing](../AGENTS.md#route-through-the-documentation-index).
+1. Identify the requested outcome and existing approvals. Read the project documentation index under [documentation routing](Execution.md#route-through-the-documentation-index).
 2. Select the needed responsibilities under [Role Routing](#role-routing). For a defect, request Debugging evidence before designing its correction.
 3. For a change that needs a design, request Design's proposal. Resolve blocking questions before asking for approval.
 4. Present the design and its acceptance criteria. STOP for developer approval before construction. Existing explicit approval of that design satisfies this checkpoint.
 5. After approval, dispatch the required construction work. Use Implementation, Authoring, or RuleMaintenance according to the artifact.
 6. Request Testing for executable behavior. Use the artifact specialist's completion checks for documents and rules.
 7. Route failed checks to the responsible specialist. Repeat the affected checks after correction. Do not request routine approval for these transitions.
-8. Assess [Reusable Knowledge](../AGENTS.md#reusable-knowledge). Update the task record. Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
+8. Assess [Reusable Knowledge](RuleMaintenance.md#reusable-knowledge). Update the task record. Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
 
 Design approval is the only routine human checkpoint. A request that only asks for explanation or review does not enter the construction workflow.
 
@@ -34,15 +34,15 @@ For example, “Add an export command” follows the same approval flow. By cont
 
 Required supporting work belongs to the requested outcome, even when the developer did not list every step. It does not authorize unrelated changes.
 
-Report discovered risks under [Report a Risk Only With Its Failure](../AGENTS.md#report-a-risk-only-with-its-failure). Do not suppress a finding because the developer did not request a risk review.
+Report discovered risks under [Report a Risk Only With Its Failure](Communication.md#report-a-risk-only-with-its-failure). Do not suppress a finding because the developer did not request a risk review.
 
 After Design approval, continue automatically within the approved scope. Return to Design when new evidence requires changing the approved requirements or acceptance criteria. Obtain approval for that change.
 
 The following exceptional stops remain in force:
 
-- [Blockers and failed mechanisms](../AGENTS.md#blocker-detection-and-stop-policy).
+- [Blockers and failed mechanisms](Execution.md#blocker-detection-and-stop-policy).
 - [Credentials and security boundaries](../AGENTS.md#security).
-- [Taking control of the developer's machine](../AGENTS.md#ask-before-taking-the-developers-machine).
+- [Taking control of the developer's machine](Execution.md#ask-before-taking-the-developers-machine).
 - Other explicit approval requirements in the applicable instructions.
 
 Developer-only visual judgment and release approval remain post-completion checks unless an explicit gate prevents completion. Do not claim that the agent supplied those approvals.
@@ -220,7 +220,7 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 - **Answer**: only an explanation task needs this. For an implementation, do not list the changes: the git diff already shows them.
 - **Lesson**: only when the request handled a correction. Name the cause and where it was recorded or proposed, or why nothing was recorded.
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
-- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Do not fill the response with noise](../AGENTS.md#do-not-fill-the-response-with-noise). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
+- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Do not fill the response with noise](Communication.md#do-not-fill-the-response-with-noise). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
 
 Use the shared scope, evidence, and noise rules for every response. When the developer requests explanation, its content follows the Explanation specialist document.
 

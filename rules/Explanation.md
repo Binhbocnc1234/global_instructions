@@ -106,7 +106,7 @@ Name the term once, as the first line of the response: the term in bold, the dev
 Apply only when all of these hold:
 - The meaning is clear. When it is not, [Requirement elicitation](Design.md#requirement-elicitation) applies instead.
 - The term is standard: official documentation uses it, or a web search for the concept returns it.
-- It is not a project symbol; [Name a project thing by project symbol](../AGENTS.md#name-a-project-thing-by-project-symbol) covers those.
+- It is not a project symbol; [Name a project thing by project symbol](Communication.md#name-a-project-thing-by-project-symbol) covers those.
 - It was not taught earlier in the same session. A new session teaches it again, because a developer who still paraphrases has not kept the word.
 
 Do not correct spelling or grammar under this rule.

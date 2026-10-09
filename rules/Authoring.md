@@ -70,7 +70,7 @@ Why: a document that restates code drifts from it without any check failing, and
 
 When to apply: adding, removing, moving, renaming, or re-describing a document in a project that has an index.
 
-A documentation index is one committed file that lists every qualifying document with its relative path and a one-sentence description. It is the canonical entry point for document discovery, so that a reader never opens a document just to learn what it holds. [Route Through the Documentation Index](../AGENTS.md#route-through-the-documentation-index) owns the reading half.
+A documentation index is one committed file that lists every qualifying document with its relative path and a one-sentence description. It is the canonical entry point for document discovery, so that a reader never opens a document just to learn what it holds. [Route Through the Documentation Index](Execution.md#route-through-the-documentation-index) owns the reading half.
 
 - The index is generated output. Never edit it by hand.
 - Regenerate it in the same change that adds, removes, moves, renames, or re-describes an indexed document. A change that leaves the index stale is incomplete.
@@ -80,7 +80,7 @@ A documentation index is one committed file that lists every qualifying document
 
 For example, `MonkeyVsAlien` generates its index from the `description` and `status` frontmatter fields of every document under `Documentation/`, and its `AGENTS.md` records both the index path and the generator command.
 
-A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is a Routing Defect](../AGENTS.md#an-unrelated-file-opened-is-a-routing-defect) says when that proposal is due.
+A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is a Routing Defect](Execution.md#an-unrelated-file-opened-is-a-routing-defect) says when that proposal is due.
 
 ## Completion Evidence
 
