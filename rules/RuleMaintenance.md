@@ -1,6 +1,6 @@
 # RuleMaintenance
 
-Summary: What does the RuleMaintenance specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the RuleMaintenance specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -159,6 +159,6 @@ Why: a fix repairs this session, a record repairs every session after it. Withou
 
 The approved rules, their unique owners, checked references, and representative routing cases.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return ownership and routing evidence to Leader. Identify unmade organizational decisions for Design and executable verification for Testing. Do not change rules without the required approval.

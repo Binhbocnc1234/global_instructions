@@ -1,6 +1,6 @@
 # Implementation
 
-Summary: What does the Implementation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Implementation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -94,6 +94,7 @@ That's it. You don't need to check for that error
 Keep source-code and documentation files at or below 250 lines whenever practical.
 
 The 250-line limit is a signal to split responsibilities, not a target to satisfy through compression.
+Like the [16 child rule](#16-child-rule), it supports maintenance through meaningful groups. It does not limit the expanded prompt or token count.
 
 When a file is likely to exceed 250 lines:
 
@@ -146,6 +147,6 @@ Why: the developer and the agent have no reliable memory of where a file lives, 
 
 The changed artifacts and passing agent-required verification, with remaining developer approvals identified.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return construction evidence to Leader. Request Testing for verification and Debugging for an unknown defect cause. Leader coordinates the next responsibility.

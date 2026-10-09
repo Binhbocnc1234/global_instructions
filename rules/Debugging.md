@@ -1,6 +1,6 @@
 # Debugging
 
-Summary: What does the Debugging specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Debugging specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -50,6 +50,6 @@ If automation is impractical, document a stable manual procedure and why automat
 
 A reproduction, an evidenced cause, and the authorized correction to make.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return diagnosis evidence to Leader. Identify needed construction for Implementation and regression selection or execution for Testing.

@@ -1,7 +1,7 @@
 # Leader
 
 Summary: How does an agent complete a developer request? Request coordination, specialist routing, the Design approval checkpoint, handoffs, task state, and completion.
-Why: the developer states an outcome. Specialists supply bounded work and evidence. Leader owns the sequence, not their internal methods.
+Why: one agent performs the active specialist responsibility. Leader controls the sequence, not each responsibility's internal methods.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
@@ -49,7 +49,7 @@ Developer-only visual judgment and release approval remain post-completion check
 
 ## Role Routing
 
-Classify responsibilities, not the whole request under one fixed task type. Load only the specialist needed for the current responsibility.
+Classify responsibilities, not the whole request under one fixed task type. All specialist instructions are loaded through the global prompt imports. Apply the instructions for the active responsibility.
 
 | Responsibility | Specialist | Output |
 |---|---|---|
@@ -65,11 +65,14 @@ Explanation is not a mandatory final stage. A completion report does not activat
 
 Review is a non-mutating mode of the artifact specialist. Use Implementation for code, Testing for tests, Authoring for documents, RuleMaintenance for instructions, and Design for proposals. Report supported findings or state that none qualifies. Do not modify an artifact unless authorized.
 
-A specialist consumes another specialist's outputs and contracts. It does not inherit that specialist's internal rules. Testing behavior does not require loading construction rules such as folder-child limits.
+A responsibility uses the preceding work's outputs and contracts. Its internal rules apply only to that responsibility. Testing behavior does not activate construction rules such as folder-child limits.
 
-These are responsibilities, not a requirement to create separate sessions. In one session, keep one active responsibility at a time. Read its document before the work.
+These are responsibilities within one session, not separate agents. Keep one active responsibility at a time. A role change does not require a handoff report.
 
-When using separate sessions, supply the shared foundation, specialist instructions, applicable project instructions, and a [handoff](#handoff-contract). Include the remaining request budget and required return format. Parallel work must use independent scopes.
+Subagent delegation remains deferred under task `SubagentEscalation`. Use the single-session workflow until the developer approves escalation after an observed failure.
+Why: the available evidence does not establish a benefit for the developer's workload.
+
+For an actual transfer to another session or a continuation without the previous context, use the [handoff contract](#handoff-contract). Do not create a session merely to change roles.
 
 A missing responsibility does not justify creating a generic specialist with no independent guidance. Route proposed role changes to RuleMaintenance.
 
@@ -77,13 +80,14 @@ A missing responsibility does not justify creating a generic specialist with no 
 
 The approved outcome, specialist results, verification limits, task state, and commit result when required.
 
-## Handoff Conditions
+## Responsibility Transitions
 
-Specialists return results, discovered risks, blockers, and any needed next responsibility to Leader. Leader selects the next step without expanding the approved scope.
+Use the active specialist's completion evidence to select the next responsibility. Preserve scope, approvals, results, discovered risks, and blockers in the existing task context. Do not restate them in a separate report for each role change.
 
 ## Handoff Contract
 
-Use these fields when responsibility passes to another role. A handoff MUST NOT expand the authorized scope.
+Use these fields only when task context transfers to another session or a continuation that cannot access the previous conversation.
+A handoff MUST NOT expand the authorized scope. Supply the shared rules and applicable specialist and project instructions when the receiver does not already have them.
 
 ```text
 Goal:
@@ -93,9 +97,11 @@ Artifacts and changes:
 Evidence:
 Open questions or blockers:
 Requested next responsibility:
+Remaining request budget:
+Required return format:
 ```
 
-Name the role that receives the work. Distinguish verified results from assumptions. Preserve pending approvals and evidence limits.
+Name the receiving responsibility. Distinguish verified results from assumptions. Preserve pending approvals and evidence limits. Authorized parallel sessions must use independent scopes.
 
 ## Task Management
 

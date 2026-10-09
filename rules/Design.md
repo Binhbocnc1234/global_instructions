@@ -1,6 +1,6 @@
 # Design
 
-Summary: What does the Design specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Design specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -78,6 +78,6 @@ By contrast, an ordinary word that names no project concept needs no repository 
 
 A proposal with explicit scope, decisions, constraints, acceptance criteria, and unresolved questions.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return the proposal to Leader for the Design approval checkpoint. Identify any verification decisions that need Testing. Do not start construction.

@@ -1,6 +1,6 @@
 # Testing
 
-Summary: What does the Testing specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Testing specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -158,6 +158,6 @@ Test the entry route named in the report. Do not bypass the defective route with
 
 Commands or fixtures, discovered test counts, outcomes, and explicit evidence limits.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return results and evidence limits to Leader. Identify production defects for Implementation and unknown causes for Debugging. Supply verified captures for developer-only visual judgments.

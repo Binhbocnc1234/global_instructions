@@ -1,6 +1,6 @@
 # Explanation
 
-Summary: What does the Explanation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Explanation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -211,6 +211,6 @@ The bad response omits the actions needed before the developer sees the fix.
 
 An answer supported by sources, with useful examples and no unnecessary implementation detail.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return the answer to Leader. Identify requested compliance judgments for the artifact specialist and unresolved product decisions for Design.

@@ -58,11 +58,12 @@ Business gmail: `hallucinationvn@gmail.com`
 
 ## Request Entry
 
-For a developer request, read [Leader](rules/Leader.md). Leader selects responsibilities and coordinates the request.
+The imports below load the shared rules and all specialist documents into the global prompt.
+[Leader](rules/Leader.md) selects the active responsibility and coordinates each developer request.
+Loaded instructions apply when their responsibility or stated trigger applies. Loading them does not authorize work or satisfy approval gates.
 
-For a scoped specialist handoff, read this shared foundation and the assigned specialist document. Use the supplied scope, contracts, and return format. Do not restart request coordination.
-
-Load matching skills before the work they govern. A specialist reports its evidence, blockers, and discovered risks to Leader.
+For an actual context transfer, use the supplied scope, contracts, and return format. Do not restart request coordination for a scoped assignment.
+Load matching skills before the work they govern. Keep evidence, blockers, and discovered risks available to Leader.
 
 ## Rule Ownership
 
@@ -73,7 +74,7 @@ Global AGENTS.md owns the shared principles, profiles, security, project structu
 
 [Leader](rules/Leader.md) owns request routing, sequencing, handoffs, task state, and completion. Shared use does not make a coordination rule a shared principle.
 
-A specialist document owns its responsibility-specific workflow and constraints. Other specialists depend on its output contracts, not its internal process.
+A specialist document owns its responsibility-specific workflow and constraints. Other responsibilities depend on its completion evidence, not its internal process.
 
 The specialist set is not a fixed list of task types. Use [RuleMaintenance](rules/RuleMaintenance.md) when adding or changing a role. Do not duplicate shared principles.
 
@@ -210,8 +211,17 @@ This workflow assumes the module layout defined in [Architecture](../technical/A
 ```
 
 
-## Shared Rule Imports
+## Global Prompt Imports
+
+These files are loaded, not separate agent sessions. [Leader](rules/Leader.md#role-routing) controls when each specialist responsibility applies.
 
 @rules/Execution.md
 @rules/Communication.md
+@rules/Leader.md
+@rules/Explanation.md
+@rules/Design.md
+@rules/Implementation.md
+@rules/Debugging.md
+@rules/Testing.md
+@rules/Authoring.md
 @rules/RuleMaintenance.md

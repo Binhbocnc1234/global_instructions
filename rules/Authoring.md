@@ -1,6 +1,6 @@
 # Authoring
 
-Summary: What does the Authoring specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and handoffs.
+Summary: What does the Authoring specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
 Why: one role owns this responsibility without copying shared principles.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -86,6 +86,6 @@ A project that holds more than 10 documents and has no index has no routing. Pro
 
 The document, its canonical references, and an updated generated index where applicable.
 
-## Handoff Conditions
+## Responsibility Transitions
 
 Return documents and reference checks to Leader. Identify instruction changes for RuleMaintenance. Use Explanation only when the developer requests explanation. Learning materials activate the learning-material skill.
