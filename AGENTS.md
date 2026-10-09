@@ -70,7 +70,7 @@ Load matching skills before the work they govern. Keep evidence, blockers, and d
 A rule tells an agent what to do across requests. A request names work for the current task. A fact describes a project or tool.
 
 Global AGENTS.md owns the shared principles, profiles, security, project structure, and prompt imports.
-[Execution](rules/Execution.md) owns shared execution safeguards. [Communication](rules/Communication.md) owns shared language, relevance, and evidence rules.
+[Execution](rules/Execution.md) owns shared execution safeguards. [Communication](rules/Communication.md) owns communication constraints for both developer-facing and agent-facing text. [Explanation](rules/Explanation.md) owns developer-facing presentation, including relevance and vocabulary.
 
 [Leader](rules/Leader.md) owns request routing, sequencing, handoffs, task state, and completion. Shared use does not make a coordination rule a shared principle.
 

@@ -88,4 +88,4 @@ The document, its canonical references, and an updated generated index where app
 
 ## Responsibility Transitions
 
-Return documents and reference checks to Leader. Identify instruction changes for RuleMaintenance. Use Explanation only when the developer requests explanation. Learning materials activate the learning-material skill.
+Return documents and reference checks to Leader. Identify instruction changes for RuleMaintenance. Apply Explanation to developer-facing presentation while Authoring owns document construction. Agent-facing documents use Communication. Learning materials activate the learning-material skill.

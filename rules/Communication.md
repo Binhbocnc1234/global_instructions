@@ -1,35 +1,15 @@
 # Communication
 
-Summary: How must an agent communicate claims? Shared language, relevance, project references, and evidence rules.
-Why: these constraints apply across specialist responsibilities.
+Summary: Which communication constraints apply to both developer-facing and agent-facing text? Shared language, project references, risk claims, and evidence rules.
+Why: language consistency and supported claims are necessary regardless of who reads the text.
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+Use the shared foundation in [AGENTS.md](../AGENTS.md). These constraints apply to developer-facing and agent-facing text, across responsibilities.
 
-## Do not fill the response with noise
-
-Noise: the proposal with low value, resource spent to read agent proposal and proceed it doesn't repay
-
-For example: If developer request agent to review project, and you find that project is already good(following coding practices, documentation and developer's rules) Agent should say "There is no problem" instead of specify noise problem.
-
-This is also apply when review a skill
-
-For example: a small dead code that changes nothing at runtime. "`Entity.cs` declares a field that no code read it" True, and worth nothing: the property costs no behaviour, no memory, and no confusion until someone edits that class.
-
-For example: "The variable `users` could be renamed to `userList`". If no project rules require it, it's just noise
-
-For example: A game mechanism that is not broken. "ActionManager.AfterActionResolve skips a dead listener with a bare continue; add a Debug.Log there." Nothing malfunctions, and anyone debugging that path is already reading the loop. The developer spends time on a proposal that prevents no failure.
-
-Repays — a silent fallback. "`public GameObject prefab` is not assigned but the code supress the error instead of letting error happen" or "using `var` in C#". It violates rules and you can fix it without developer permission
-
-Repays — developer secret commited to Github, or a security risk
-
-Why: Bad default behavior of agents when they try to fill up the response instead of re-evaluating the worth of the finding.
-
-### Report a Risk Only With Its Failure
+## Report a Risk Only With Its Failure
 
 When to apply: before reporting any risk, whether it is in a developer change, in the agent's own proposal, or in an audit finding.
 
-A risk names the concrete failure it causes and what that failure costs to fix. When nothing fails, or the failure is cheap to fix, the risk is noise under [Do not fill the response with noise](#do-not-fill-the-response-with-noise).
+A risk names the concrete failure it causes and what that failure costs to fix. When nothing fails, or the failure is cheap to fix, the risk is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance).
 
 Ask what already prevents that risk. Existing configuration, a test that would fail, a schema or type constraint, and a runtime check all count as prevention. Report the risk only when nothing prevents it.
 
@@ -51,8 +31,6 @@ Communicate with the developer in English, regardless of the request's language.
 
 A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST come with a measurable value. This applies to every rule, document, skill, and response. Write `this task is long (5 to 10 minutes)`, not `this task is long`. When the value is an estimate, say so and name its basis, for example `~3 minutes, from 1.2 GB at ~7 MB/s`.
 
-Prefer `Open Unity Editor`, `Click Run All`, and `Result: all tests pass` over conversational sequencing such as `First you need to` or `Then you should`.
-
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
 
 When developer say "I recommend/suggest implementing .... because ...", this is not an order that agent must adhere, this is suggestion agent should assess before execution
@@ -60,8 +38,6 @@ When developer say "I recommend/suggest implementing .... because ...", this is 
 When developer say "I think ...". Developer is not certain about their speaking, agent should judge it instead of treating it as a command
 
 Propose = "do not make changes"
-
-I familiar with Software Engineering technical term. Prefer the standard term of the field over jargon borrowed from another one. For dependencies, write `depends on` and `depended on by` rather than `outgoing` and `incoming`; the plain phrase is also the exact one, because `outgoing` has several unrelated meanings.
 
 Prefer simple, direct words that are easy to understand.
 

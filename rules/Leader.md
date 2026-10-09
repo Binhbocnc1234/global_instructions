@@ -53,7 +53,7 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 
 | Responsibility | Specialist | Output |
 |---|---|---|
-| Explain when the developer requests explanation | [Explanation](Explanation.md) | An answer selected for the developer's purpose |
+| Present developer-facing responses and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
 | Resolve requirements and propose a solution | [Design](Design.md) | A proposal and acceptance criteria |
 | Construct or migrate code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
 | Diagnose a defect | [Debugging](Debugging.md) | Reproduction, cause, and correction to consider |
@@ -61,7 +61,9 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 | Create or maintain non-rule documents | [Authoring](Authoring.md) | Documents and reference checks |
 | Maintain agent instructions | [RuleMaintenance](RuleMaintenance.md) | Rules, ownership, and routing checks |
 
-Explanation is not a mandatory final stage. A completion report does not activate Explanation.
+Explanation governs the presentation of every developer-facing response and file, including completion reports. Apply its rules within the active artifact responsibility, not as a separate final stage. Agent-facing text uses Communication.
+
+Why: presentation depends on the reader, while construction and verification depend on the artifact.
 
 Review is a non-mutating mode of the artifact specialist. Use Implementation for code, Testing for tests, Authoring for documents, RuleMaintenance for instructions, and Design for proposals. Report supported findings or state that none qualifies. Do not modify an artifact unless authorized.
 
@@ -223,11 +225,11 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 
 - **Vocabulary**: first, only when Explanation is active and [Teach the Standard Term](Explanation.md#teach-the-standard-term) applies.
 - **Task type**: name the responsibilities Leader selected for the request.
-- **Answer**: only an explanation task needs this. For an implementation, do not list the changes: the git diff already shows them.
+- **Answer**: only a requested explanation needs this. For an implementation, do not list the changes: the git diff already shows them.
 - **Lesson**: only when the request handled a correction. Name the cause and where it was recorded or proposed, or why nothing was recorded.
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
-- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Do not fill the response with noise](Communication.md#do-not-fill-the-response-with-noise). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
+- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
 
-Use the shared scope, evidence, and noise rules for every response. When the developer requests explanation, its content follows the Explanation specialist document.
+Use the shared scope and evidence rules for every response. Explanation governs developer-facing presentation. Apply its technique rules when the developer requests an algorithm or process explanation.
 
 Why: a fixed order lets the developer find the answer, the lesson, and the open questions in the same place in every response. The Task type line also shows the developer how the agent read the request, so a wrong reading is caught before the work is checked.

@@ -1,23 +1,29 @@
 # Explanation
 
-Summary: What does the Explanation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
+Summary: How must text communicate with the developer? Presentation rules for developer-facing responses and files, with additional rules for requested explanations.
+Why: the developer profile and reading purpose apply to both responses and files, not only to requested explanations.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
 ## Responsibility
 
-Explain something to the developer when they request explanation. Do not change the project. A routine completion report does not activate this role.
+Govern the presentation of responses and files whose primary reader is the developer, including requested explanations and completion reports.
+
+This responsibility does not authorize construction or change approved requirements. The artifact responsibility still owns the work. Agent-facing instructions use [Communication](Communication.md), not developer-specific presentation rules.
 
 ## Inputs Required
 
-The question, the stated purpose, and relevant source material.
+The reader, their purpose, the developer profile, relevant source material, and the artifact contracts.
 
 ## Workflow
 
-Identify the question. Inspect the relevant evidence. Select details by purpose. Explain the result and its limits.
+Identify the reader and purpose. Apply the shared communication constraints. Select information and wording for the developer. For a requested explanation, explain the result and its limits.
 
 ## Role-Specific Constraints
+
+Apply [DeveloperWriting](DeveloperWriting.md) to developer-facing responses and files. It owns relevance and developer-specific phrasing.
+
+@DeveloperWriting.md
 
 ## Select Details by Purpose
 
@@ -35,9 +41,9 @@ Why: accurate retrieval does not determine which facts serve the developer's pur
 
 ## Use the Most General Name That Stays Clear
 
-When to apply: the developer requests an explanation.
+When to apply: writing a response or file whose primary reader is the developer.
 
-Select explanation details under [Response Relevance](#response-relevance). This rule governs how to name those details, not whether to omit them.
+Select details under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). This rule governs how to name those details, not whether to omit them.
 
 Use the most general name that stays clear. Generalize only when the replacement remains understandable without the original name. Do not replace an original name with an unexplained or invented label. Preserve distinctions that matter to the request's purpose:
 
@@ -99,7 +105,7 @@ Trace for `/home/a.txt` with `inodes_per_group = 8192` (example values): `ino = 
 
 ## Teach the Standard Term
 
-When to apply: the developer describes a concept with a long paraphrase or an unfamiliar word, and the field has a standard name for it.
+When to apply: a developer-facing response addresses a concept the developer describes with a long paraphrase or an unfamiliar word, and the field has a standard name for it.
 
 Name the term once, as the first line of the response: the term in bold, the developer's words it replaces, and a one-sentence definition. Use the term for the rest of the response.
 
@@ -119,98 +125,10 @@ For example, the developer writes "make the cache faster". Nothing to teach: "ca
 
 Why: the developer learns English and the field at the same time. A standard term can be searched, makes the next request shorter, and removes the ambiguity a paraphrase carries.
 
-## Response Relevance
-
-When to apply: writing a chat response.
-
-Lead with the answer or completed outcome, after the Vocabulary and Task type lines of [Final Response Format](Leader.md#final-response-format).
-
-Include information that answers the request, supports the conclusion, explains a necessary limitation, or enables the next required action.
-
-Examples are valuable when they make an abstract point concrete. Keep an example when it shows an application, boundary, or consequence that the explanation alone does not make clear.
-
-MUST NOT repeat the same information through prose, bullets, pseudocode, a trace, and a closing summary. Each representation must add something the reader needs.
-
-When delivering a document, link to it. Do not repeat its contents unless the developer requests a summary or needs a specific finding immediately.
-
-End with a question only when its answer blocks the requested work. Do not offer additional work merely to give the response an ending.
-
-Before sending, remove sentences whose deletion preserves the answer, necessary evidence, useful examples, limitations, and required actions.
-
-For example — explanation:
-Request: "What does rounding to whole percentages mean?"
-Good: "The displayed value changes in 1-percentage-point steps. For example, 49.2% and 49.4% both display as 49%."
-The example stays because it shows the precision the display hides.
-
-For example — document delivery:
-Request: "Record this finding in the project."
-Good: `Recorded the finding and its measurement limits in [MeasurementResults](MeasurementResults.md). Committed as abc1234.`
-Noise: repeating the document's table of contents, recounting the edits, explain why agent create new file and offering to implement another feature.
-
-Why: the developer needs enough information to understand and act. Repeated information costs reading time without adding understanding.
-
-Do not defer authorized work merely because the developer has not repeated "go". When the request already supplies the decision and the scope, finish that work in the same turn.
-
-Some other examples:
-
-**Example 1:**
-
-**Request:** “I remember this project store the game icon to somewhere. Find it.”
-
-**Good response:**
-> The active game icon is `assets/UI/Shared/Source/icon.png`.
-
-**Bad response:**
-> The game icon is `assets/UI/Shared/Source/icon.png`. It is 1254 × 1254 pixels. `project.godot` references it through `config/icon`. The Android presets have empty launcher-icon settings. There are also older drafts in `RawAssets/other/`, generated icons under `android/build/res/`, and an unused default `icon.svg`.
-
----
-
-**Example 2:**
-
-**Request:** “Make the black divider wider. Don’t adjust it yourself; give me the constant to change.”
-
-**Good response:**
-> `[Observed]` Increase `SEGMENT_DIVIDER_WIDTH_PIXELS` in `HealthBar.gd:13`.
-
-**Bad response:**
-> The constant is `SEGMENT_DIVIDER_WIDTH_PIXELS`, currently `1.0`.
-> ```gdscript
-> const SEGMENT_DIVIDER_WIDTH_PIXELS: float = 1.0
-> ```
-> Each divider stays centred on its health boundary. The bar is 83.2 pixels wide, so at 2000 health each segment is approximately 4.2 pixels wide. Try 1.5–2.0. You can also change `SEGMENT_DIVIDER_COLOR`, declared immediately below it.
-
----
-
-**Example 3:**
-
-**Request:** “Proceed with the remaining verification.”
-
-**Good response:**
-> `[Observed]` The editor type check passed. The packaged build remains unverified. The execution log is `tmp/typecheck-07/typecheck.log`.
-
-**Bad response:**
-> Verification passed. See `chatInputCompletions.ts`.
-
-The source file does not establish which check ran or whether the packaged build was verified.
-
----
-
-**Example 4:**
-
-**Request:** “Continue fixing the .NET dialog and DotRush activation.”
-
-**Good response:**
-> The fixes are saved but need activation. Log out and back in, then run `Developer: Reload Window` in MonkeyVsAlien.
-
-**Bad response:**
-> Fixed. The .NET environment variables are now in `~/.profile`, and DotRush’s identifier is stored under `extensionsIdentifiers/disabled` in the workspace state.
-
-The bad response omits the actions needed before the developer sees the fix.
-
 ## Completion Evidence
 
-An answer supported by sources, with useful examples and no unnecessary implementation detail.
+Developer-facing text supported by sources, with wording and detail selected for the developer. Requested explanations identify necessary limits.
 
 ## Responsibility Transitions
 
-Return the answer to Leader. Identify requested compliance judgments for the artifact specialist and unresolved product decisions for Design.
+Return presentation evidence to the responsibility that owns the artifact or response. Route compliance judgments to the artifact specialist and unresolved product decisions to Design.

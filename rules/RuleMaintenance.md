@@ -36,7 +36,7 @@ It does not fire: [Name a project thing by project symbol](Communication.md#name
 
 You can take examples from any source (whether from the session itself or ones you come up with yourself), provided they meet the aforementioned conditions.
 
-Why: a rule is added after an agent makes an error in a real session. For example, a hallucinated fact led to [Evidence Labels](Communication.md#evidence-labels), and uncommon, exam-level English words led to the plain-word rules in [Language](Communication.md#language). The agent that writes the rule is still inside that session, and it builds the example from the session's context (the developer suspects a model habit): an agent working in a game project writes examples about that game's units and grid. Every fact the reader must recall from another field stands between the reader and the point, and the developer learns English and the field at the same time.
+Why: a rule is added after an agent makes an error in a real session. For example, a hallucinated fact led to [Evidence Labels](Communication.md#evidence-labels), and uncommon, exam-level English words led to the plain-word rules in [Language](Communication.md#language). Developer-specific terminology belongs in [Developer Vocabulary and Direct Phrasing](DeveloperWriting.md#developer-vocabulary-and-direct-phrasing). The agent that writes the rule is still inside that session, and it builds the example from the session's context (the developer suspects a model habit): an agent working in a game project writes examples about that game's units and grid. Every fact the reader must recall from another field stands between the reader and the point, and the developer learns English and the field at the same time.
 
 ## The Why Line
 
