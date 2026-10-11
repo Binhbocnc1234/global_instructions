@@ -120,11 +120,13 @@ A project MAY contain a `delivery/` folder at its root. It is the canonical sour
 
 ### Request Budget
 
-One request has a budget of 15 minutes of agent work. The budget lets the developer check the result and correct it before work continues. In Claude Code, the hook [request_budget.py](../scripts/request_budget.py) enforces it.
+The harness owns request timing, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the deadline, the agent MUST write only the final response and MUST NOT request further tools.
+Why: one clock in the harness enforces the cutoff without depending on the agent's time estimates.
 
-Create a task file only when you estimate that the work does not fit one request budget. Work that needs the developer between steps (an approval, a playtest, a reboot, a physical device) never fits, because each approval ends a request. The number of items does not decide it: a mechanical change over many files can fit.
+Create a task file for work spanning requests, including work that needs developer approval, a playtest, a reboot, or a physical device between steps. The number of items does not decide it.
 
-Also create a task file when the budget ends a request with work left, so the work survives a closed laptop.
+At the harness's final pre-deadline reminder, preserve unfinished work in a task file before tools become unavailable. If work remains at the deadline without a saved task file, describe it in the final response; MUST NOT call a tool to save it after the cutoff.
+Why: unfinished work must survive a closed laptop without creating a tool exemption at the deadline.
 
 Also create a task file for a future spec: planned work that no code implements yet, whatever its size. Its Why states the trigger that starts the work, and it stays in `delivery/deferred/` until the trigger fires. The spec lives only until the code exists, so it does not break the rule that a task file owns nothing that outlives it.
 
@@ -161,7 +163,7 @@ Plain paragraphs MAY record decisions and evidence.
 - MUST NOT use `###` or deeper headings in a task file.
 - `Step <n>` is the step ID inside its file. Number new steps after the last one and never renumber, because chat and other files refer to these IDs. Item numbers restart at `#1` in each step. One item is one line.
 - An item is `- [ ]` or `- [x]`. There is no deferred item; see `delivery/deferred/`.
-- Size a step to fit one request budget, and end it with its testing items.
+- Group each step around one checkable outcome, and end it with its testing items.
 - Refer to an item as `<TaskName> Step <n>#<m>`, e.g. `GodotPrefabMigration Step 1#3`. Omit the task ID when the conversation already names the task.
 - When a task file would exceed 250 lines, split it into sibling task files that share an ID prefix, e.g. `GodotMigrationPrefabs` and `GodotMigrationScenes`. Create every sibling at once, so work not started yet stays visible. No parent file.
 
