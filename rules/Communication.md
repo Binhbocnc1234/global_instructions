@@ -70,6 +70,25 @@ Before writing, ask:
 
 If yes, use the simpler wording.
 
+## Harness Vocabulary
+
+For harness-level discussion, MUST use these definitions. They are shared vocabulary conventions, not claims that every provider uses the same protocol terms.
+Why: one developer request can cause several model requests and tool calls; calling all of them a request or turn makes usage and stopping boundaries unclear.
+
+| Term | Meaning |
+|---|---|
+| Harness | The software that connects the developer, model, tools, and conversation state. |
+| Request | One developer message submitted to the harness for the agent to handle. |
+| Turn | The whole lifecycle of one request, from submission through the agent's final response, failure, or cancellation. Intermediate model responses and tool calls belong to that turn. |
+| Final response | The developer-facing answer that ends the agent's work on the request. |
+| Model request | One invocation of the model backend. A harness turn may require several model requests. |
+| Model response | The output of one model request, which may include text, reasoning, or requests to call tools. It is not necessarily the final response. |
+| Tool call | One request from the agent to execute a tool. Its returned output is the tool result. |
+| Session | A conversation with its retained history, which can contain multiple turns. |
+| Provider turn | A unit defined by a backend's own protocol. It is not assumed to match one harness turn. |
+
+For example, the developer asks the agent to fix a bug. The model requests Read, receives the tool result, requests Bash, receives the test result, and writes a final response. This is one harness turn containing multiple model requests and two tool calls.
+
 ## Name a project thing by project symbol
 
 For example, we are inside game project:
