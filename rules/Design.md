@@ -1,23 +1,8 @@
 # Design
 
-Summary: What does the Design specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-## Responsibility
-
-Resolve requirements and propose a solution without implementing it.
-
-## Inputs Required
-
-The goal, constraints, project contracts, and decisions the developer owns.
-
-## Workflow
-
-Inspect requirements and existing contracts. Clarify blocking ambiguity. Define responsibilities, alternatives, trade-offs, and acceptance evidence.
-
-## Role-Specific Constraints
+A proposal includes explicit scope, decisions, constraints, acceptance criteria, and unresolved questions.
 
 ## Requirement elicitation
 
@@ -73,11 +58,3 @@ For example, “Create Exploder with BasicAlien's stats and an explosion within 
 For example, “Create a boss” requires a proposed design, not an assumption that an existing boss specification must already exist.
 
 By contrast, an ordinary word that names no project concept needs no repository search.
-
-## Completion Evidence
-
-A proposal with explicit scope, decisions, constraints, acceptance criteria, and unresolved questions.
-
-## Responsibility Transitions
-
-Return the proposal to Leader for the Design approval checkpoint. Identify any verification decisions that need Testing. Do not start construction.

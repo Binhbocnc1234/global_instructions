@@ -1,23 +1,8 @@
 # Authoring
 
-Summary: What does the Authoring specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-## Responsibility
-
-Create or maintain non-rule documentation.
-
-## Inputs Required
-
-The reader, their question, canonical sources, and the project documentation index.
-
-## Workflow
-
-Check whether documentation is needed. Choose its kind. Write what code cannot show. Update descriptions and regenerate the index.
-
-## Role-Specific Constraints
+Learning materials activate the learning-material skill.
 
 ## Markdown Document Kind
 
@@ -81,11 +66,3 @@ A documentation index is one committed file that lists every qualifying document
 For example, `MonkeyVsAlien` generates its index from the `description` and `status` frontmatter fields of every document under `Documentation/`, and its `AGENTS.md` records both the index path and the generator command.
 
 A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is a Routing Defect](Execution.md#an-unrelated-file-opened-is-a-routing-defect) says when that proposal is due.
-
-## Completion Evidence
-
-The document, its canonical references, and an updated generated index where applicable.
-
-## Responsibility Transitions
-
-Return documents and reference checks to Leader. Identify instruction changes for RuleMaintenance. Apply Explanation to developer-facing presentation while Authoring owns document construction. Agent-facing documents use Communication. Learning materials activate the learning-material skill.

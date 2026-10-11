@@ -1,23 +1,6 @@
 # Testing
 
-Summary: What does the Testing specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
-
-## Responsibility
-
-Select, construct, execute, and assess verification.
-
-## Inputs Required
-
-The changed behavior, actual entry route, candidate fixtures, environment, and relevant contracts.
-
-## Workflow
-
-Select verification with detection value. Use owned inputs. Execute the intended fixture. Assess evidence and state what remains unverified.
-
-## Role-Specific Constraints
 
 ## Select Valuable Tests
 
@@ -153,11 +136,3 @@ Why: checking a visual by hand costs the developer a launch, a route through men
 | Performance, memory, interruption, or device-specific behavior | Measure the affected scenario in the relevant environment or device |
 
 Test the entry route named in the report. Do not bypass the defective route with a helper or alternate setup.
-
-## Completion Evidence
-
-Commands or fixtures, discovered test counts, outcomes, and explicit evidence limits.
-
-## Responsibility Transitions
-
-Return results and evidence limits to Leader. Identify production defects for Implementation and unknown causes for Debugging. Supply verified captures for developer-only visual judgments.

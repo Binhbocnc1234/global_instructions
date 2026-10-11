@@ -1,23 +1,6 @@
 # Implementation
 
-Summary: What does the Implementation specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
-
-## Responsibility
-
-Construct or migrate code, assets, project folders, and execution tools within the approved scope.
-
-## Inputs Required
-
-The approved requirements, current artifacts, project conventions, and known constraints.
-
-## Workflow
-
-Inspect construction and wiring. Apply the smallest coherent change. Return artifacts and verification inputs to Leader.
-
-## Role-Specific Constraints
 
 ## Construction constraints
 
@@ -142,11 +125,3 @@ When a folder would pass 16, look for the groups that already exist among its ch
 For example, a `UI/` folder holds 25 scripts: 9 for the battle screen, 8 for the shop, and 8 widgets that both screens use. Split it into `Battle/`, `Shop/`, and `Widgets/`. By contrast, `UI1/` and `UI2/` pass the count and tell the reader nothing about which one holds the shop.
 
 Why: the developer and the agent have no reliable memory of where a file lives, so the folder tree is how both find a file without reading many files. A folder with more than 16 children sends the reader back to scanning names one by one, and a folder without a shared meaning sends the reader into every subfolder.
-
-## Completion Evidence
-
-The changed artifacts and passing agent-required verification, with remaining developer approvals identified.
-
-## Responsibility Transitions
-
-Return construction evidence to Leader. Request Testing for verification and Debugging for an unknown defect cause. Leader coordinates the next responsibility.

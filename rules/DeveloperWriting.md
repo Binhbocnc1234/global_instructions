@@ -3,7 +3,7 @@
 Summary: How must developer-facing text select information and wording? Relevance and vocabulary rules for responses and files, under Explanation.
 Why: the developer needs the same presentation choices in a response and a document.
 
-These rules belong to [Explanation](Explanation.md#responsibility). Apply the shared constraints in [Communication](Communication.md) too. A file's primary reader determines its presentation; another reader may still use the same canonical file.
+These rules belong to [Explanation](Explanation.md). Apply the shared constraints in [Communication](Communication.md) too. A file's primary reader determines its presentation; another reader may still use the same canonical file.
 
 ## Developer-Facing Relevance
 

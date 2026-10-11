@@ -1,25 +1,8 @@
 # Explanation
 
-Summary: How must text communicate with the developer? Presentation rules for developer-facing responses and files, with additional rules for requested explanations.
-Why: the developer profile and reading purpose apply to both responses and files, not only to requested explanations.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-## Responsibility
-
-Govern the presentation of responses and files whose primary reader is the developer, including requested explanations and completion reports.
-
 This responsibility does not authorize construction or change approved requirements. The artifact responsibility still owns the work. Agent-facing instructions use [Communication](Communication.md), not developer-specific presentation rules.
-
-## Inputs Required
-
-The reader, their purpose, the developer profile, relevant source material, and the artifact contracts.
-
-## Workflow
-
-Identify the reader and purpose. Apply the shared communication constraints. Select information and wording for the developer. For a requested explanation, explain the result and its limits.
-
-## Role-Specific Constraints
 
 Apply [DeveloperWriting](DeveloperWriting.md) to developer-facing responses and files. It owns relevance and developer-specific phrasing.
 
@@ -124,11 +107,3 @@ For example, the developer writes "the script that runs by itself before every c
 For example, the developer writes "make the cache faster". Nothing to teach: "cache" is already the term.
 
 Why: the developer learns English and the field at the same time. A standard term can be searched, makes the next request shorter, and removes the ambiguity a paraphrase carries.
-
-## Completion Evidence
-
-Developer-facing text supported by sources, with wording and detail selected for the developer. Requested explanations identify necessary limits.
-
-## Responsibility Transitions
-
-Return presentation evidence to the responsibility that owns the artifact or response. Route compliance judgments to the artifact specialist and unresolved product decisions to Design.

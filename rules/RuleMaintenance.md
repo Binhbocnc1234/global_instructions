@@ -1,23 +1,8 @@
 # RuleMaintenance
 
-Summary: What does the RuleMaintenance specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-## Responsibility
-
-Design, edit, and check agent instructions and their ownership.
-
-## Inputs Required
-
-The observed need, existing owners, authorized scope, and developer approval.
-
-## Workflow
-
-Check existing ownership and duplication. Establish supported scope. Propose unapproved changes. Apply approved changes. Check links, routing, and preserved constraints.
-
-## Role-Specific Constraints
+Check links, routing, preserved constraints, unique ownership, and representative routing cases when verifying rule changes.
 
 ## Examples in a Rule
 
@@ -154,11 +139,3 @@ For example (a global step). The developer asks why a chat list is empty. The ag
 For example (nothing to record). The agent mistypes a path in one sentence and corrects it in the next.
 
 Why: a fix repairs this session, a record repairs every session after it. Without this step the agent fixes each correction separately, and the same cause returns. In one observed session, three corrections that shared one cause were fixed one by one, and the cause was recorded only after the developer named this rule.
-
-## Completion Evidence
-
-The approved rules, their unique owners, checked references, and representative routing cases.
-
-## Responsibility Transitions
-
-Return ownership and routing evidence to Leader. Identify unmade organizational decisions for Design and executable verification for Testing. Do not change rules without the required approval.

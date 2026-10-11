@@ -1,23 +1,6 @@
 # Debugging
 
-Summary: What does the Debugging specialist do? Its responsibility, inputs, workflow, constraints, completion evidence, and responsibility transitions.
-Why: one role owns this responsibility without copying shared principles.
-
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
-
-## Responsibility
-
-Reproduce a defect and identify its evidenced cause.
-
-## Inputs Required
-
-The actual and expected behavior, entry route, platform, and available diagnostics.
-
-## Workflow
-
-Collect the smallest report. Distinguish defect classes. Inspect discriminating evidence. Identify the correction without speculative changes.
-
-## Role-Specific Constraints
 
 ## Defect diagnosis
 
@@ -45,11 +28,3 @@ Then:
 7. Recommend durable prevention only when the defect class is likely to recur.
 
 If automation is impractical, document a stable manual procedure and why automation is not valuable.
-
-## Completion Evidence
-
-A reproduction, an evidenced cause, and the authorized correction to make.
-
-## Responsibility Transitions
-
-Return diagnosis evidence to Leader. Identify needed construction for Implementation and regression selection or execution for Testing.
