@@ -2,13 +2,53 @@
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-## Select Valuable Tests
+## Start With Workflow Verification
 
-Do not create a permanent automated test merely because production code changed. Add or update one when it has unique detection value and manual verification is expensive, unreliable, or unable to cover the relevant state spaces.
+When to apply: selecting or extending automated verification for changed behavior.
+
+Start verification through the production entry point for the changed workflow. Prefer one integration scenario that checks several related behaviors over separate tests for each function.
+
+Reuse existing scenarios and fixtures before creating new ones. Minimize setup effort and additional test code without removing required behavioral checks. Executing a function does not establish that its behavior was checked.
+
+Do not add unit tests merely because a function changed. Add another test method only when the workflow test cannot:
+
+- Reach a required state.
+- Check a required result.
+- Reproduce a reported defect.
+
+State the uncovered behavior before adding that method. A failing assertion requires investigation. It does not, by itself, justify changing the test method.
+
+For example, an existing checkout scenario submits two items through the real checkout entry point and asserts the calculated total, payment status, and created order. When the price calculation changes, update the assertions in this scenario rather than creating a separate test for the calculation function.
+
+By contrast, if the existing checkout scenario reports an incorrect total, investigate the failure through that scenario. The failed assertion does not justify creating another test method.
+
+Do not replace a workflow test merely because it reports an incorrect total. Investigate that failure through the existing scenario.
+
+Why: tests organized around functions can duplicate setup and checks. Workflow scenarios can check component interactions with fewer test files.
+
+## Select Valuable Tests
 
 Avoid tests for trivial getters, setters, constructors, passthroughs, and implementation details.
 
 Test behaviour, not implementation.
+
+## Do Not Reimplement Production Behavior
+
+When to apply: constructing test fixtures, fakes, or expected results.
+
+Apply [DRY](../AGENTS.md#drydont-repeat-yourself) to test construction. Tests MUST execute the production implementation of the behavior they claim to verify.
+
+Do not copy production algorithms, state transitions, or invariant enforcement into test helpers or fakes. A copied implementation can repeat the same defect without exercising the production code.
+
+Fixtures MAY supply inputs and independently specified expected results. These are test data, not replacement implementations.
+
+Fakes MAY supply scripted responses for dependencies outside the test's verification scope. They MUST NOT replace the behavior the test claims to verify. State which boundaries are fake when reporting integration coverage.
+
+For example, a fake model can request Read while the real harness executes Read and returns its result. This verifies harness tool handling, not the model service.
+
+By contrast, a test that claims to verify file editing cannot replace the production editor with a fake that writes the expected file itself.
+
+Why: a passing test must establish production behavior, not merely agreement between test-owned substitutes.
 
 ## Test Only What the Branch Changes
 
@@ -40,18 +80,6 @@ A tuned number has one owner: a named constant in production code, or an authore
 - A test MAY write its own numbers for inputs it owns: a fixture config it builds, the damage it deals, the grid size it creates. Keep test-only tolerances and timing margins explicitly named.
 
 Why: a test that copies a tuned number fails on a balance change while no behaviour broke. The reader learns to update the number without reading the failure, and then the test stops catching real regressions. In a game project, raising one unit's health from 120 to 200 failed a test that only repeated the data file.
-
-## Tests Own Their Inputs
-
-When to apply: whenever you create or modify a test that reads a file, folder, setting, or other input that exists for another purpose, such as developer config, skills, rules, save files, or editor settings.
-
-The test must use a test-owned fixture instead of live project state. Put the fixture inside the test repository and point the code under test at it. A test may read live state only when verifying that live state itself, and the test name must explicitly identify that purpose.
-
-For example, a Godot test for key rebinding must read a fixture such as `test/fixtures/settings.cfg`, not the developer's `user://settings.cfg`. If the developer changes their key bindings while playing, the test must remain unchanged.
-
-For example, a test for an agent harness that verifies skill loading must load a test-owned skill fixture rather than a skill from the developer's skills folder. If the test is specifically intended to verify the developer's real skill configuration, it may read that live skill, and its name must state that it is a live-configuration check.
-
-Why: a test should fail because the behavior under test changed, not because unrelated live state changed.
 
 ## Execute Tests by Default
 
@@ -127,9 +155,11 @@ Why: checking a visual by hand costs the developer a launch, a route through men
 
 ## Verification Selection
 
-| Defect or change | First verification method |
+For automated verification, apply [Start With Workflow Verification](#start-with-workflow-verification) before selecting another test method. The table identifies evidence appropriate to each defect class, not permission to create function-by-function tests.
+
+| Defect or change | Verification evidence |
 |---|---|
-| Deterministic rule, calculation, serialization, or data error | Focused unit or integration regression when it has unique value; otherwise the smallest static or manual check |
+| Deterministic rule, calculation, serialization, or data error | Check the changed behavior in the workflow scenario; add a focused unit regression only for behavior that scenario cannot verify |
 | Lifecycle, scene/view flow, coroutine, event, physics, or input error | Runtime integration test reproducing the real hierarchy and required frames, or a focused manual scenario |
 | Configuration, dependency, prefab, scene, or resource wiring | Inspect persisted configuration and runtime wiring; add a wiring test only for stable recurring contracts |
 | Visual clarity, animation, audio, usability, balance, or comprehension | A capture under [Capture Visual Evidence for the Developer](#capture-visual-evidence-for-the-developer) for what an image or video shows; focused manual review for feel and usability; automate only an underlying deterministic rule |

@@ -1,7 +1,6 @@
 # Communication
 
-Summary: Which communication constraints apply to both developer-facing and agent-facing text? Shared language, project references, risk claims, and evidence rules.
-Why: language consistency and supported claims are necessary regardless of who reads the text.
+Summary: Which communication constraints apply to both developer-facing and agent-facing text? Shared language, project references, risk claims, and evidence rules. Language consistency and supported claims are necessary regardless of who reads the text.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md). These constraints apply to developer-facing and agent-facing text, across responsibilities.
 
@@ -85,7 +84,6 @@ Why: one developer request can cause several model requests and tool calls; call
 | Model response | The output of one model request, which may include text, reasoning, or requests to call tools. It is not necessarily the final response. |
 | Tool call | One request from the agent to execute a tool. Its returned output is the tool result. |
 | Session | A conversation with its retained history, which can contain multiple turns. |
-| Provider turn | A unit defined by a backend's own protocol. It is not assumed to match one harness turn. |
 
 For example, the developer asks the agent to fix a bug. The model requests Read, receives the tool result, requests Bash, receives the test result, and writes a final response. This is one harness turn containing multiple model requests and two tool calls.
 
@@ -116,8 +114,6 @@ Why: without a source, the developer can only trust the claim or work it out aga
 
 ## Name the Relation Between Sentences
 
-When to apply: a sentence relates to the one before it by contrast, cause, consequence, or example. The same applies to a list item and the item before it.
-
 Start the second sentence with the connector that names the relation. Without a connector, the reader finishes the second sentence and then goes back to guess how it relates to the first. With a connector, the reader knows the relation before reading the content.
 
 | Relation | Connector |
@@ -134,7 +130,7 @@ Choose the connector by its literal meaning. `Meanwhile` means "during the same 
 For example, in a session that debug harness tool, agent wrote without a connector: "In a real window, a tab that is not its window's active tab does not paint. `Page.captureScreenshot` waits for a painted frame, so it can hang while that page is idle. Headless paints the tab." The last sentence could be read as a cause, a fix, or a contrast. But with the exact connector: "... so it can hang while that page is idle. By contrast, headless paints the tab."
 
 For example, in a session that debug Linux context
-> Why a forced power-off leaves no "shutdown" lines in journal: journald writes each message to disk as it arrives. A normal shutdown ends with systemd-journald: Journal stopped. By constrast, when the power is cut, the file just ends at the last message written, which was 138.288883 … Failed to activate service in boot -1. That missing end marker is how I counted your 3 forced shutdowns.
+> Why a forced power-off leaves no "shutdown" lines in journal: journald writes each message to disk as it arrives. A normal shutdown ends with systemd-journald: "Journal stopped". By constrast, when the power is cut, the file just ends at the last message written, which was "Failed to activate service". That missing end marker is how I counted your 3 forced shutdowns.
 
 Why: developer can understand paragraph faster and more accurate. As soon as they read the connector word, the developer narrow down the semantic space of the subsequent sentence.
 
@@ -201,3 +197,31 @@ Therefore, the answer should distinguish the evidence:
 The agent must not turn the general claim “developers need 32 GB” into `[Observed]` merely because it sounds plausible. The required RAM depends on the workload being evaluated.
 
 Why: in prose, a recalled fact reads exactly like a checked one. Training rewards a plausible next token, not a true one, so a hallucination appears exactly where a pattern is strong and a fact is rare. The label makes the weak claims visible before a decision rests on them. Checking a claim costs tool calls, time, and context, so the effort goes only where a wrong claim costs more than the check.
+
+
+## Inline file link
+
+Use concise relative Markdown links, such as `[Layer 2](00-pipeline.md)` or `[details](00-pipeline.md#section-id)`. Do not use `file:///` URLs: they are machine-specific, add unnecessary text, and make links less portable.
+
+- Keep each Markdown link on one line so parsers and VS Code recognize it.
+- Do not write absolute or machine-specific paths in documentation.
+- `@path` is not a link. It loads the file into the agent's context, so it belongs in an instruction file that the harness reads, such as `AGENTS.md` or a `SKILL.md`. Everywhere else, a reference to another document is a Markdown link.
+
+### Document references belong in the body
+
+A reference to another document MUST be an inline Markdown link placed at the point where the reader needs it. Do not collect document references into a list held apart from the prose that needs them.
+
+A link at the point of use states both the target and the reason. A separated list states only the target, so the reader learns that a document matters but not which step needs it. Such a list is also a second navigation system running parallel to the body links, and it rots silently because no reader passes through it.
+
+Write the dependency where the work happens:
+
+```markdown
+Slice the exported sheet in Godot. Follow the naming and child-count rules in
+[CharacterArtAssetRequirements](CharacterArtAssetRequirements.md).
+```
+
+When a document cannot be applied at all without another one, link it in the opening paragraph and say so:
+
+```markdown
+This workflow assumes the module layout defined in [Architecture](../technical/Architecture.md).
+```

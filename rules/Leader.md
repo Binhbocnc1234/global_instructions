@@ -16,7 +16,7 @@ The request, project instructions, current artifacts, existing approvals, and an
 ## Workflow
 
 1. Identify the requested outcome and existing approvals. Read the project documentation index under [documentation routing](Execution.md#route-through-the-documentation-index).
-2. Select the needed responsibilities under [Role Routing](#role-routing). For a defect, request Debugging evidence before designing its correction.
+2. Select the needed responsibilities under [Role Routing](#role-routing).
 3. For a change that needs a design, request Design's proposal. Resolve blocking questions before asking for approval.
 4. Present the design and its acceptance criteria. STOP for developer approval before construction. Existing explicit approval of that design satisfies this checkpoint.
 5. After approval, dispatch the required construction work. Use Implementation, Authoring, or RuleMaintenance according to the artifact.
@@ -56,7 +56,6 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 | Present developer-facing responses and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
 | Resolve requirements and propose a solution | [Design](Design.md) | A proposal and acceptance criteria |
 | Construct or migrate code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
-| Diagnose a defect | [Debugging](Debugging.md) | Reproduction, cause, and correction to consider |
 | Select and execute verification | [Testing](Testing.md) | Results and evidence limits |
 | Create or maintain non-rule documents | [Authoring](Authoring.md) | Documents and reference checks |
 | Maintain agent instructions | [RuleMaintenance](RuleMaintenance.md) | Rules, ownership, and routing checks |

@@ -2,25 +2,15 @@
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-This responsibility does not authorize construction or change approved requirements. The artifact responsibility still owns the work. Agent-facing instructions use [Communication](Communication.md), not developer-specific presentation rules.
+This responsibility does not authorize production code changes. The artifact responsibility still owns the work. Agent-facing instructions use [Communication](Communication.md), not developer-specific presentation rules.
 
 Apply [DeveloperWriting](DeveloperWriting.md) to developer-facing responses and files. It owns relevance and developer-specific phrasing.
 
 @DeveloperWriting.md
 
-## Select Details by Purpose
+## Convention
 
-When the developer states a purpose, use it to select the explanation's details and evidence. Include implementation details when they affect the answer, its limits, or the decision the developer needs to make. Do not retain or omit details merely because they are implementation details.
-
-When the request only says “explain this file”, explain its purpose, behavior, and limits. Do not assume the developer wants a maintenance guide or a rule-compliance review. Ask for the intended purpose only when its absence blocks a correct answer, under [Requirement elicitation](Design.md#requirement-elicitation).
-
-For example, “explain this test so I can check compliance with our testing rules” requires evidence about isolation, execution, and the tested entry route. A description of assertions alone does not establish workflow compliance.
-
-By contrast, “explain this backup script so I can decide whether to run it” requires details about files it reads, changes, or deletes. Internal helper names matter only when the developer needs them to understand or act.
-
-For example, “what does this test do?” does not authorize a workflow audit. Explain its setup, actions, assertions, and what remains untested.
-
-Why: accurate retrieval does not determine which facts serve the developer's purpose. Naming that purpose helps select relevant facts without requiring every implementation detail.
+When the request only says “explain this file”, explain its purpose, behavior, and limits. Do not assume the developer wants implementation details, a maintenance guide or a rule-compliance review. Ask for the intended purpose only when its absence blocks a correct answer, under [Requirement elicitation](Design.md#requirement-elicitation).
 
 ## Use the Most General Name That Stays Clear
 
@@ -40,13 +30,13 @@ For example, we are inside project that create VSCodium extension to connect to 
 
 Bad answer:
 > Checks real Codex runtime → harness tools → editor document using a fake model server.
-The server requests Read, then Edit. The test checks that the editor document changes while the disk file remains unchanged. It also checks response text, usage reporting, and thread resumption. See codex.ts:116
+The server requests Read, then Edit. The test checks that the editor document changes while the disk file remains unchanged. It also checks response text, usage reporting, and thread resumption.
 
 Good answer:
 
 > Tests whether Codex can read and edit the text of a file currently open in VSCodium, using a fake model server.
 >
-> The server requests Read, then Edit. The test checks that the file's text in VSCodium's memory changes while the file on disk remains unchanged. It also checks the response text, token usage reporting, and whether the conversation can resume. See `codex.ts:116`.
+> The server requests Read, then Edit. The test checks that the file's text in VSCodium's memory changes while the file on disk remains unchanged. It also checks the response text, token usage reporting, and whether the conversation can resume.
 
 Why this is better:
 
