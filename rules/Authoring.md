@@ -19,7 +19,7 @@ A file has one main kind: the question its reader holds when opening it. The kin
 - The main kind is the kind that most of the file's sections answer. A section of another kind stays when the reader needs it at that point: the reason next to a rule, the command that runs a rule's check, a stop condition inside a step.
 - A decision record's main kind is Rules: its Decision section states what must hold, and its Why section is the reason next to it.
 - When a group of sections of another kind is read by a request that does not need the rest of the file, split that group into its own file and link to it.
-- A project MAY add kinds for material these three do not cover, such as lessons or task records, and names them in its `AGENTS.md`.
+- A project MAY add kinds for material these three do not cover, such as lessons, and names them in its `AGENTS.md`.
 
 For example, a document holds three rules for how the save file is written, each with its reason, and the command that checks them. Its main kind is rules, and the reasons and the command stay in it.
 
@@ -37,7 +37,6 @@ Typically, the following common scenarios arise:
 |---|---|
 | **Reason** that no code shows. A product goal counts: the audience and the intended experience are the reason behind every design that serves them | An ADR, the project's product-vision document for a product goal, or a code comment when only one file is affected |
 | **Principle** that every instance of a kind must follow and that no code or lint checks. For example, the art style every character image follows | Its document, or the project `AGENTS.md` when almost every request needs it |
-| **Future spec**, still planned and not built | A task in `delivery/deferred/`, under [Task Management](Leader.md#task-management). A reason attached to it stays in a document. |
 | **Flow** that no call chain from one entry point shows: it crosses a process or repository boundary, runs through a callback or event that another component fires later, or its source is out of reach (an LLM, an operating system kernel) | Pseudocode under [Explaining a Technique](Explanation.md#explaining-a-technique), in the document that owns the design. Name the real files and functions, so a reader can check the pseudocode against the code. |
 
 **Delete** (no link replaces it; name the symbol directly instead):
@@ -45,7 +44,7 @@ Typically, the following common scenarios arise:
 - Dead design.
 - A copy of another document.
 - Rule IDs that no code or test uses.
-- Task steps and status. Open steps move to a task file.
+- Task steps and status.
 
 For example, a rules document lists every module with its folder and layer, copied from the manifest that the boundary lint reads. The manifest holds the list, so the table is deleted. The reason one layer exists stays, because no manifest shows it.
 

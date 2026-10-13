@@ -18,8 +18,6 @@ Example: the developer deletes a null guard. If the parameter's type forbids nul
 
 Example — level count: The developer hardcodes a level-select screen to show exactly 10 buttons for 10 levels. You think: "If the game grows to 50 levels this UI won't scale and needs pagination." But the current scope is 10 levels and no documentation indicates more are planned. → Speculation. Don't report it.
 
-Example — the agent's own proposal: the agent moves a future spec into a task file and reports "an agent adding the 50th entity will not see the spec". It names no failure → Noise. Don't report it
-
 ## Language
 
 Communicate with the developer in English, regardless of the request's language. Code, documentation, skills and comments will also be written in English.

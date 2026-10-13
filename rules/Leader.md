@@ -1,6 +1,6 @@
 # Leader
 
-Summary: How does an agent complete a developer request? Request coordination, specialist routing, the Design approval checkpoint, handoffs, task state, and completion.
+Summary: How does an agent complete a developer request? Request coordination, specialist routing, the Design approval checkpoint, handoffs, and completion.
 Why: one agent performs the active specialist responsibility. Leader controls the sequence, not each responsibility's internal methods.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -11,7 +11,7 @@ Coordinate the requested outcome from intake through completion. The developer d
 
 ## Inputs Required
 
-The request, project instructions, current artifacts, existing approvals, and any task record.
+The request, project instructions, current artifacts, and existing approvals.
 
 ## Workflow
 
@@ -22,7 +22,7 @@ The request, project instructions, current artifacts, existing approvals, and an
 5. After approval, dispatch the required construction work. Use Implementation, Authoring, or RuleMaintenance according to the artifact.
 6. Request Testing for executable behavior. Use the artifact specialist's completion checks for documents and rules.
 7. Route failed checks to the responsible specialist. Repeat the affected checks after correction. Do not request routine approval for these transitions.
-8. Assess [Reusable Knowledge](RuleMaintenance.md#reusable-knowledge). Update the task record. Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
+8. Assess [Reusable Knowledge](RuleMaintenance.md#reusable-knowledge). Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
 
 Design approval is the only routine human checkpoint. A request that only asks for explanation or review does not enter the construction workflow.
 
@@ -70,7 +70,7 @@ A responsibility uses the preceding work's outputs and contracts. Its internal r
 
 These are responsibilities within one session, not separate agents. Keep one active responsibility at a time. A role change does not require a handoff report.
 
-Subagent delegation remains deferred under task `SubagentEscalation`. Use the single-session workflow until the developer approves escalation after an observed failure.
+Use the single-session workflow until the developer approves subagent escalation after an observed failure.
 Why: the available evidence does not establish a benefit for the developer's workload.
 
 For an actual transfer to another session or a continuation without the previous context, use the [handoff contract](#handoff-contract). Do not create a session merely to change roles.
@@ -79,7 +79,7 @@ A missing responsibility does not justify creating a generic specialist with no 
 
 ## Completion Evidence
 
-The approved outcome, specialist results, verification limits, task state, and commit result when required.
+The approved outcome, specialist results, verification limits, and commit result when required.
 
 ## Responsibility Transitions
 
@@ -104,67 +104,10 @@ Required return format:
 
 Name the receiving responsibility. Distinguish verified results from assumptions. Preserve pending approvals and evidence limits. Authorized parallel sessions must use independent scopes.
 
-## Task Management
-
-A project MAY contain a `delivery/` folder at its root. It is the canonical source for tasks that last longer than one request.
-
-- `delivery/unfinished/` holds a task in progress: at least one `- [ ]` item.
-- `delivery/deferred/` holds a task the developer deferred as a whole. It is not started or it is paused; its items keep their `- [ ]` and `- [x]` state.
-- `delivery/finished/` holds a task whose items are all `- [x]`.
-- A task is never partly deferred. To defer part of a task, split that part into its own task in `delivery/deferred/`.
-- 1 task = 1 Markdown file. The file name is the task ID: PascalCase, unique across all three folders.
-- Checkboxes decide between `unfinished/` and `finished/`: move the file in the same change that ticks its last item or reopens one. The developer's decision decides `deferred/`: move the file in the same change that defers or resumes it.
-- Refer to a task by its ID, never by its file path, because the file moves between folders.
-- A task file MUST NOT own anything that outlives its task. A durable contract, rule, or workflow belongs in project documentation, and the task file links to it.
-
-### Request Budget
+## Request Budget
 
 The harness owns request timing, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the deadline, the agent MUST write only the final response and MUST NOT request further tools.
 Why: one clock in the harness enforces the cutoff without depending on the agent's time estimates.
-
-Create a task file for work spanning requests, including work that needs developer approval, a playtest, a reboot, or a physical device between steps. The number of items does not decide it.
-
-At the harness's final pre-deadline reminder, preserve unfinished work in a task file before tools become unavailable. If work remains at the deadline without a saved task file, describe it in the final response; MUST NOT call a tool to save it after the cutoff.
-Why: unfinished work must survive a closed laptop without creating a tool exemption at the deadline.
-
-Also create a task file for a future spec: planned work that no code implements yet, whatever its size. Its Why states the trigger that starts the work, and it stays in `delivery/deferred/` until the trigger fires. The spec lives only until the code exists, so it does not break the rule that a task file owns nothing that outlives it.
-
-| Request | Task file | Reason |
-|---|---|---|
-| "Add this rule to AGENTS.md: kill a command after 2 minutes without output" | No | One edit, checked by reading the diff |
-| "Rename 30 documentation files to PascalCase and fix their links" | No | Mechanical, a few minutes |
-| "Fix the crash when the player dies during a pause" | No | One bug and one regression test |
-| "Is the `cooldown` field redundant?" | No | A question |
-| "Migrate this game from Unity to Godot" | Yes | Many systems, and the developer playtests each slice |
-| "Install Linux beside Windows and restore my tools" | Yes | Reboots, firmware checks, and long installs |
-| "Sync 20 GB of files to cloud storage and verify them" | Yes | Waits hours on an outside process |
-| "Build an editor plugin in six steps, each checked by hand" | Yes | The developer approves every step |
-| "Fix this bug", and the budget ends before the fix is verified | Yes | The budget ended with work left |
-
-### Task File Format
-
-```markdown
-## Why
-Plain paragraphs: the reason, the criteria, and the decisions of the task.
-
-## Step 1: Import the prefabs
-Plain paragraphs MAY record decisions and evidence.
-- [x] #1 Convert the prefab files
-- [ ] #2 Run the unit tests
-- [ ] #3 Manual testing: open each prefab in the editor
-
-## Step 2: Migrate the scenes
-- [x] #1 Convert the scene files
-- [ ] #2 Manual testing: play level 1-1
-```
-
-- A step is a `##` section titled `Step <n>: <name>` that holds checkboxes. A `##` section without checkboxes holds context.
-- MUST NOT use `###` or deeper headings in a task file.
-- `Step <n>` is the step ID inside its file. Number new steps after the last one and never renumber, because chat and other files refer to these IDs. Item numbers restart at `#1` in each step. One item is one line.
-- An item is `- [ ]` or `- [x]`. There is no deferred item; see `delivery/deferred/`.
-- Group each step around one checkable outcome, and end it with its testing items.
-- Refer to an item as `<TaskName> Step <n>#<m>`, e.g. `GodotPrefabMigration Step 1#3`. Omit the task ID when the conversation already names the task.
-- When a task file would exceed 250 lines, split it into sibling task files that share an ID prefix, e.g. `GodotMigrationPrefabs` and `GodotMigrationScenes`. Create every sibling at once, so work not started yet stays visible. No parent file.
 
 ## Commit
 

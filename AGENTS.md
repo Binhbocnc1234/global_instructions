@@ -101,7 +101,6 @@ Every project root holds these entries. Each row names the rule that owns what g
 | Path | Holds | Owner |
 |---|---|---|
 | `AGENTS.md` | The project brief and the project-scoped rules | [Rule Ownership](rules/RuleOwnership.md) |
-| `delivery/` | Task files for work longer than one request, created with the first one | [Task Management](rules/Leader.md#task-management) |
 | `tmp/` | Scratch files of the current task, ignored by git | [Scratch Files Go in `tmp/`](rules/Execution.md#scratch-files-go-in-tmp) |
 | `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | The project `AGENTS.md`, which names the engine or language conventions |
 | `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | The project `AGENTS.md`, which names each tool's command |
