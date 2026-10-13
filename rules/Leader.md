@@ -106,8 +106,8 @@ Name the receiving responsibility. Distinguish verified results from assumptions
 
 ## Request Budget
 
-The harness owns request timing, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the deadline, the agent MUST write only the final response and MUST NOT request further tools.
-Why: one clock in the harness enforces the cutoff without depending on the agent's time estimates.
+The harness owns request-cost accounting, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the cost cutoff, the agent MUST write only the final response and MUST NOT request further tools. Continuing work requires a new developer message.
+Why: the harness uses the approved cost allowance to require human review before further autonomous work, without depending on the agent's own estimates.
 
 ## Commit
 
