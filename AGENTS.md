@@ -8,6 +8,11 @@ This project holds the source instructions and is used to develop new rules. The
 
 [AGENTS.development.md](AGENTS.development.md) holds the global instruction document being developed in this repository. This `AGENTS.md` describes the purpose of the project rather than duplicating that document.
 
+## Repository folders
+
+- `scripts/` contains executable support for the global instructions: Git checks, request-budget hooks, and keyring access, together with automated tests for those scripts.
+- `test/` contains behavioral evaluation scenarios for the agent rules, written as Markdown rather than executable test code. Like unit and integration tests, they specify scenario inputs, expected behavior, and failure conditions to check individual rules or interactions between rules. These scenarios are evaluation criteria, not evidence that the rules have passed.
+
 ## Install instructions
 
 Run `python3 tools/install_agents.py` to install the development document as `~/.agents/AGENTS.md` and copy `rules/` into `~/.agents/rules/`. The installer preserves `@` imports and leaves other destination files untouched.
