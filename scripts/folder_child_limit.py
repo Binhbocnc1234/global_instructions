@@ -37,11 +37,17 @@ def git(root: Path, *arguments: str) -> list[str]:
     return [path for path in result.stdout.split("\0") if path]
 
 
-def load_settings(root: Path) -> tuple[frozenset[str], tuple[str, ...]]:
+def load_settings(root: Path, staged: bool = False) -> tuple[frozenset[str], tuple[str, ...]]:
     path: Path = root / SETTINGS_FILE
-    if not path.exists():
-        return frozenset(), ()
-    settings: dict = json.loads(path.read_text())
+    if staged:
+        if SETTINGS_FILE not in git(root, "ls-files", "-z", "--cached", "--", SETTINGS_FILE):
+            return frozenset(), ()
+        content = subprocess.run(["git", "-C", str(root), "show", f":{SETTINGS_FILE}"], capture_output=True, text=True, check=True).stdout
+    else:
+        if not path.exists():
+            return frozenset(), ()
+        content = path.read_text()
+    settings: dict = json.loads(content)
     unknown: set[str] = set(settings) - SETTINGS_KEYS
     if unknown:
         raise SystemExit(f"{SETTINGS_FILE}: unknown keys {sorted(unknown)}; allowed keys are {sorted(SETTINGS_KEYS)}")
@@ -79,7 +85,7 @@ def main() -> int:
     staged: bool = parser.parse_args().staged
 
     root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel")[0].strip())
-    third_party, sidecar_suffixes = load_settings(root)
+    third_party, sidecar_suffixes = load_settings(root, staged)
     if staged:
         counts: dict[str, int] = child_counts(git(root, "ls-files", "-z", "--cached"), third_party, sidecar_suffixes)
         committed_paths: list[str] = git(root, "ls-tree", "-r", "-z", "--name-only", "HEAD") if has_head(root) else []

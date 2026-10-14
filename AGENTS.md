@@ -15,3 +15,15 @@ Run `python3 tools/install_agents.py` to install the development document as `~/
 Run `python3 tools/install_agents.py --check` to compare without writing. Use `--destination /path/to/directory` for an isolated installation.
 
 Verify the installer with `python3 -m unittest discover -s tools/tests -p 'test_install_agents.py'`.
+
+## Global Git hooks
+
+Run `python3 tools/install_global_hooks.py` to install the shared checkers in `~/.agents/scripts/` and the pre-commit hook in `~/.agents/hooks/`, then enable Git's global `core.hooksPath`. Rerun this command after changing the checkers or hook; the instruction installer does not update them.
+
+The hook runs an existing repository-local `.git/hooks/pre-commit` first, then checks the resulting index for source/Markdown line counts, local Markdown links, and folder-child violations. Repository-specific `core.hooksPath` settings override the global hook. Git's `--no-verify` can bypass it.
+
+Projects may commit `.agent-checks.json` with `source_extensions` (replaces the default source extension list), `exclude` (repository-relative third-party/generated directories), and `line_exceptions` (repository-relative file paths mapped to nonempty reasons). Markdown remains in the line-count check regardless of `source_extensions`. The schema and defaults belong to `scripts/check_staged_files.py`.
+
+Folder-check settings remain in `.folder-child-limit.json`, documented by `scripts/folder_child_limit.py`. Both configurations are read from the index during pre-commit checks.
+
+Verify real commit workflows with `python3 -m unittest discover -s tools/tests -p 'test_global_hooks.py'`; those tests use isolated global Git configuration.
