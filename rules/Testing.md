@@ -83,13 +83,25 @@ Why: a test that copies a tuned number fails on a balance change while no behavi
 
 ## Execute Tests by Default
 
-Agents own automated test execution by default. Run the relevant fixture first and expand only when risk or focused failures justify it.
+Agents own automated test execution by default. Use [Automate Project-Lifetime Tests](#automate-project-lifetime-tests) for tests maintained for the project. For session-only tests, run the relevant fixture first and expand only when risk or focused failures justify it.
 
 Leave physical-device checks, performance measurement, usability review, and release approval to the developer unless explicitly delegated.
 
 A result is evidence only when the intended fixture was discovered and a nonzero test count executed. A skipped or silently excluded test script is a failure of evidence, even if the runner exits successfully.
 
 A script that tests or reproduces a behavior prints every error it catches and exits non-zero when anything fails. Its cleanup MUST NOT call `exit(0)` or swallow the exception: a `finally { process.exit(0) }` turns a crash into a silent pass. Exit code 0 with missing output is a failure of evidence, not a pass.
+
+## Automate Project-Lifetime Tests
+
+When to apply: adding or maintaining automated tests intended to remain useful beyond the current session.
+
+These tests MUST be connected to the project's pre-commit workflow, so `git commit` runs the tests and shared checks through one entry point. A failed test MUST block the commit. Use the project's test runner and existing workflow rather than requiring the agent to remember a separate test command. Rely on that workflow for commit verification; separate test runs MAY be used during development or to diagnose failures.
+
+Tests that are only valid for the current session MUST remain in the git-ignored `tmp/` folder. MUST NOT add them to the project's permanent test workflow.
+
+For example, a regression test that must keep protecting a behavior after this session belongs in the project's maintained test suite and runs automatically before commits. By contrast, a script that checks a one-time migration against this session's scratch data belongs in `tmp/` and runs only for that session.
+
+Why: one command runs the project's maintained tests and checks, instead of requiring the agent to remember both a test command and a commit command. Session-only tests do not remain as obligations after their inputs or purpose expire.
 
 ## Agent Tests Logic, Developer Judges Visuals
 

@@ -121,6 +121,10 @@ Agent-performed verification is sufficient evidence for committing. Manual or de
 4. Commit using a focused Conventional Commit message. Apply Commit Scope and Commit Message. The message is a header line only, with no description body.
 5. Verify the resulting commit and the remaining worktree state.
 
+When the configured pre-commit hook runs the 250-line, local Markdown-link, and folder-child checks, MUST rely on `git commit` to run them. MUST NOT run these scripts separately merely to repeat the hook's verification. Separate runs MAY be used to diagnose a failure. Required tests and checks not covered by the hook MUST still run before committing.
+
+Why: one command runs all configured checks, instead of requiring the agent to remember and run each script individually.
+
 Do not omit the commit merely because the worktree is dirty; make a scoped commit. Do not commit when the user or the project explicitly forbids it, when agent-required verification failed, when the change is incomplete, or when an explicit approval gate requires stopping before commit. A requirement for later developer or manual verification is not such a gate.
 
 ### Commit Scope
