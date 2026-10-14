@@ -36,7 +36,7 @@ Test behaviour, not implementation.
 
 When to apply: constructing test fixtures, fakes, or expected results.
 
-Apply [DRY](../AGENTS.md#drydont-repeat-yourself) to test construction. Tests MUST execute the production implementation of the behavior they claim to verify.
+Apply DRY from the [shared foundation](../AGENTS.md) to test construction. Tests MUST execute the production implementation of the behavior they claim to verify.
 
 Do not copy production algorithms, state transitions, or invariant enforcement into test helpers or fakes. A copied implementation can repeat the same defect without exercising the production code.
 
@@ -140,7 +140,7 @@ Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals
 - **Image or video.** An image shows a state: a layout, a colour, a label. A video shows change over time: an animation, a transition, a sequence of steps. Send an image when nothing in the check moves.
 - **Drive it through the production path.** A driver (a script, a scene, a test entry point) reaches each state through the code path the product uses. It also stages states that are slow or impossible to reach by hand, such as a skill with a long cooldown or a failed network call.
 - **Off the developer's screen.** Render into a virtual display or an off-screen renderer. A headless mode that draws no frames captures nothing, so prove the renderer draws before relying on it. When no off-screen route exists, [Ask Before Taking the Developer's Machine](Execution.md#ask-before-taking-the-developers-machine) applies.
-- **Own state only.** The driver runs on its own profile, save file, and settings, under [Tests Own Their Inputs](#tests-own-their-inputs), because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](Execution.md#scratch-files-go-in-tmp).
+- **Own state only.** The driver runs on its own profile, save file, and settings, because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](Execution.md#scratch-files-go-in-tmp).
 - **Mark each behavior.** The driver prints one line per behavior it shows, with its time in the video. Build the caption from those lines, so the developer knows where to look.
 - **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
 - **Check before linking.** The file has the expected size and duration, it is a format any player opens (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.

@@ -41,7 +41,7 @@ After Design approval, continue automatically within the approved scope. Return 
 The following exceptional stops remain in force:
 
 - [Blockers and failed mechanisms](Execution.md#blocker-detection-and-stop-policy).
-- [Credentials and security boundaries](../AGENTS.md#security).
+- [Credentials and security boundaries](../AGENTS.md).
 - [Taking control of the developer's machine](Execution.md#ask-before-taking-the-developers-machine).
 - Other explicit approval requirements in the applicable instructions.
 
