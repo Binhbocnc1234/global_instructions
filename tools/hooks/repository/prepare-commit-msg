@@ -1,0 +1,3 @@
+#!/bin/sh
+# Repository-specific hook paths must forward automatic agent attribution.
+exec python3 "$HOME/.agents/hooks/prepare-commit-msg" "$@"

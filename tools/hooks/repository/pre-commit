@@ -1,0 +1,5 @@
+#!/bin/sh
+# Keep the installed-hook workflow covered before checking the staged files.
+set -eu
+python3 -m unittest discover -s tools/tests -p 'test_global_hooks.py'
+exec python3 "$HOME/.agents/hooks/pre-commit"

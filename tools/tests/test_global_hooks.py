@@ -126,6 +126,46 @@ class GlobalHookTests(unittest.TestCase):
         self.stage("Source.py")
         self.commit(True)
 
+    def test_session_attribution_through_real_commits(self) -> None:
+        self.env.pop("AGENT_SESSION_ID", None)
+        self.write("Source.py", "pass\n")
+        self.stage("Source.py")
+        self.commit(True)
+        self.assertNotIn("Agent-Session:", self.git("log", "-1", "--format=%B").stdout)
+        session = "11111111-1111-4111-8111-111111111111"
+        self.env["AGENT_SESSION_ID"] = session
+        local = self.root / ".git/hooks/prepare-commit-msg"
+        local.write_text('#!/bin/sh\nprintf "\\nLocal body\\n" >> "$1"\n', encoding="utf-8")
+        local.chmod(0o755)
+        for message in ("fix: attribution", f"fix: attribution\n\nAgent-Session: {session}",
+                        "fix: attribution\n\nAgent-Session: 22222222-2222-4222-8222-222222222222\nAgent-Session: stale"):
+            result = self.git("commit", "--allow-empty", "-m", message)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            body = self.git("log", "-1", "--format=%B").stdout
+            self.assertTrue(body.startswith("fix: attribution\n"), body)
+            self.assertIn("Local body", body)
+            self.assertEqual(body.count(f"Agent-Session: {session}"), 1, body)
+        self.env["AGENT_SESSION_ID"] = "not-a-session"
+        result = self.git("commit", "--allow-empty", "-m", "fix: invalid")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Malformed AGENT_SESSION_ID", result.stderr)
+
+    def test_concurrent_session_commits(self) -> None:
+        processes = []
+        for index in (1, 2):
+            root = self.repository(f"session-{index}")
+            session = f"{index:08d}-1111-4111-8111-111111111111"
+            env = {**self.env, "AGENT_SESSION_ID": session}
+            process = subprocess.Popen(["git", "commit", "--allow-empty", "-m", "fix: concurrent"],
+                                       cwd=root, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            processes.append((root, session, process))
+        for root, session, process in processes:
+            stdout, stderr = process.communicate(timeout=20)
+            self.assertEqual(process.returncode, 0, stdout + stderr)
+            result = self.command(root, "git", "log", "-1", "--format=%B")
+            self.assertEqual(result.stdout.count("Agent-Session:"), 1, result.stdout)
+            self.assertIn(f"Agent-Session: {session}", result.stdout)
+
     def test_installer_rejects_other_global_hook(self) -> None:
         result = self.git("config", "--global", "core.hooksPath", str(self.base / "other-hooks"))
         self.assertEqual(result.returncode, 0)

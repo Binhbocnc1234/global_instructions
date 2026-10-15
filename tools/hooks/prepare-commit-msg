@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Preserve local message preparation, then attach the executing agent session."""
+from __future__ import annotations
+
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+
+def main() -> int:
+    session = os.environ.get("AGENT_SESSION_ID")
+    if session is not None and not re.fullmatch(
+        r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", session
+    ):
+        print("Malformed AGENT_SESSION_ID: expected a full UUID", file=sys.stderr)
+        return 1
+    local = Path(subprocess.run(
+        ["git", "rev-parse", "--git-common-dir"], capture_output=True,
+        text=True, check=True,
+    ).stdout.strip()) / "hooks" / "prepare-commit-msg"
+    if local.exists() and local.resolve() != Path(__file__).resolve():
+        if not os.access(local, os.X_OK):
+            print(f"Local hook is not executable: {local}", file=sys.stderr)
+            return 1
+        result = subprocess.run([str(local.resolve()), *sys.argv[1:]])
+        if result.returncode:
+            return result.returncode
+    if session is not None:
+        # Local hooks can move old metadata out of Git's final trailer block.
+        message = Path(sys.argv[1])
+        message.write_bytes(re.sub(
+            rb"(?im)^Agent-Session:[^\r\n]*(?:\r?\n|$)", b"", message.read_bytes()
+        ))
+        subprocess.run([
+            "git", "-c", "trailer.separators=:", "interpret-trailers", "--in-place",
+            "--if-exists", "replace", "--if-missing", "add",
+            "--trailer", f"Agent-Session: {session}", sys.argv[1],
+        ], check=True)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
