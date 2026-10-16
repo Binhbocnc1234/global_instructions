@@ -95,13 +95,27 @@ A script that tests or reproduces a behavior prints every error it catches and e
 
 When to apply: adding or maintaining automated tests intended to remain useful beyond the current session.
 
-These tests MUST be connected to the project's pre-commit workflow, so `git commit` runs the tests and shared checks through one entry point. A failed test MUST block the commit. Use the project's test runner and existing workflow rather than requiring the agent to remember a separate test command. Rely on that workflow for commit verification; separate test runs MAY be used during development or to diagnose failures.
+Maintained tests MUST have a documented automated entry point. Adding a maintained test MUST NOT automatically add its execution to every commit.
+
+Pre-commit MUST automatically select checks from the candidate commit's changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests covering affected dependencies. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
+
+Changes to the test-selection configuration, shared test runner, or dependency configuration MUST select the full relevant suite unless the project defines and verifies a narrower dependency boundary.
+
+The selector MUST print the selected checks and the reason for each selection, deduplicate checks, and execute them against the same candidate snapshot used for selection.
+
+Workflows not selected for every commit MUST remain available through the project's test entry point. The project MUST state when those workflows are required, such as before merging or releasing.
+
+Commit verification MUST test the candidate commit's files. When uncommitted changes could affect the result, run verification in an isolated checkout of the candidate snapshot. MUST NOT treat a passing test against different working-folder content as evidence that the candidate commit passes.
+
+A failed required check MUST block the commit. Each selected check MUST run once per candidate snapshot; reuse a passing result only when the checked content, dependencies, configuration, and selected checks remain unchanged.
 
 Tests that are only valid for the current session MUST remain in the git-ignored `tmp/` folder. MUST NOT add them to the project's permanent test workflow.
 
-For example, a regression test that must keep protecting a behavior after this session belongs in the project's maintained test suite and runs automatically before commits. By contrast, a script that checks a one-time migration against this session's scratch data belongs in `tmp/` and runs only for that session.
+For example, a documentation-only commit runs the applicable staged-file checks without launching an editor when no executable behavior or test configuration changes.
 
-Why: one command runs the project's maintained tests and checks, instead of requiring the agent to remember both a test command and a commit command. Session-only tests do not remain as obligations after their inputs or purpose expire.
+By contrast, a change to shared session storage runs the workflows that depend on that storage. A passing run that included an unstaged storage fix does not verify a candidate commit that omits the fix.
+
+Why: verification must cover the committed behavior without repeating unrelated workflows or allowing uncommitted changes to hide a broken commit.
 
 ## Agent Tests Logic, Developer Judges Visuals
 
