@@ -97,7 +97,7 @@ When to apply: adding or maintaining automated tests intended to remain useful b
 
 Maintained tests MUST have a documented automated entry point. Adding a maintained test MUST NOT automatically add its execution to every commit.
 
-Pre-commit MUST automatically select checks from the candidate commit's changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests covering affected dependencies. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
+Pre-commit MUST automatically select checks from the candidate commit's changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests for workflows that depend directly or indirectly on changed components. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
 
 Changes to the test-selection configuration, shared test runner, or dependency configuration MUST select the full relevant suite unless the project defines and verifies a narrower dependency boundary.
 
@@ -107,7 +107,7 @@ Workflows not selected for every commit MUST remain available through the projec
 
 Commit verification MUST test the candidate commit's files. When uncommitted changes could affect the result, run verification in an isolated checkout of the candidate snapshot. MUST NOT treat a passing test against different working-folder content as evidence that the candidate commit passes.
 
-A failed required check MUST block the commit. Each selected check MUST run once per candidate snapshot; reuse a passing result only when the checked content, dependencies, configuration, and selected checks remain unchanged.
+A failed required check MUST block the commit. Each selected check MUST run for the candidate snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure; a later pass MUST NOT silently erase an earlier failure.
 
 Tests that are only valid for the current session MUST remain in the git-ignored `tmp/` folder. MUST NOT add them to the project's permanent test workflow.
 
