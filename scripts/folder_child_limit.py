@@ -82,15 +82,23 @@ def has_head(root: Path) -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check the 16 child rule on the current git repository.")
     parser.add_argument("--staged", action="store_true", help="pre-commit mode: report only what the index adds or grows")
-    staged: bool = parser.parse_args().staged
+    parser.add_argument("--all", action="store_true", help="explicit full audit, including existing folder-limit violations")
+    args = parser.parse_args()
+    staged: bool = args.staged
 
     root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel")[0].strip())
+    if staged and not args.all:
+        structural = git(root, "diff", "--cached", "--no-renames", "--name-only", "--diff-filter=ADT", "-z")
+        config_changed = git(root, "diff", "--cached", "--name-only", "-z", "--", SETTINGS_FILE)
+        if not structural and not config_changed:
+            print("Skipped folder counts: no staged path or folder-check configuration changes.")
+            return 0
     third_party, sidecar_suffixes = load_settings(root, staged)
     if staged:
         counts: dict[str, int] = child_counts(git(root, "ls-files", "-z", "--cached"), third_party, sidecar_suffixes)
-        committed_paths: list[str] = git(root, "ls-tree", "-r", "-z", "--name-only", "HEAD") if has_head(root) else []
+        committed_paths: list[str] = git(root, "ls-tree", "-r", "-z", "--name-only", "HEAD") if not args.all and has_head(root) else []
         committed: dict[str, int] = child_counts(committed_paths, third_party, sidecar_suffixes)
-        over: list[str] = [folder for folder, count in counts.items() if count > LIMIT and count > committed.get(folder, 0)]
+        over: list[str] = [folder for folder, count in counts.items() if count > LIMIT and (args.all or count > committed.get(folder, 0))]
     else:
         counts = child_counts(working_tree_paths(root), third_party, sidecar_suffixes)
         over = [folder for folder, count in counts.items() if count > LIMIT]

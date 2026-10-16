@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from collections.abc import Callable
 from urllib.parse import unquote, urlsplit
 
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
@@ -145,15 +146,24 @@ def anchors(text: str) -> set[str]:
     return result
 
 
-def check(files: list[Path]) -> int:
+def check(files: list[Path], *, read_text: Callable[[Path], str] | None = None,
+          exists: Callable[[Path], bool] | None = None,
+          is_file: Callable[[Path], bool] | None = None,
+          only_targets: set[Path] | None = None,
+          resolve: Callable[[Path], Path] = Path.resolve) -> int:
+    read_text = read_text or (lambda path: path.read_text(encoding="utf-8"))
+    exists = exists or Path.exists
+    is_file = is_file or Path.is_file
     errors = 0
     cache: dict[Path, set[str]] = {}
     for source in files:
         try:
-            text = source.read_text(encoding="utf-8")
+            text = read_text(source)
             for number, target in links(visible_lines(text)):
                 reason = ""
                 if target.startswith("!undefined-reference:"):
+                    if only_targets is not None:
+                        continue
                     reason = "undefined reference label"
                 else:
                     target = re.sub(r"\\([!\"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])", r"\1", target)
@@ -161,15 +171,17 @@ def check(files: list[Path]) -> int:
                     if url.scheme or url.netloc:
                         continue
                     local = Path(unquote(url.path)).expanduser()
-                    path = (source.parent / local).resolve() if url.path else source.resolve()
-                    if not path.exists():
+                    path = resolve(source.parent / local) if url.path else resolve(source)
+                    if only_targets is not None and path not in only_targets:
+                        continue
+                    if not exists(path):
                         reason = "target does not exist"
                     elif url.fragment:
-                        if not path.is_file() or path.suffix.lower() not in (".md", ".markdown"):
+                        if not is_file(path) or path.suffix.lower() not in (".md", ".markdown"):
                             reason = "cannot validate an anchor in a non-Markdown target"
                         else:
                             if path not in cache:
-                                cache[path] = anchors(path.read_text(encoding="utf-8"))
+                                cache[path] = anchors(read_text(path))
                             if unquote(url.fragment) not in cache[path]:
                                 reason = "heading anchor does not exist"
                 if reason:

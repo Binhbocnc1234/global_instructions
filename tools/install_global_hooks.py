@@ -16,7 +16,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-FILES = ["hooks/pre-commit", "hooks/prepare-commit-msg", "scripts/check_staged_files.py", "scripts/check_markdown_links.py", "scripts/folder_child_limit.py"]
+FILES = ["hooks/pre-commit", "hooks/prepare-commit-msg", "scripts/check_staged_files.py", "scripts/check_markdown_links.py", "scripts/folder_child_limit.py", "scripts/staged_snapshot.py"]
 
 
 def main() -> int:

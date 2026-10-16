@@ -68,6 +68,10 @@ class GlobalHookTests(unittest.TestCase):
             self.commit(True)
 
     def test_index_links_not_worktree_links(self) -> None:
+        trace = self.base / "git-trace"
+        self.env["GIT_TRACE"] = str(trace)
+        (self.root / "Unrelated.bin").write_bytes(b"\xff\x00\xfe")
+        self.stage("Unrelated.bin")
         self.write("Source.md", "[link](Target.md#staged)\n")
         self.write("Target.md", "# Staged\n")
         self.stage("Source.md", "Target.md")
@@ -81,6 +85,25 @@ class GlobalHookTests(unittest.TestCase):
         self.stage("Source.md")
         result = self.commit(False)
         self.assertIn("heading anchor does not exist", result.stdout + result.stderr)
+        self.write("Source.md", "[link](Target.md#staged)\n[asset](assets/item.bin)\n[directory](assets)\n")
+        self.write("assets/item.bin", "asset\n")
+        self.stage("Source.md", "assets")
+        self.commit(True)
+        # Only the target changes; the unchanged source must still be checked.
+        self.stage("Target.md")
+        result = self.commit(False)
+        self.assertIn("heading anchor does not exist", result.stdout + result.stderr)
+        self.write("Target.md", "# Staged\n")
+        self.stage("Target.md")
+        self.git("mv", "Target.md", "Renamed.md")
+        result = self.commit(False)
+        self.assertIn("Target.md#staged: target does not exist", result.stdout + result.stderr)
+        self.git("mv", "Renamed.md", "Target.md")
+        self.git("rm", "assets/item.bin")
+        result = self.commit(False)
+        self.assertIn("assets/item.bin: target does not exist", result.stdout + result.stderr)
+        self.assertIn("assets: target does not exist", result.stdout + result.stderr)
+        self.assertNotIn("checkout-index", trace.read_text())
 
     def test_staged_exceptions_exclusions_and_custom_extensions(self) -> None:
         self.write("Main.custom", "line\n" * 251)
@@ -95,6 +118,14 @@ class GlobalHookTests(unittest.TestCase):
         self.write(".agent-checks.json", json.dumps(config))
         self.stage(".agent-checks.json")
         self.assertIn("nonempty reasons", self.commit(False).stderr)
+        config["line_exceptions"].pop("Long.md")
+        self.write(".agent-checks.json", json.dumps(config))
+        self.stage(".agent-checks.json")
+        # A full audit includes unchanged files; normal commits remain selective.
+        self.commit(True)
+        result = self.command(self.root, sys.executable, str(self.destination / "scripts/check_staged_files.py"), "--all")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Long.md: 251 lines", result.stdout + result.stderr)
 
     def test_folder_limit_uses_staged_config(self) -> None:
         for index in range(17):
@@ -109,6 +140,27 @@ class GlobalHookTests(unittest.TestCase):
         self.write("new/file.txt", "")
         self.stage("new")
         self.commit(True)
+        self.write("new/file.txt", "content only\n")
+        self.stage("new/file.txt")
+        result = self.commit(True)
+        self.assertIn("Skipped folder counts", result.stdout + result.stderr)
+        # Configuration-only changes cannot take the content-only shortcut.
+        self.write(".folder-child-limit.json", json.dumps({"third_party": ["vendor"]}))
+        self.stage(".folder-child-limit.json")
+        result = self.commit(True)
+        self.assertNotIn("Skipped folder counts", result.stdout + result.stderr)
+        self.write(".folder-child-limit.json", "{}")
+        self.stage(".folder-child-limit.json")
+        result = self.command(self.root, sys.executable, str(self.destination / "scripts/folder_child_limit.py"), "--staged", "--all")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("17 children", result.stdout + result.stderr)
+        self.write(".folder-child-limit.json", json.dumps({"third_party": ["vendor"]}))
+        self.stage(".folder-child-limit.json")
+        for index in range(17):
+            self.write(f"new/file{index}.txt", "")
+        self.stage("new")
+        result = self.commit(False)
+        self.assertIn("18 children", result.stdout + result.stderr)
 
     def test_local_hook_preserved_and_mutations_checked(self) -> None:
         local = self.root / ".git/hooks/pre-commit"
