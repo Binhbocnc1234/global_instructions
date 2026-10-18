@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import subprocess
 import sys
 import tempfile
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -105,6 +107,49 @@ class CompileTests(unittest.TestCase):
         self.source.write_text("# Changed\n")
         self.assertEqual(self.run_cli("--check").returncode, 1)
         self.assertEqual(self.output.read_text(), installed)
+
+    def test_default_export_refreshes_cache_prefix_and_check_preserves_files(self) -> None:
+        self.write("shared/AGENTS.md", "# Original\n@rules/Work.md\n")
+        self.write("shared/rules/Work.md", "# Work\n")
+        self.write("codex/AGENTS.md", "")
+        self.write("codex/config.toml", 'model = "test-model"\n[features]\nexample = true\n')
+        self.write("codex/instruction-cache/NativeInstructions.md", "Native base instructions\n")
+        self.write(".local/share/applications/chatgpt.desktop", "[Desktop Entry]\nExec=chatgpt %U\n")
+        # Only the external runtime version probe is fake; the production exporter
+        # compiles imports, updates TOML, and writes every installation artifact.
+        runtime = self.write(".local/share/one-harness/codex-cache/bin/codex",
+                             '#!/bin/sh\nprintf "codex one-harness-cache.test\\n"\n')
+        runtime.chmod(0o755)
+        self.write(".local/share/one-harness/codex-cache/bin/codex-code-mode-host", "")
+        environment = {**os.environ, "HOME": str(self.root),
+                       "CODEX_HOME": str(self.output.parent),
+                       "XDG_DATA_HOME": str(self.root / ".local/share")}
+        command = [sys.executable, str(SCRIPT), "--source", str(self.source)]
+        result = subprocess.run(command, env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        config_path = self.output.parent / "config.toml"
+        config = tomllib.loads(config_path.read_text())
+        model_file = Path(config["model_instructions_file"])
+        self.assertEqual(config["global_prompt_cache_prefix"], model_file.read_text().strip())
+        self.assertIn("# Work\n", config["global_prompt_cache_prefix"] + "\n")
+        self.assertNotIn("@rules/", config["global_prompt_cache_prefix"])
+        self.assertEqual(config["model"], "test-model")
+        self.assertEqual(config["features"], {"example": True})
+        self.assertEqual(self.output.read_text(), "")
+        result = subprocess.run([*command, "--check"], env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        installed_config = config_path.read_bytes()
+        installed_model = model_file.read_bytes()
+        self.source.write_text("# Changed\n")
+        result = subprocess.run([*command, "--check"], env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertEqual(config_path.read_bytes(), installed_config)
+        self.assertEqual(model_file.read_bytes(), installed_model)
+        result = subprocess.run(command, env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        refreshed = tomllib.loads(config_path.read_text())
+        self.assertIn("# Changed\n", refreshed["global_prompt_cache_prefix"] + "\n")
+        self.assertEqual(refreshed["global_prompt_cache_prefix"], model_file.read_text().strip())
 
 
 if __name__ == "__main__":

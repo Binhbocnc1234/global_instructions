@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Expand shared @path.md imports into Codex's global AGENTS.md.
+"""Expand shared @path.md imports and refresh Codex Desktop's cache prefix.
 
-Run: python3 ~/.agents/tools/compile_codex_agents.py
-Use --source and --output to compile other instruction files, or --check to
-verify that the output matches the sources without writing it.
+Run: python3 tools/compile_codex_agents.py
+The default uses install_codex_cache.py and its installed native snapshot.
+Use --output for a standalone compiled document, or --check to compare without
+writing. --source selects the shared instruction file for either mode.
 """
 from __future__ import annotations
 
 import argparse
 import os
 import re
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -133,9 +135,15 @@ def compile_document(source: Path, output: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("~/.agents/AGENTS.md"))
-    parser.add_argument("--output", type=Path, default=Path("~/.codex/AGENTS.md"))
+    parser.add_argument("--output", type=Path, help="write a standalone document instead of the Desktop cache prefix")
     parser.add_argument("--check", action="store_true", help="exit 1 if output is missing or stale")
     args = parser.parse_args()
+    if args.output is None:
+        command = [sys.executable, str(Path(__file__).with_name("install_codex_cache.py")),
+                   "--source", str(args.source)]
+        if args.check:
+            command.append("--check")
+        return subprocess.run(command, check=False).returncode
     output = args.output.expanduser().resolve()
     temporary: Path | None = None
     try:
