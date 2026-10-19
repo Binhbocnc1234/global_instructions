@@ -19,7 +19,7 @@ A file has one main kind: the question its reader holds when opening it. The kin
 - The main kind is the kind that most of the file's sections answer. A section of another kind stays when the reader needs it at that point: the reason next to a rule, the command that runs a rule's check, a stop condition inside a step.
 - A decision record's main kind is Rules: its Decision section states what must hold, and its Why section is the reason next to it.
 - When a group of sections of another kind is read by a request that does not need the rest of the file, split that group into its own file and link to it.
-- A project MAY add kinds for material these three do not cover, such as lessons, and names them in its `AGENTS.md`.
+- A project MAY add kinds for material these three do not cover, such as lessons. Project-specific conventions follow [ProjectRules](ProjectRules.md#project-index).
 
 For example, a document holds three rules for how the save file is written, each with its reason, and the command that checks them. Its main kind is rules, and the reasons and the command stay in it.
 
@@ -58,10 +58,10 @@ A documentation index is one committed file that lists every qualifying document
 
 - The index is generated output. Never edit it by hand.
 - Regenerate it in the same change that adds, removes, moves, renames, or re-describes an indexed document. A change that leaves the index stale is incomplete.
-- Each entry's description answers the same question as the document's `Summary:` line, under [Markdown Document Structure](../AGENTS.md#markdown-document-structure). A description that does not let a reader decide whether to open the document is a defect in the description, not in the reader.
+- Each entry's description answers the same question as the document's `Summary:` line. A description that does not let a reader decide whether to open the document is a defect in the description, not in the reader.
 - A document that states rules names them in its description. `Records the decision to ...` describes an event, so a reader who is about to act skips it. Write `Rules for which values go in a data file and which stay as constants in code, with the reasons` instead.
-- The project's `AGENTS.md` records the index path, the command that regenerates it, which documents qualify, and where their descriptions come from. Those are project decisions, and no global rule fixes them.
+- Project-specific index configuration is reached through the [Project Index](ProjectRules.md#project-index).
 
-For example, `MonkeyVsAlien` generates its index from the `description` and `status` frontmatter fields of every document under `Documentation/`, and its `AGENTS.md` records both the index path and the generator command.
+For example, a project generates its documentation index from the `Summary:` lines of Markdown documents under `docs/`. Its Project Index links to the generation command and configuration.
 
-A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is a Routing Defect](Execution.md#an-unrelated-file-opened-is-a-routing-defect) says when that proposal is due.
+A project that holds more than 10 documents and has no index has no routing. Propose one instead of reading the folder tree; [An Unrelated File Opened Is Also A Correction](RuleMaintenance.md#an-unrelated-file-opened-is-also-a-correction) says when that proposal is due.

@@ -2,7 +2,7 @@
 
 The original request reviewed an external debugging skill, cause-to-solution reasoning in rule maintenance, the Lesson contract, and two behavioral evaluation scenarios under `test/`.
 
-The developer subsequently decided to delete `Debugging.md` and its dedicated role. The proposed external-skill adaptation is withdrawn, not deferred. No debugging workflow is awaiting implementation. The condition for any future reconsideration belongs in [Reintroducing Debugging Rules](../../rules/RuleMaintenance.md#reintroducing-debugging-rules), not in this task.
+The developer subsequently decided to delete `Debugging.md` and its dedicated role. The proposed external-skill adaptation is withdrawn, not deferred. No debugging workflow is awaiting implementation.
 
 The two scenarios remain evaluation fixtures, not global rules or completed runtime evaluations. Existing developer edits outside the authorized removal remain untouched.
 
@@ -10,7 +10,7 @@ The two scenarios remain evaluation fixtures, not global rules or completed runt
 
 Only the earlier rule-maintenance proposals remain awaiting approval. They do not restore a debugging workflow or role.
 
-The diagnosis principle already exists in [A Correction Is a Trigger](../../rules/RuleMaintenance.md#a-correction-is-a-trigger): name the cause, decide whether it recurs, then route prevention. The proposed clarification distinguishes the observed failure, evidence for its cause, proposed prevention, and a scenario demonstrating the prevention. A complaint establishes a symptom, not automatically the correct rule. Assess whether a fact, routing repair, tool repair, or clarification of an existing rule addresses the cause.
+The diagnosis principle already exists in [Treat Workflow Failures as Improvement Triggers](../../rules/RuleMaintenance.md#treat-workflow-failures-as-improvement-triggers): name the cause, decide whether it recurs, then route prevention. The proposed clarification distinguishes the observed failure, evidence for its cause, proposed prevention, and a scenario demonstrating the prevention. A complaint establishes a symptom, not automatically the correct rule. Assess whether a fact, routing repair, tool repair, or clarification of an existing rule addresses the cause.
 
 Example: a check reports success after discovering zero tests. Inspect the invocation and discovery output before proposing prevention. If a wrong fixture path caused the empty run, repair that invocation and clarify the existing nonzero-count requirement rather than add an unrelated instruction to run every test suite. By contrast, a question about a correctly executed test does not itself establish an error.
 

@@ -29,7 +29,7 @@ Facts available to the agent:
 
 ## Expected result: proposal
 
-Follow [Propose a Rule Before Writing It](../rules/RuleMaintenance.md#propose-a-rule-before-writing-it) and [Generalize from the Cause or Why Line](../rules/RuleMaintenance.md#generalize-from-the-cause-or-why-line). The proposal includes:
+Follow [Propose a Rule in Response Before Writing It](../rules/RuleMaintenance.md#propose-a-rule-in-response-before-writing-it) and [Generalize from Why Line](../rules/RuleMaintenance.md#generalize-from-why-line). The proposal includes:
 
 - **Cause and evidence:** the two supplied cases show task-level association being used where paragraph-level need should decide inclusion. A more specific internal cause remains unknown.
 - **Owner:** amend the existing relevance rule rather than create another owner.

@@ -16,19 +16,6 @@ When to apply: before a tool call that would read file content already available
 
 Why: repeated reads of unchanged content consume tool calls and context without adding evidence.
 
-## Scratch Files Go in `tmp/`
-
-When to apply: the agent writes a file that serves only the current task, such as a probe, a driver scene, a one-off check or conversion script, a log, or an intermediate output.
-
-- Put it in `tmp/<topic>/` at the project root. Git MUST ignore `tmp/`. When the project does not ignore it yet, add `/tmp/` to `.gitignore` in the same change.
-- MUST NOT put it in a harness scratchpad, even when the harness names one. Use a scratchpad only when the task has no project root.
-- MUST NOT write it at the project root, or inside a folder that holds source, assets, data, tests or documentation. No file outside `tmp/` references a file inside it.
-- A check worth running again is not scratch. Move it into the project's tools or tests, where it gets a name and an owner.
-
-For example, a Godot script that loads every model scene and prints duplicate node names needs `res://` paths, so it goes in `tmp/model-probes/AllModelsCheck.gd`, not in `probe_all_models_tmp.gd` at the project root.
-
-Why: a scratch file at the root appears in the editor and in `git status` next to the developer's own untracked work, so the developer cannot tell whether it is safe to delete, and git cannot restore it after deletion. Inside an ignored `tmp/`, the folder name says the file is disposable and git never offers it for a commit. A harness scratchpad is a feature of one harness: another harness or model has none, and the path is per session, outside the project, so the developer and the next session cannot find the file. `tmp/` is the same path for every harness and every model.
-
 ## Route Through the Documentation Index
 
 When to apply: at the start of every task in a project that carries documentation.
@@ -41,30 +28,13 @@ MUST NOT list a documentation folder, grep it for a keyword, or open a document 
 
 Why: the index costs one read and names every document. Discovering the same set by opening files costs one read per candidate, and the candidates that turn out to be irrelevant stay in context for the rest of the session.
 
-## An Unrelated File Opened Is a Routing Defect
-
-When to apply: you read a file, and it held nothing the task needed.
-
-Two causes produce that read: the agent chose badly, or the project routes badly. Treat the second as the cause, because it is the one that can be fixed. A routing defect is one of:
-
-- The project has no documentation index, so the only way to learn what a document holds was to open it.
-- The index entry's description does not describe the document, or it is stale.
-- The document mixes kinds, so one sentence cannot describe it. See [Markdown Document Kind](Authoring.md#markdown-document-kind).
-- `AGENTS.md` or a document links to a file that was renamed, moved, split, or deleted.
-
-Report it in the same response as the work: name the file you opened, what you expected it to hold, and which defect above sent you there. Then propose the fix, and record it under [Reusable Knowledge](RuleMaintenance.md#reusable-knowledge).
-
-For example, a task about card cost ends with the agent reading `Documentation/en/rules/technical/EntityStats.md`, which holds no cost rule. The index describes it as "Entity reference", a description that fits four documents. The fix is one sentence in that document's `description` frontmatter field naming what it holds, followed by regenerating the index.
-
-For example, a task about the build pipeline ends with the agent opening six files under `tools/` because no document names which one runs first. Nothing is stale; the routing simply does not exist. The fix is an entry in `AGENTS.md` naming the entry point.
-
 ## Reviewing Developer Changes
 
 Developers often edit files without explicitly telling you in request, so if you see unusual changes (e.g. removing a feature, removing a seemingly unnecessary null check) in the git diff, it's because of the developer.
 
 A change the developer made is deliberate. Read it to understand the current state. Do not undo it, reformat it, report on it, or fold it into a change of your own — unless the task specifically asks you to do one of these.
 
-A risk you see in a change is reported under [Report a Risk Only With Its Failure](Communication.md#report-a-risk-only-with-its-failure).
+Report a risk you see in a change.
 
 ## Handle long-running task
 
@@ -153,7 +123,7 @@ Why: a workaround hides the failure from the only reader who can fix it. The dev
 
 When to apply: a step of the task could be done by the agent or handed to the developer, such as a setup, a check, a test, a lookup, or a repeated action.
 
-Compare the step with the strengths and weaknesses in [About developer](../AGENTS.md#about-developer) and [About agent](../AGENTS.md#about-agent). When the agent does the step better, the agent does it, and MUST NOT hand the developer instructions for it. Hand over only the part that needs a developer strength: sight or taste, a product decision, a credential or an approval, or a physical device. When the agent cannot do the step yet but a tool would let it (a driver script, a debugging protocol, an editor API), build or find the tool under [Automate Repeated Work](Implementation.md#automate-repeated-work).
+Compare the step with the strengths and weaknesses in [About developer](../AGENTS.development.md#about-developer) and [About agent](../AGENTS.development.md#about-agent). When the agent does the step better, the agent does it, and MUST NOT hand the developer instructions for it. Hand over only the part that needs a developer strength: sight or taste, a product decision, a credential or an approval, or a physical device. When the agent cannot do the step yet but a tool would let it (a driver script, a debugging protocol, an editor API), build or find the tool under [Automate Repeated Work](Implementation.md#automate-repeated-work).
 
 These rules apply this one to particular steps: [Agent Tests Logic, Developer Judges Visuals](Testing.md#agent-tests-logic-developer-judges-visuals), [Query the GUI Before Asking the Developer to Look](Testing.md#query-the-gui-before-asking-the-developer-to-look), and [Capture Visual Evidence for the Developer](Testing.md#capture-visual-evidence-for-the-developer).
 

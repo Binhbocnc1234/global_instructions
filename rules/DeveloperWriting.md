@@ -115,7 +115,7 @@ Repays — developer secret commited to Github, or a security risk
 
 When to apply: writing a response or file whose primary reader is the developer.
 
-Use the [developer profile](../AGENTS.md#about-developer) to select vocabulary, detail, and examples. This does not change the shared evidence requirements.
+Use the [developer profile](../AGENTS.development.md#about-developer) to select vocabulary, detail, and examples. This does not change the shared evidence requirements.
 
 Prefer the standard term of the field over jargon borrowed from another field. For dependencies, write `depends on` and `depended on by`, not `outgoing` and `incoming`, because `outgoing` has several unrelated meanings.
 

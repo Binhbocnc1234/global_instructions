@@ -37,6 +37,14 @@ class InstallationWorkflowTests(unittest.TestCase):
         return result
 
     def test_install_check_drift_and_reinstall_preserve_unrelated_files(self) -> None:
+        source_rule = self.source / "rules" / "Nested.md"
+        source_content = (
+            "Rule content.\n"
+            "[Profile](../AGENTS.development.md#about-developer)\n"
+            "[Foundation](../AGENTS.development.md)\n"
+            "[Other](Other.md#section)\n"
+        )
+        source_rule.write_text(source_content)
         self.destination.mkdir()
         untouched = {
             "rules/DestinationOnly.md": "Local-only rule.\n",
@@ -53,9 +61,16 @@ class InstallationWorkflowTests(unittest.TestCase):
         self.assertIn("Updated 3 of 3", result.stdout)
         self.assertEqual((self.destination / "AGENTS.md").read_bytes(),
                          (self.source / "AGENTS.development.md").read_bytes())
-        for relative in ("rules/Example.md", "rules/Nested.md"):
-            self.assertEqual((self.destination / relative).read_bytes(),
-                             (self.source / relative).read_bytes())
+        self.assertEqual((self.destination / "rules/Example.md").read_bytes(),
+                         (self.source / "rules/Example.md").read_bytes())
+        self.assertEqual(
+            (self.destination / "rules/Nested.md").read_text(),
+            "Rule content.\n"
+            "[Profile](../AGENTS.md#about-developer)\n"
+            "[Foundation](../AGENTS.md)\n"
+            "[Other](Other.md#section)\n",
+        )
+        self.assertEqual(source_rule.read_text(), source_content)
         self.run_installer("--check")
         changed = self.destination / "rules" / "Nested.md"
         changed.write_text("Changed installed rule.\n")

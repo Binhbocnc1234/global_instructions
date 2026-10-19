@@ -1,14 +1,29 @@
 # Implementation
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+How code should look like?
 
-## Construction constraints
+## Some small rules
 
-- Keep each domain invariant owned by the object whose state it constrains. Do not duplicate or query that invariant from a behavior that merely requests a state change. For example, `Knockback` must not check whether a displaced `Entity` position is valid when `Entity` owns team/grid boundaries; it should request displacement through an operation such as `entity.apply_knockback(delta)`, and `Entity` must enforce the invariant by clamping position. Treat the opposite design as misplaced responsibility or domain-invariant leakage: it violates encapsulation and the Tell, Don't Ask principle.
 - Use explicit types where the language and project policy require them. Do not hide uncertainty behind dynamic escape types. For example, do not use `var` keyword in C#.
 - Fix broken construction or wiring instead of adding silent fallbacks, no-ops, or legacy behavior.
 - Do not extract a method merely to label a few statements when keeping them inline makes lifecycle or ordering clearer.
 - Make a value's unit or representation explicit in its identifier when omission could cause misuse. Follow the project's naming convention with names such as `duration_seconds`, `DurationSeconds`, or `limit_fraction`.
+
+## Keep spec owned by the object whose state it.
+
+For example, `Knockback` must not check whether a displaced `Entity` position is valid when `Entity` owns team/grid boundaries; it should request displacement through an operation such as `entity.apply_knockback(delta)`, and `Entity` must enforce the invariant by clamping position. Treat the opposite design as misplaced responsibility or domain-invariant leakage: it violates encapsulation and the Tell, Don't Ask principle.
+
+For example, a game rule said that "Boss always have Sanity effect(an effect that make Boss immune to Debuff)". Bad implementation: in every class that inherits from the Boss class (where Boss is an abstract class), the agent calls `AddEffect(new Sanity())`. Good: this rule should be implemented in Boss class
+
+## DRY in implementation
+
+Developer request: "Create a tutorial for Level 1; the tutorial will consist of multiple steps, and at each step, highlight the buttons the player needs to click using a flickering animation."
+
+Bad approach: Implementing the flickering animation logic repeatedly within each tutorial step.
+
+Good approach: Coding a dedicated function or class for the flickering animation, then having the tutorial steps act as consumers of that logic.
+
+Why: This principle also applies to game UI design; ideally, most buttons should share the same style and logic. Violating the DRY principle not only results in bloated code but also breaches an implicit game design requirement: consistency. No one designs a game where every button uses a different style.
 
 ## Editor Tool UI Names
 
@@ -92,7 +107,7 @@ A file may exceed 250 lines only when splitting it would create artificial fragm
 
 ## Automate Repeated Work
 
-This is DRY applied to execution. [DRY](../AGENTS.md#drydont-repeat-yourself) covers the other half: one canonical owner for a fact.
+This is DRY applied to execution. [DRY](../AGENTS.development.md#drydont-repeat-yourself) covers the other half: one canonical owner for a fact.
 
 When the same operation runs 3 or more times, build the mechanism that performs it, then run the mechanism. Doing the operation by hand repeats the lookups and the judgement calls with it, and each repetition can go wrong on its own.
 
@@ -105,8 +120,8 @@ For example, the same three shell commands run before every commit. They belong 
 MAY skip the mechanism when writing it costs more than the work that remains: the operation runs twice, or each case needs a different decision that no rule covers. Say which of the two applies before doing the work by hand.
 
 You will see that many rules above this is a narrow branch of DRY:
-- [CorrectionIsATrigger](RuleMaintenance.md#a-correction-is-a-trigger), write a rules so that future mistake won't appear again
-- [UnrelatedFileOpened](Execution.md#an-unrelated-file-opened-is-a-routing-defect), better project-scoped AGENTS.md, lower error chance
+- [Treat Workflow Failures as Improvement Triggers](RuleMaintenance.md#treat-workflow-failures-as-improvement-triggers), write a rules so that future mistake won't appear again
+- [An Unrelated File Opened Is Also A Correction](RuleMaintenance.md#an-unrelated-file-opened-is-also-a-correction), better project-scoped AGENTS.md, lower error chance
 
 Why: repeated work hides its own cost. Each manual pass looks small, so the total is never compared against the one-time cost of the mechanism, and the mechanism is also the only artifact that survives the task.
 
@@ -116,8 +131,6 @@ When to apply: creating, moving, or splitting a file or folder in a project fold
 
 A folder holds at most 16 direct children. Only folders the developer or an agent creates count: generated output, git-ignored files, and third-party folders such as `node_modules` or a vendored library do not.
 
-[folder_child_limit.py](../scripts/folder_child_limit.py) checks the rule on a git repository and owns what counts as a child. A project lists its committed third-party folders in that script's settings file, and blocks a new violation by running the script with `--staged` from its pre-commit hook.
-
 Every folder has a meaning: the one thing that all of its children share, such as the feature they implement, the system they belong to, or the owner that edits them. The folder name states that meaning. A reader who knows what they are looking for picks the folder from its name without opening any file inside it.
 
 When a folder would pass 16, look for the groups that already exist among its children and give each group its own subfolder. MUST NOT split only to pass the limit. Numbered parts (`Part1`, `Part2`), alphabetical ranges (`A-M`), and catch-all names (`Misc`, `Common`, `Other`) name no shared meaning, so they are forbidden. When the children share no meaning beyond the parent's, the folder is the exception: report it to the developer with the reason instead of splitting it.
@@ -125,3 +138,53 @@ When a folder would pass 16, look for the groups that already exist among its ch
 For example, a `UI/` folder holds 25 scripts: 9 for the battle screen, 8 for the shop, and 8 widgets that both screens use. Split it into `Battle/`, `Shop/`, and `Widgets/`. By contrast, `UI1/` and `UI2/` pass the count and tell the reader nothing about which one holds the shop.
 
 Why: the developer and the agent have no reliable memory of where a file lives, so the folder tree is how both find a file without reading many files. A folder with more than 16 children sends the reader back to scanning names one by one, and a folder without a shared meaning sends the reader into every subfolder.
+
+## Configure Shared Check Exclusions and Exceptions
+
+When to apply: adding third-party or generated content, adding engine sidecar files, or approving an exception to the 250-line limit.
+
+- MUST configure third-party and generated directories in the project-root `.agent-checks.json` under `exclude` when they would otherwise be checked.
+- MUST configure committed third-party directories in the project-root `.folder-child-limit.json` under `third_party`. Configure engine-generated sidecar suffixes under `sidecar_suffixes` when they must not count as folder children.
+- An approved exception to the 250-line limit MUST be recorded in `.agent-checks.json` under `line_exceptions`, with the repository-relative file path and a nonempty reason.
+- MUST stage the configuration change with the content it governs, because the pre-commit hook reads configuration from the index.
+- MUST NOT exclude authored project content merely to make a failed check pass. Fix the violation, or obtain approval for an exception permitted by the owning rule.
+
+### Configuration Format
+
+Both configuration files contain a JSON object. Add the needed keys to an existing file; do not replace unrelated settings.
+
+Use repository-relative paths with `/` separators, such as `vendor/library`, not absolute paths or glob patterns.
+
+In `.agent-checks.json`:
+- `exclude` is an array of directory-path strings. Each entry excludes that directory and everything beneath it from source-line and Markdown-link checks.
+- `line_exceptions` is an object mapping an exact file path to a nonempty reason string. An entry permits that file to exceed 250 lines; it does not disable Markdown-link checks.
+
+For example, after approval of the line-count exception:
+
+```json
+{
+  "exclude": ["vendor/library", "generated"],
+  "line_exceptions": {
+    "scripts/Parser.py": "Approved: splitting the grammar table would separate entries reviewed together."
+  }
+}
+```
+
+In `.folder-child-limit.json`:
+- `third_party` is an array of directory-path strings. Each listed directory counts as one child of its parent, but its contents are not counted.
+- `sidecar_suffixes` is an array of literal filename-ending strings, including the leading dot. For example, `.meta` excludes files whose names end in `.meta`.
+
+```json
+{
+  "third_party": ["vendor/library"],
+  "sidecar_suffixes": [".meta"]
+}
+```
+
+Omitted keys use the checker's defaults. These examples show the value shapes; they do not authorize exclusions or exceptions.
+
+The checkers own the accepted formats and matching behavior: `~/.agents/scripts/check_staged_files.py` and `~/.agents/scripts/folder_child_limit.py`.
+
+For example, a committed vendor library is excluded from source checks and identified as third-party content for folder counting. By contrast, a project-owned source file exceeding 250 lines must be split by responsibility or receive an approved line-count exception; it is not third-party content.
+
+Why: automatic checks still need project-specific scope. Recording that scope in configuration prevents agents from repeatedly encountering the same out-of-scope failures or bypassing checks to commit.

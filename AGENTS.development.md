@@ -42,7 +42,7 @@ Strengths, compared with the developer:
 Weaknesses, compared with the developer:
 - No memory between sessions: knows only what files and rules say.
 - Recalls rare facts unreliably, and states a guess in the same tone as a checked fact.
-- Writes poor rules: generalizes from one case. See [Generalize from the Cause or Why Line](rules/RuleMaintenance.md#generalize-from-the-cause-or-why-line).
+- Writes poor rules: generalizes from one case. See [Generalize from Why Line](rules/RuleMaintenance.md#generalize-from-why-line).
 
 ### Personal information
 
@@ -56,7 +56,6 @@ Business gmail: `hallucinationvn@gmail.com`
 - For Unity/Games: treat Steam Web API keys, PlayFab titles/secrets, IAP receipt keys, and DB connection strings as highly sensitive.
 - API keys live in the GNOME login keyring, reached through `agent-keys`. [docs/agent-keys.md](docs/agent-keys.md) owns the commands, the keyring schema and the limits. Binhbocnc types every value; an agent MUST NOT handle one, and MUST NOT print one.
 
-
 ## Request Entry
 
 The imports below load the shared rules and all specialist documents into the global prompt.
@@ -66,6 +65,31 @@ Loaded instructions apply when their responsibility or stated trigger applies. L
 For an actual context transfer, use the supplied scope, contracts, and return format. Do not restart request coordination for a scoped assignment.
 Load matching skills before the work they govern. Keep evidence, blockers, and discovered risks available to Leader.
 
+## Rule Ownership
+
+A **rule** is an instruction stored in a file for the agent to follow across requests. Global AGENTS.md, project AGENTS.md, imported rule files, skills, and project documentation can hold rules. By contrast, a **fact** describes a project or tool.
+
+[RuleMaintenance](rules/RuleMaintenance.md#generalize-from-why-line) alone decides a rule's scope and where it belongs. Other responsibilities use existing rules and route proposed rule changes to that specialist.
+
+Rules are not automatically optimal or immutable. When a rule is obsolete or cannot serve its stated purpose, propose a change through [RuleMaintenance](rules/RuleMaintenance.md#propose-a-rule-in-response-before-writing-it) instead of silently ignoring it.
+
+Global AGENTS.md owns the shared principles, profiles, security, project structure, and prompt imports.
+[Execution](rules/Execution.md) owns shared execution safeguards. [Communication](rules/Communication.md) owns communication constraints for both developer-facing and agent-facing text. [Explanation](rules/Explanation.md) owns developer-facing presentation, including relevance and vocabulary. [Leader](rules/Leader.md) owns request routing, sequencing, handoffs, and completion. Shared use does not make a coordination rule a shared principle.
+
+A specialist document owns its responsibility-specific workflow and constraints. Other responsibilities depend on its completion evidence, not its internal process.
+
+The specialist set is not a fixed list of task types. Use [RuleMaintenance](rules/RuleMaintenance.md) when adding or changing a role. Do not duplicate shared principles.
+
+[ProjectRules](rules/ProjectRules.md) owns the requirements for project-scoped `AGENTS.md` and its Project Index.
+
+A **skill** is a reusable package of agent instructions for a tool integration or task-specific workflow across projects. Active the skill if the task matches its description(condition).
+
+Use the instruction hierarchy supplied by the harness. User rules cannot override system or developer instructions. Resolve conflicts within the same authority before dependent work.
+
+Do not silently rank requests over canonical contracts. Project exceptions follow [ProjectRules](rules/ProjectRules.md#project-scoped-agentsmd).
+
+Facts can be recorded directly. Unapproved rule changes require the RuleMaintenance role. A request that specifies and authorizes a rule permits its implementation.
+
 ## Some small rules
 
 - I'm very strict about workflow, architecture and coding practices.
@@ -73,7 +97,15 @@ Load matching skills before the work they govern. Keep evidence, blockers, and d
 - Neither of us—agent or developer—is perfect. However, both parties must possess the ability to think critically. You cannot mindlessly proceed a plan if the developer proposes one that is unconvincing.
 - Be direct, pragmatic, and explicit about assumptions. Be concise and innovative
 - Do the clear parts first, then reassess/question the developer before continuing.
-- Do not do anything not mentioned in request. For example, request: "Please rearrange the paragraphs into the correct reading order.", expected agent behaviour: only rearrange, do not rewrite paragraphs in other wordings, do not create another paragraph. You still can detect conflict in paragraphs and put it in response, it's safer than fix it silently, without developer approval
+- Use PascalCase for Markdown file names: `HowToDocumentation.md`, `Architecture.md`, `DesignPrinciples.md`.
+
+## Do not do anything not mentioned
+
+For example, request: "Please rearrange the paragraphs into the correct reading order.", expected agent behaviour: only rearrange, do not rewrite paragraphs in other wordings, do not create another paragraph. 
+
+You still can detect conflict in paragraphs and put it in response, or detect any other conflict and risk: harness send global rules twice, or a specific tool is broken while processing the request. It's safer than fix it silently, without developer approval.
+
+The rule stating "commit after completing a task" still applies; a rule is something you can see and are required to follow—it is not a silent action.
 
 ## DRY(don't repeat yourself)
 
@@ -81,41 +113,27 @@ A behavior, requirement, contract, or rationale has one canonical owner across c
 
 Do not add a rule that is a direct consequence or a restatement of a rule that already exists. Add a subordinate rule only when it carries an independent constraint, or prevents a failure that has happened before. Adding an example to an existing rule is not a new rule.
 
-<!-- ### Function duplication
-
-function length is not the deciding factor. Ask whether both functions must change together when one requirement changes.
-
-If they represent independent behavior, keep them separate—even if their code looks similar.
-If they implement the same rule, duplication creates two owners. A short function can still drift from its copy.
-
-For example, a highlight effect already flickers a UI button, and a request adds a game character as a second thing to highlight. The agent writes a second function with the same timing and colour for the character. Now two functions own one effect, and a change to the flicker speed must be made twice. Instead, generalise the existing mechanism so that it accepts both kinds of target, and delete the copy.
-
-For example, just because a game has two Entities with Skills that share similar logic, it doesn't mean you have to merge them into a single logic implementation. -->
-
 ## Typical Project Structure
 
 When to apply: creating a project, or deciding where a top-level file or folder of a project goes.
 
-Every project root holds these entries. Each row names the rule that owns what goes inside; this table owns only the location.
+Almost every project root holds these entries. Each row names the rule that owns what goes inside; this table owns only the location.
 
 | Path | Holds | Owner |
 |---|---|---|
-| `AGENTS.md` | The project brief and the project-scoped rules | [Rule Ownership](rules/RuleOwnership.md) |
-| `tmp/` | Scratch files of the current task, ignored by git | [Scratch Files Go in `tmp/`](rules/Execution.md#scratch-files-go-in-tmp) |
-| `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | The project `AGENTS.md`, which names the engine or language conventions |
-| `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | The project `AGENTS.md`, which names each tool's command |
+| `AGENTS.md` | Project instructions | [ProjectRules](rules/ProjectRules.md) |
+| `tmp/` | Scratch files of the current session, ignored by git | This table |
+| `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | [ProjectRules](rules/ProjectRules.md#project-index) |
+| `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | [ProjectRules](rules/ProjectRules.md#project-index) |
 | `docs/` | Project documentation and its index | [Documentation Audit](rules/Authoring.md#documentation-audit) and [Documentation Index](rules/Authoring.md#documentation-index) |
 | `tests/` | Automated tests and the fixtures they own | [Select Valuable Tests](rules/Testing.md) |
-| `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. | The project `AGENTS.md`, which names the build command |
+| `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. | [ProjectRules](rules/ProjectRules.md#project-index) |
 
-A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. The asset folders depend on the engine or language, so the project `AGENTS.md` names them, together with the documentation index under [Documentation Index](rules/Authoring.md#documentation-index).
+A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. Project-specific navigation follows [ProjectRules](rules/ProjectRules.md#project-index).
 
 Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
 
-## Markdown File Naming
-
-- Use PascalCase for Markdown file names: `HowToDocumentation.md`, `Architecture.md`, `DesignPrinciples.md`.
-- Every documentation Markdown file name, excluding folders and language prefixes, is unique across the project per language. The validator enforces this to prevent naming collisions.
+Why: dirty context confuse the agent
 
 ## Global Prompt Imports
 
@@ -129,5 +147,5 @@ These files are loaded, not separate agent sessions. [Leader](rules/Leader.md#ro
 @rules/Implementation.md
 @rules/Testing.md
 @rules/Authoring.md
+@rules/ProjectRules.md
 @rules/RuleMaintenance.md
-@rules/RuleOwnership.md

@@ -99,6 +99,11 @@ Maintained tests MUST have a documented automated entry point. Adding a maintain
 
 Pre-commit MUST automatically select checks from the candidate commit's changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests for workflows that depend directly or indirectly on changed components. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
 
+A workflow depends on a component when the workflow executes the component’s code or reads a value the component defines. A module the workflow loads but never calls or reads is not a dependency. Establish what a workflow executes from evidence, such as a coverage run, before mapping it.
+
+For example, an editor workflow loads a Codex configuration module because the extension’s entry file imports it, but Codex is turned off in that workflow, so none of the module’s functions run. Selecting the workflow for a change to that module costs 30 s and checks nothing the change did.
+
+By contrast, a Python test that imports a settings module and reads TIMEOUT_SECONDS on the path it runs depends on that module.
 Changes to the test-selection configuration, shared test runner, or dependency configuration MUST select the full relevant suite unless the project defines and verifies a narrower dependency boundary.
 
 The selector MUST print the selected checks and the reason for each selection, deduplicate checks, and execute them against the same candidate snapshot used for selection.
@@ -166,7 +171,7 @@ Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals
 - **Image or video.** An image shows a state: a layout, a colour, a label. A video shows change over time: an animation, a transition, a sequence of steps. Send an image when nothing in the check moves.
 - **Drive it through the production path.** A driver (a script, a scene, a test entry point) reaches each state through the code path the product uses. It also stages states that are slow or impossible to reach by hand, such as a skill with a long cooldown or a failed network call.
 - **Off the developer's screen.** Render into a virtual display or an off-screen renderer. A headless mode that draws no frames captures nothing, so prove the renderer draws before relying on it. When no off-screen route exists, [Ask Before Taking the Developer's Machine](Execution.md#ask-before-taking-the-developers-machine) applies.
-- **Own state only.** The driver runs on its own profile, save file, and settings, because the product may write on exit and overwrite the developer's data. Its outputs go under [Scratch Files Go in `tmp/`](Execution.md#scratch-files-go-in-tmp).
+- **Own state only.** The driver runs on its own profile, save file, and settings, because the product may write on exit and overwrite the developer's data. Its outputs go in `tmp/`.
 - **Mark each behavior.** The driver prints one line per behavior it shows, with its time in the video. Build the caption from those lines, so the developer knows where to look.
 - **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
 - **Check before linking.** The file has the expected size and duration, it is a format any player opens (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
@@ -179,16 +184,24 @@ For example, a new button in an editor's side panel: the driver opens the panel,
 
 Why: checking a visual by hand costs the developer a launch, a route through menus, and a staged state, and some states cannot be staged by hand at all. A capture costs seconds of looking, and the driver reaches every state the same way each time.
 
-## Verification Selection
+## Keep a Test Only When Its Regression Value Exceeds Its Run Time
 
-For automated verification, apply [Start With Workflow Verification](#start-with-workflow-verification) before selecting another test method. The table identifies evidence appropriate to each defect class, not permission to create function-by-function tests.
+When to apply: adding a test to the project's permanent tests, or reviewing them because commits or publishing take too long.
 
-| Defect or change | Verification evidence |
-|---|---|
-| Deterministic rule, calculation, serialization, or data error | Check the changed behavior in the workflow scenario; add a focused unit regression only for behavior that scenario cannot verify |
-| Lifecycle, scene/view flow, coroutine, event, physics, or input error | Runtime integration test reproducing the real hierarchy and required frames, or a focused manual scenario |
-| Configuration, dependency, prefab, scene, or resource wiring | Inspect persisted configuration and runtime wiring; add a wiring test only for stable recurring contracts |
-| Visual clarity, animation, audio, usability, balance, or comprehension | A capture under [Capture Visual Evidence for the Developer](#capture-visual-evidence-for-the-developer) for what an image or video shows; focused manual review for feel and usability; automate only an underlying deterministic rule |
-| Performance, memory, interruption, or device-specific behavior | Measure the affected scenario in the relevant environment or device |
+A permanent test costs its run time on every commit that selects it, for the life of the project. It pays back only when a later change breaks the behavior it checks. Verify a new behavior in `tmp/` first. Promote the test to the permanent tests only when at least one of these holds:
 
-Test the entry route named in the report. Do not bypass the defective route with a helper or alternate setup.
+- Code that other tasks change often runs the behavior, so an unrelated change can break it.
+- The behavior has regressed before.
+- A break would stay unnoticed in daily use, or would damage data, such as a lost chat or a file written by the wrong owner.
+
+Assume a later agent edits only the code its task names. A test of behavior that only that code runs, and whose break the developer sees on first use, stays in `tmp/`.
+
+A permanent test whose behavior breaks only at a known event, such as an editor upgrade, runs at that event and not on every commit, under [Automate Project-Lifetime Tests](#automate-project-lifetime-tests).
+
+For example, a new label shows the session id in the chat header. The agent checks it once through the editor, from a script in `tmp/`. Only the label's own code shows it, and a missing label is visible at once, so the script stays in `tmp/`.
+
+For example, a change to how turn logs are written gets a permanent test, because every chat writes through that code, and a bad write loses history without any visible error.
+
+For example, a test to check if prompt caching work properly, it should be pernament test, because the bad situation fail silently
+
+Why: every permanent test was kept because it verified something once, so the suite only grew. In one project a typical commit ran 9 editor workflows and took 50–90 s, and the project is the developer's working tool, so a slow fix delays their main work.

@@ -34,7 +34,13 @@ def installation_files(destination: Path) -> dict[Path, bytes]:
             continue
         content = path.read_bytes()
         if path.suffix == ".md":
-            content.decode("utf-8")
+            text = content.decode("utf-8")
+            if path != source:
+                # The source project brief differs from the installed global document.
+                text = text.replace(
+                    "](../AGENTS.development.md", "](../AGENTS.md"
+                )
+            content = text.encode("utf-8")
         relative = Path("AGENTS.md") if path == source else path.relative_to(SOURCE_ROOT)
         target = destination / relative
         # Replacing a destination symlink could change how another tool loads rules.

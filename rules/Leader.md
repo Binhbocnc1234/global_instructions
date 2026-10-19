@@ -1,6 +1,6 @@
 # Leader
 
-Summary: How does an agent complete a developer request? Request coordination, specialist routing, the Design approval checkpoint, handoffs, and completion.
+Summary: How does an agent complete a developer request? Request coordination, specialist routing, requirement elicitation, handoffs, and completion.
 Why: one agent performs the active specialist responsibility. Leader controls the sequence, not each responsibility's internal methods.
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
@@ -17,26 +17,26 @@ The request, project instructions, current artifacts, and existing approvals.
 
 1. Identify the requested outcome and existing approvals. Read the project documentation index under [documentation routing](Execution.md#route-through-the-documentation-index).
 2. Select the needed responsibilities under [Role Routing](#role-routing).
-3. For a change that needs a design, request Design's proposal. Resolve blocking questions before asking for approval.
-4. Present the design and its acceptance criteria. STOP for developer approval before construction. Existing explicit approval of that design satisfies this checkpoint.
-5. After approval, dispatch the required construction work. Use Implementation, Authoring, or RuleMaintenance according to the artifact.
+3. When requirements are missing or ambiguous, use Design to resolve them before dependent work.
+4. Apply explicit approval requirements owned by the active responsibility before the actions they govern.
+5. Once requirements are established and required approvals are satisfied, dispatch construction to Implementation, Authoring, or RuleMaintenance according to the artifact.
 6. Request Testing for executable behavior. Use the artifact specialist's completion checks for documents and rules.
 7. Route failed checks to the responsible specialist. Repeat the affected checks after correction. Do not request routine approval for these transitions.
-8. Assess [Reusable Knowledge](RuleMaintenance.md#reusable-knowledge). Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
+8. Assess [Treat Workflow Failures as Improvement Triggers](RuleMaintenance.md#treat-workflow-failures-as-improvement-triggers). Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
 
-Design approval is the only routine human checkpoint. A request that only asks for explanation or review does not enter the construction workflow.
+A clear request proceeds to the responsible specialist without a separate Design approval checkpoint. Explicit approval requirements elsewhere remain in force. A request that only asks for explanation or review does not enter the construction workflow.
 
-For example, “Create a boss for game ABC” routes to Design for project concepts, behavior, integration, and acceptance criteria. After approval, Leader coordinates construction and verification.
+For example, “Create a boss for game ABC” routes to Design to clarify missing requirements about the boss. Once those requirements are established, Leader coordinates construction and verification.
 
-For example, “Add an export command” follows the same approval flow. By contrast, “Explain the export command” routes to Explanation without construction.
+For example, “Add an export command” routes to Design only when export requirements need clarification. By contrast, “Explain the export command” routes to Explanation without construction.
 
 ## Scope and Exceptional Stops
 
 Required supporting work belongs to the requested outcome, even when the developer did not list every step. It does not authorize unrelated changes.
 
-Report discovered risks under [Report a Risk Only With Its Failure](Communication.md#report-a-risk-only-with-its-failure). Do not suppress a finding because the developer did not request a risk review.
+Report discovered risks. Do not suppress a finding because the developer did not request a risk review.
 
-After Design approval, continue automatically within the approved scope. Return to Design when new evidence requires changing the approved requirements or acceptance criteria. Obtain approval for that change.
+Continue automatically within established requirements and authorized scope. Return to Design when new evidence leaves a required outcome or constraint unresolved. Resolve that requirement before dependent work continues.
 
 The following exceptional stops remain in force:
 
@@ -54,7 +54,7 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 | Responsibility | Specialist | Output |
 |---|---|---|
 | Present developer-facing responses and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
-| Resolve requirements and propose a solution | [Design](Design.md) | A proposal and acceptance criteria |
+| Resolve missing or ambiguous requirements | [Design](Design.md) | Established requirements or focused clarification questions |
 | Construct or migrate code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
 | Select and execute verification | [Testing](Testing.md) | Results and evidence limits |
 | Create or maintain non-rule documents | [Authoring](Authoring.md) | Documents and reference checks |
@@ -64,7 +64,7 @@ Explanation governs the presentation of every developer-facing response and file
 
 Why: presentation depends on the reader, while construction and verification depend on the artifact.
 
-Review is a non-mutating mode of the artifact specialist. Use Implementation for code, Testing for tests, Authoring for documents, RuleMaintenance for instructions, and Design for proposals. Report supported findings or state that none qualifies. Do not modify an artifact unless authorized.
+Review is a non-mutating mode of the artifact specialist. Use Implementation for code, Testing for tests, Authoring for documents, RuleMaintenance for instructions, and Design for requirements. Report supported findings or state that none qualifies. Do not modify an artifact unless authorized.
 
 A responsibility uses the preceding work's outputs and contracts. Its internal rules apply only to that responsibility. Testing behavior does not activate construction rules such as folder-child limits.
 
@@ -73,7 +73,7 @@ These are responsibilities within one session, not separate agents. Keep one act
 Use the single-session workflow until the developer approves subagent escalation after an observed failure.
 Why: the available evidence does not establish a benefit for the developer's workload.
 
-For an actual transfer to another session or a continuation without the previous context, use the [handoff contract](#handoff-contract). Do not create a session merely to change roles.
+For an actual transfer to another session or a continuation without the previous context, use a handoff contract. Do not create a session merely to change roles.
 
 A missing responsibility does not justify creating a generic specialist with no independent guidance. Route proposed role changes to RuleMaintenance.
 
@@ -85,24 +85,11 @@ The approved outcome, specialist results, verification limits, and commit result
 
 Use the active specialist's completion evidence to select the next responsibility. Preserve scope, approvals, results, discovered risks, and blockers in the existing task context. Do not restate them in a separate report for each role change.
 
-## Handoff Contract
+## Separate session for unrelated request
 
-Use these fields only when task context transfers to another session or a continuation that cannot access the previous conversation.
-A handoff MUST NOT expand the authorized scope. Supply the shared rules and applicable specialist and project instructions when the receiver does not already have them.
+This means that if a developer submits an unrelated request within the current session, the agent must inform them that a separate session should be created. To clarify "unrelated": this refers to instances where there is very little information within the session that can be reused. Shared global rules does not count as reusable task context
 
-```text
-Goal:
-Authorized scope:
-Decisions and constraints:
-Artifacts and changes:
-Evidence:
-Open questions or blockers:
-Requested next responsibility:
-Remaining request budget:
-Required return format:
-```
-
-Name the receiving responsibility. Distinguish verified results from assumptions. Preserve pending approvals and evidence limits. Authorized parallel sessions must use independent scopes.
+By constrast, consider a request to "implement feature A" which involves multiple subtasks: design, implementation, and testing. Under the rules, these would all fall within a single session because implementation relies on the design, and testing relies on both.
 
 ## Request Budget
 
@@ -173,7 +160,6 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 
 - **Vocabulary**: first, only when Explanation is active and [Teach the Standard Term](Explanation.md#teach-the-standard-term) applies.
 - **Task type**: name the responsibilities Leader selected for the request.
-- **Answer**: only a requested explanation needs this. For an implementation, do not list the changes: the git diff already shows them.
 - **Lesson**: only when the request handled a correction. Name the cause and where it was recorded or proposed, or why nothing was recorded.
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
 - **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
