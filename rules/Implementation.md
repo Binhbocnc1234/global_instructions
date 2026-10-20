@@ -83,6 +83,22 @@ use_dependency()
 ```
 That's it. You don't need to check for that error
 
+## Keep the Trace When Code Handles a Failure
+
+When to apply: writing code that catches an error, converts it to a return value, an exit status or a message, or passes it across a boundary such as a process, a tool result, an RPC, or an API that returns only success or failure.
+
+A handled failure MUST stay traceable to its origin: the original error's type and message, its cause chain, its stack, and the operation and input that failed. Put that record where the person who debugs it reads: in the rethrown error (wrap it with `cause`, never replace it), in the log the program writes, or in a file that the message names. A shell script that exits non-zero prints the failing command, its exit status, and the path of any log that holds the details.
+
+When a dependency reduces a failure to a Boolean or a code, call the lower-level operation that raises the real error, or record the dependency's limit where its result is used. MUST NOT retry, guess a cause, or report a generic message instead.
+
+An expected outcome that the caller handles as a normal result, such as a search with no match, is not a failure under this rule.
+
+For example, a save function returns `false` when the disk is full, and the caller reports "Save failed". The reader cannot tell a full disk from a read-only file. Good: the caller uses the save operation that throws, and reports `ENOSPC: no space left on device, write 'notes.txt'` with its stack.
+
+For example, a test script launches a program that exits 1, and the script exits 1 with no output, while the details sit in a report file the script never mentions. Good: the script prints "program exited 1; failures in tmp/run-7/report.json".
+
+Why: a failure without its cause makes the reader reproduce it to learn what the error already knew. On 2026-10-20, an editor save API reduced errors to `false`, and a workflow script exited 1 silently with its failures in an unmentioned report; each cost a separate investigation.
+
 ## Comment rules
 
 - Comment non-obvious reasons, invariants, units, ordering, external constraints, and deliberate trade-offs. Do not restate the code.
