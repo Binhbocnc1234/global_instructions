@@ -1,6 +1,6 @@
 ---
 name: software-quality
-description: Select, write, and evidence non-functional requirements with the ISO/IEC 25010 quality model. Use when a request names a quality attribute or a non-functional target — performance budget, frame time, memory, reliability, security, accessibility, usability, maintainability, portability — or asks "is this fast/reliable/maintainable enough?", "what acceptance criteria should this have?", "how do I measure it?", or "which quality attributes matter here?". Also use before committing to a quality target in a design, and when judging whether evidence proves a quality claim.
+description: Select, write, and evidence non-functional requirements with the ISO/IEC 25010 quality model. Use when a request names a quality attribute or a non-functional target — performance budget, frame time, memory, reliability, security, accessibility, usability, maintainability, portability — or asks "is this fast/reliable/maintainable enough?", "what acceptance criteria should this have?", "how do I measure it?", or "which quality attributes matter here?". Also use before committing to a quality target in a design, when judging whether evidence proves a quality claim, and as the list of criteria when decision-analysis compares software options.
 ---
 
 # Software Quality Model
@@ -27,6 +27,10 @@ Select only the attributes that are material to the request. An attribute that n
 5. Record meaningful trade-offs and residual risk. Re-evaluate the scenario when its architecture, platform, workload, or user context changes.
 
 Example: `On the lowest supported device, when a player opens a saved game with 1,000 entities, the scene is interactive within 2 seconds in 95% of 30 cold-start runs.`
+
+## Use as Decision Criteria
+
+When [decision-analysis](../decision-analysis/SKILL.md) compares software options, each material subcharacteristic is one criterion. The measurable scenario from step 3 supplies its anchors: a threshold that one option meets and another misses marks the step between two scores. Weights, ranges, and ties follow decision-analysis.
 
 ## Product Quality
 
