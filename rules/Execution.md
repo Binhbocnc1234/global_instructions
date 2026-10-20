@@ -20,7 +20,7 @@ Why: repeated reads of unchanged content consume tool calls and context without 
 
 When to apply: at the start of every task in a project that carries documentation.
 
-1. Read the project's documentation index in full. The project `AGENTS.md` records its path.
+1. Read the project's documentation index in full, reached through the [Project Index](ProjectRules.md#project-index).
 2. Open only the indexed documents whose description matches the request.
 3. Follow an inline link out of those documents only when the link affects the task.
 

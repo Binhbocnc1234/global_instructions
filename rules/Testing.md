@@ -176,7 +176,7 @@ Test the logic as text first, under [Agent Tests Logic, Developer Judges Visuals
 - **Short.** One video is at most 30 seconds. Split a longer showcase into one video per behavior group.
 - **Check before linking.** The file has the expected size and duration, it is a format any player opens (PNG, H.264 MP4), and a frame taken at one marked time is not blank. A broken capture costs the round trip it was meant to save.
 
-The project owns the route, reached from its `AGENTS.md`: the capture mode, the virtual display, the driver's entry point, and the encoder command. A project with a GUI and no route gets one proposed.
+Find the project-owned capture route through the [Project Index](ProjectRules.md#project-index). A project with a GUI and no route gets one proposed.
 
 For example, a new game character: the driver spawns it beside an enemy, then shows its walk, an attack, its skill, a hit, and its death in one 15-second video.
 
