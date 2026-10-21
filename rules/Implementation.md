@@ -27,6 +27,28 @@ For a boundary case, a candidate application supplies the desired widget but req
 
 Why: research can avoid rebuilding existing capabilities and reveal protocol constraints before implementation. Limiting the trigger to subsystem choices and unresolved integrations avoids requiring external research for routine local changes.
 
+## Keep Core Behavior Independent of Presentation and Its Host
+
+When to apply: introducing or changing the boundary between application or gameplay behavior and a UI, engine scene, or host process.
+
+MUST identify the behavior's state owner, required lifetime and required execution contexts before choosing the boundary. Derive these from the request and project contracts. Include established needs such as automated verification, simulation, frontend replacement or survival across a host reload; do not invent future requirements.
+
+Presentation and host adapters MUST depend on core-owned operations and contracts. Core behavior MUST NOT require presentation implementations, UI objects or rendered properties to determine its results. Keep mutable state within its owning scope so separate executions do not share state accidentally.
+
+For a new or changed boundary, verification MUST exercise the production core behavior without the presentation or host dependency that the boundary is intended to exclude. Use existing dependency checks to detect prohibited imports. Separate folders or class names alone do not establish independence.
+
+For example, a game AI evaluates possible attacks. Live combat and simulation use the same damage and movement rules, while each battle owns its mutable state. Running the simulation requires no sprites or animation nodes.
+
+For example, a desktop application must support replacing its GUI. Its session operations accept core-owned inputs and produce results or events; a GUI adapter translates between those contracts and widgets.
+
+By contrast, a hover animation belongs in the widget that displays it. This rule does not require moving appearance-only behavior into a domain service.
+
+For a boundary case, a single-process application can satisfy GUI independence through modules and direct calls. Introduce a separate process only when a requirement such as independent lifetime or shared access justifies the communication and lifecycle work.
+
+For a boundary case, engine-provided math and data types may remain in gameplay code when they do not require presentation or scene services. Possible future multiplayer or saving does not require implementing networking, save formats or a plugin system now.
+
+Why: tying core behavior or state to the first presentation or host makes another execution context require changes to that behavior. Explicit dependencies and scoped state preserve reuse without requiring an architecture for hypothetical features.
+
 ## Keep spec owned by the object whose state it.
 
 For example, `Knockback` must not check whether a displaced `Entity` position is valid when `Entity` owns team/grid boundaries; it should request displacement through an operation such as `entity.apply_knockback(delta)`, and `Entity` must enforce the invariant by clamping position. Treat the opposite design as misplaced responsibility or domain-invariant leakage: it violates encapsulation and the Tell, Don't Ask principle.
