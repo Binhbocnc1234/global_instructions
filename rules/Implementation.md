@@ -9,6 +9,24 @@ How code should look like?
 - Do not extract a method merely to label a few statements when keeping them inline makes lifecycle or ordering clearer.
 - Make a value's unit or representation explicit in its identifier when omission could cause misuse. Follow the project's naming convention with names such as `duration_seconds`, `DurationSeconds`, or `limit_fraction`.
 
+## Research Before Building a Subsystem
+
+When to apply: adding or replacing a subsystem whose implementation approach is not established by the project, where existing software could supply required capabilities or resolve an unknown integration mechanism.
+
+MUST inspect project code and current dependencies first. If they do not supply the required implementation or reference, search for existing implementations before choosing how to build the subsystem.
+
+Inspect source code or official documentation. Compare reuse, adaptation and a new implementation against required behavior, architectural fit, integration work, verification work, dependency constraints and license. Reuse MAY mean a library, an application extended through an adapter, or a mechanism learned from source. An existing implementation does not by itself establish that adoption requires less work.
+
+For example, a new chat frontend needs session navigation, streamed responses, tool displays and file review. Inspect existing clients and component libraries before implementing those capabilities. Extending an existing application MAY avoid building several of them.
+
+For example, subscription authentication requires a refresh mechanism that the available API documentation does not establish. Inspect a client supporting the same authentication route before inventing the protocol.
+
+By contrast, changing a label, correcting a calculation in an established code path, or adding a field to an existing form does not trigger this rule.
+
+For a boundary case, a candidate application supplies the desired widget but requires replacing session storage, model transport and build tooling. Compare that integration work with a component library or a local implementation; finding an existing application does not require adopting it.
+
+Why: research can avoid rebuilding existing capabilities and reveal protocol constraints before implementation. Limiting the trigger to subsystem choices and unresolved integrations avoids requiring external research for routine local changes.
+
 ## Keep spec owned by the object whose state it.
 
 For example, `Knockback` must not check whether a displaced `Entity` position is valid when `Entity` owns team/grid boundaries; it should request displacement through an operation such as `entity.apply_knockback(delta)`, and `Entity` must enforce the invariant by clamping position. Treat the opposite design as misplaced responsibility or domain-invariant leakage: it violates encapsulation and the Tell, Don't Ask principle.
