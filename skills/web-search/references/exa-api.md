@@ -39,7 +39,7 @@ It emits a JSON object with `pages` (`title`, `url`, `published_date`, `text`) a
 
 Use the Python SDK directly, or extend the script with tests, when the task requires:
 
-- structured synthesis through `system_prompt` and `output_schema`;
+- structured synthesis through `output_schema`;
 - extra deep-search queries through `additional_queries`;
 - full page text or summaries instead of highlights;
 - publication or crawl date filters;

@@ -21,6 +21,12 @@ SEARCH_TYPES = (
     "deep-reasoning",
 )
 
+DEFAULT_SYSTEM_PROMPT = (
+    "Prefer official documentation, specifications, and source repositories. "
+    "Find pages that directly answer the query and match its stated version and "
+    "platform. Avoid duplicate results."
+)
+
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Search the web with Exa.")
@@ -84,6 +90,7 @@ def search(args: argparse.Namespace) -> list[dict[str, object]]:
         include_domains=args.include_domain or None,
         exclude_domains=args.exclude_domain or None,
         contents={"highlights": True},
+        system_prompt=DEFAULT_SYSTEM_PROMPT,
     )
     return [serialize_result(result) for result in response.results]
 
