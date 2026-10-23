@@ -25,12 +25,32 @@ if ($env:EXA_API_KEY) { "EXA_API_KEY configured" } else { "EXA_API_KEY missing" 
 
 Run every Python command with a timeout of at least 60 seconds. Python startup and the first `exa_py` import are slow on this machine. If the harness supports yielding, yield after about 10 seconds and keep waiting on the same process.
 
+## Choose Methods for Result Quality
+
+Choose the Exa method and options you expect to improve relevance, coverage,
+freshness, or source quality for the current request. MUST NOT choose a less
+suitable method solely to conserve Exa quota.
+
+MAY use deeper search modes, task-specific system prompts, or other supported
+API options when you can name the expected improvement. Use the official
+Python SDK when the CLI does not expose a needed option; follow
+[Exa API](references/exa-api.md).
+
+For example, try `deep` with a source-selection system prompt when a comparison
+requires finding official evidence across several sources.
+
+By contrast, an exact documentation lookup may need only `auto`. Do not assume
+that a deeper search mode improves every query.
+
+Why: The developer prioritizes result quality over conserving Exa quota.
+
 ## Search Workflow
 
 1. Write one query string that names the task, the environment, and the hard constraint.
    - Weak: `sprite sheet tool`
    - Strong: `open source sprite sheet packer command line Unity 2D`
-2. Run the Exa CLI.
+2. Run Exa using the method selected under
+   [Choose Methods for Result Quality](#choose-methods-for-result-quality).
 3. Judge the result set. See the next section.
 4. Open the sources that carry the answer with the Exa fetch CLI. Highlights and snippets are excerpts, not pages. Fetch the full page before stating a fact that the excerpt only implies.
 5. Answer from the retrieved evidence. Link every source. Separate a verified fact from an inference.
