@@ -39,6 +39,13 @@ Python SDK when the CLI does not expose a needed option; follow
 For example, try `deep` with a source-selection system prompt when a comparison
 requires finding official evidence across several sources.
 
+For searches that need official technical evidence, use this source-selection
+prompt through the SDK's `system_prompt` argument:
+
+```text
+Prefer official documentation, specifications, and source repositories. Find pages that directly answer the query and match its stated version and platform. Avoid duplicate results.
+```
+
 By contrast, an exact documentation lookup may need only `auto`. Do not assume
 that a deeper search mode improves every query.
 
