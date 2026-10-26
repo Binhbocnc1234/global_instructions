@@ -40,7 +40,7 @@ The developer approved committing all pending changes. The rule migration includ
 
 ## Correction Record
 
-The prior organization confused shared use with shared ownership. [Rule Ownership](../../AGENTS.md#rule-ownership) now distinguishes specialist outputs from internal workflows. [Leader](../../rules/Leader.md) owns coordination instead of making each specialist load it.
+The prior organization confused shared use with shared ownership. [Rule Ownership](../../AGENTS.development.md#rule-ownership) now distinguishes specialist outputs from internal workflows. [Leader](../../rules/Leader.md) owns coordination instead of making each specialist load it.
 
 ## Evidence Limits
 
