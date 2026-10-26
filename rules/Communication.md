@@ -141,3 +141,15 @@ For example, in a session that debug Linux context
 > Why a forced power-off leaves no "shutdown" lines in journal: journald writes each message to disk as it arrives. A normal shutdown ends with systemd-journald: Journal stopped. By constrast, when the power is cut, the file just ends at the last message written, which was 138.288883 … Failed to activate service in boot -1. That missing end marker is how I counted your 3 forced shutdowns.
 
 Why: developer can understand paragraph faster and more accurate. As soon as they read the connector word, the developer narrow down the semantic space of the subsequent sentence.
+
+## Do Not Hard-Wrap Sentences
+
+When to apply: writing a sentence in Markdown, a code comment, or a string literal such as a tool description.
+
+Keep each paragraph on one line, however long. MUST NOT break a sentence at about 95 characters to fit a line width; a sentence of several hundred characters on one line is normal. Splitting a string literal into adjacent pieces only to shorten the source line is also a hard wrap. Exception: a formatter or linter that the project configures enforces a line length.
+
+For example, a 300-character Markdown paragraph stays one line, and the editor wraps it on screen.
+
+For example, a 150-character Python tool description stays one literal, `"Run a command in Core's shell. Each command starts in the working directory; a cd does not carry over to the next command. ..."`, not two adjacent literals joined across a line break.
+
+Why: agents wrap at about 95 characters by habit, observed in Claude's Markdown and, on 2026-10-26, in a Python tool description whose split literal the developer had to ask about. A wrapped sentence cannot be found by searching for a phrase across the break, and a one-word edit changes several lines of the diff.
