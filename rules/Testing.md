@@ -1,6 +1,6 @@
 # Testing
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+Use the shared foundation in [AGENTS.md](../AGENTS.development.md).
 
 ## Start With Workflow Verification
 
@@ -36,7 +36,7 @@ Test behaviour, not implementation.
 
 When to apply: constructing test fixtures, fakes, or expected results.
 
-Apply DRY from the [shared foundation](../AGENTS.md) to test construction. Tests MUST execute the production implementation of the behavior they claim to verify.
+Apply DRY from the [shared foundation](../AGENTS.development.md) to test construction. Tests MUST execute the production implementation of the behavior they claim to verify.
 
 Do not copy production algorithms, state transitions, or invariant enforcement into test helpers or fakes. A copied implementation can repeat the same defect without exercising the production code.
 
@@ -97,7 +97,13 @@ When to apply: adding or maintaining automated tests intended to remain useful b
 
 Maintained tests MUST have a documented automated entry point. Adding a maintained test MUST NOT automatically add its execution to every commit.
 
-Pre-commit MUST automatically select checks from the candidate commit's changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests for workflows that depend directly or indirectly on changed components. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
+A project-owned selection command MUST select checks from the changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests for workflows that depend directly or indirectly on changed components. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
+
+The pre-commit hook MUST NOT run tests; it runs only the staged-file checks. The agent runs the selection command once, after the last commit of the request, against the last commit, and runs exactly the checks it selects. The agent MUST NOT add, skip, or replace a selected check by its own judgement. It MAY run another check only to diagnose a failure.
+
+For example, a request implements two features in two commits. The selection command runs once after the second commit, and its selection covers the files both commits changed.
+
+Why: a hook runs the selected tests at every commit, so a request with two commits pays for two runs, and in one project a single run took 144 s. A command still selects from the changed files, so selection does not depend on the agent's judgement.
 
 A workflow depends on a component when the workflow executes the component’s code or reads a value the component defines. A module the workflow loads but never calls or reads is not a dependency. Establish what a workflow executes from evidence, such as a coverage run, before mapping it.
 
@@ -110,15 +116,15 @@ The selector MUST print the selected checks and the reason for each selection, d
 
 Workflows not selected for every commit MUST remain available through the project's test entry point. The project MUST state when those workflows are required, such as before merging or releasing.
 
-Commit verification MUST test the candidate commit's files. When uncommitted changes could affect the result, run verification in an isolated checkout of the candidate snapshot. MUST NOT treat a passing test against different working-folder content as evidence that the candidate commit passes.
+Verification MUST test the committed files. When uncommitted changes could affect the result, run verification in an isolated checkout of the last commit. MUST NOT treat a passing test against different working-folder content as evidence that the commit passes.
 
-A failed required check MUST block the commit. Each selected check MUST run for the candidate snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure; a later pass MUST NOT silently erase an earlier failure.
+A failed selected check MUST be fixed in a new commit, followed by another run of the selection command, before the final response. When a blocker prevents the fix, the response names the failing check. Each selected check MUST run for the same snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure; a later pass MUST NOT silently erase an earlier failure.
 
 Tests that are only valid for the current session MUST remain in the git-ignored `tmp/` folder. MUST NOT add them to the project's permanent test workflow.
 
 For example, a documentation-only commit runs the applicable staged-file checks without launching an editor when no executable behavior or test configuration changes.
 
-By contrast, a change to shared session storage runs the workflows that depend on that storage. A passing run that included an unstaged storage fix does not verify a candidate commit that omits the fix.
+By contrast, a change to shared session storage runs the workflows that depend on that storage. A passing run that included an unstaged storage fix does not verify a commit that omits the fix.
 
 Why: verification must cover the committed behavior without repeating unrelated workflows or allowing uncommitted changes to hide a broken commit.
 

@@ -3,7 +3,7 @@
 Summary: How does an agent complete a developer request? Request coordination, specialist routing, requirement elicitation, handoffs, and completion.
 Why: one agent performs the active specialist responsibility. Leader controls the sequence, not each responsibility's internal methods.
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+Use the shared foundation in [AGENTS.md](../AGENTS.development.md).
 
 ## Responsibility
 
@@ -41,7 +41,7 @@ Continue automatically within established requirements and authorized scope. Ret
 The following exceptional stops remain in force:
 
 - [Blockers and failed mechanisms](Execution.md#blocker-detection-and-stop-policy).
-- [Credentials and security boundaries](../AGENTS.md).
+- [Credentials and security boundaries](../AGENTS.development.md).
 - [Taking control of the developer's machine](Execution.md#ask-before-taking-the-developers-machine).
 - Other explicit approval requirements in the applicable instructions.
 
@@ -98,7 +98,7 @@ Why: the harness uses the approved cost allowance to require human review before
 
 ## Commit
 
-Commit after you complete the request(bug-fixing/implementation/migration) and its required verification passes.
+Commit after you complete each change of the request (bug-fixing/implementation/migration). Tests run once after the last commit, under [Automate Project-Lifetime Tests](Testing.md#automate-project-lifetime-tests).
 
 Agent-performed verification is sufficient evidence for committing. Manual or developer verification, visual review, Play Mode confirmation, physical-device checks, usability review, and release approval may remain outstanding; report them as post-commit verification or approval rather than withholding the commit solely for their absence.
 
@@ -107,8 +107,9 @@ Agent-performed verification is sufficient evidence for committing. Manual or de
 3. Run a staged diff check when available.
 4. Commit using a focused Conventional Commit message. Apply Commit Scope and Commit Message. The message is a header line only, with no description body.
 5. Verify the resulting commit and the remaining worktree state.
+6. After the last commit of the request, run the project's test-selection command. Fix a failure in a new commit and run the command again.
 
-When the configured pre-commit hook runs the 250-line, local Markdown-link, and folder-child checks, MUST rely on `git commit` to run them. MUST NOT run these scripts separately merely to repeat the hook's verification. Separate runs MAY be used to diagnose a failure. Required tests and checks not covered by the hook MUST still run before committing.
+When the configured pre-commit hook runs the 250-line, local Markdown-link, and folder-child checks, MUST rely on `git commit` to run them. MUST NOT run these scripts separately merely to repeat the hook's verification. Separate runs MAY be used to diagnose a failure.
 
 Why: one command runs all configured checks, instead of requiring the agent to remember and run each script individually.
 
@@ -160,7 +161,7 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 
 - **Vocabulary**: first, only when Explanation is active and [Teach the Standard Term](Explanation.md#teach-the-standard-term) applies.
 - **Task type**: name the responsibilities Leader selected for the request.
-- **Lesson**: only when the request handled a correction. Name the cause and where it was recorded or proposed, or why nothing was recorded.
+- **Lesson**: only when the request handled a correction. Name the cause and where it was recorded, or why nothing was recorded.
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
 - **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
 
