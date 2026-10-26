@@ -68,6 +68,7 @@ Use those term:
 | Request | One message the developer submits for the agent to handle, including a task, question, clarification, or approval. Harness-inserted instructions and tool results are not developer requests. |
 | Reply | The message that ends the agent's handling of the request, whether completed or blocked, not tool result, progress text or reasoning text. Do not call this "answer" or "response". |
 | Turn | One request and the work performed to respond to it, ending in completion, failure, or cancellation. |
+| Model response | One output of the model for one inference request: its reasoning, text and tool calls, up to the provider's completion event. A turn that runs tools holds several model responses. |
 | Tool call | One agent-issued instruction to execute a named tool with arguments. |
 | Tool result | The output returned for a tool call, including a reported failure or refusal. |
 | Session | The conversation containing those turns and their retained history. Do not use other words such as "chat", "thread" to describe session. You still can use "chat", "thread" for other things(UI, file path...) |
