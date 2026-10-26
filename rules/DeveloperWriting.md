@@ -39,6 +39,8 @@ Why: the developer needs enough information to understand and act. Unnecessary c
 
 Do not defer authorized work merely because the developer has not repeated "go". When the request already supplies the decision and the scope, finish that work in the same turn.
 
+For example, the developer decides to rename a word that has two meanings, then asks whether another project needs the same change. The agent finds the word there too, in the labels of the app's buttons, and already has a recommended new name. The goal decides the change, and only the name is open, so the agent renames the labels with its recommendation in the same turn and names that choice in the reply. If the developer prefers another name, reverting one commit is enough. By contrast, when the options change what the product does, such as removing the buttons instead of renaming them, the decision is unmade and the agent asks first.
+
 Some other examples:
 
 **Example 1:**
