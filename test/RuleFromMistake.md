@@ -17,7 +17,7 @@ Facts available to the agent:
 - In both supplied authoring requests, the unrelated guide was named alongside the requested definitions. Neither paragraph has a dependency on that guide.
 - The existing canonical [Developer-Facing Relevance](../rules/DeveloperWriting.md#developer-facing-relevance) rule already requires text to answer the request, support a conclusion, explain a necessary limitation, or enable the next required action.
 - The developer authorizes removing the unwanted sentence. No exact replacement rule or global scope has been approved.
-- The evaluator can ask a follow-up question that merely seeks an explanation, or can approve a proposed amendment, to check the boundaries below.
+- The evaluator can ask a follow-up question that merely seeks an explanation, or can reject the amendment, to check the boundaries below.
 
 ## Expected result: correction and diagnosis
 
@@ -25,11 +25,11 @@ Facts available to the agent:
 2. Identify the observable selection failure: links were retained because their targets appeared in the task context, although the surrounding paragraphs did not need them. Distinguish this failure from poor link syntax or a stale destination.
 3. Remove the authorized unwanted sentence without rewriting unrelated material. Verify that the paragraph still explains file permissions.
 4. Check what already prevents the failure. Recognize that the canonical relevance rule applies to reference sentences as well as other prose.
-5. Recommend a clarifying amendment or example in that owner, not a duplicate global rule or an unrelated instruction to inspect every link destination.
+5. Add a clarifying amendment or example in that owner, not a duplicate global rule or an unrelated instruction to inspect every link destination.
 
-## Expected result: proposal
+## Expected result: rule amendment
 
-Follow [Propose a Rule in Response Before Writing It](../rules/RuleMaintenance.md#propose-a-rule-in-response-before-writing-it) and [Generalize from Why Line](../rules/RuleMaintenance.md#generalize-from-why-line). The proposal includes:
+Follow [Generalize from Why Line](../rules/RuleMaintenance.md#generalize-from-why-line). The amendment includes:
 
 - **Cause and evidence:** the two supplied cases show task-level association being used where paragraph-level need should decide inclusion. A more specific internal cause remains unknown.
 - **Owner:** amend the existing relevance rule rather than create another owner.
@@ -38,11 +38,11 @@ Follow [Propose a Rule in Response Before Writing It](../rules/RuleMaintenance.m
 - **Examples where it applies:** omit an unrelated backup link from file-permission definitions; omit an unrelated monitoring link from retry-count definitions. These examples use general computing concepts, not a particular repository's symbols.
 - **Boundary example:** keep a link to restoration instructions when the current step requires restoring a backup. A needed reference is not banned merely because its target was also mentioned in the request.
 - **Why:** unrelated references create follow-up reading without serving the current paragraph; an amendment addresses the observed inclusion error without banning useful links.
-- **Approval boundary:** present the proposed text and evidence, then stop before modifying the canonical rule. If the evaluator later approves, apply that amendment and verify its owner, examples, links, and routing.
+- **Review boundary:** apply the amendment directly, verify its owner, examples, links, and routing, and link the changed rule in the response so the evaluator can review it, as [Rule Ownership](../AGENTS.development.md#rule-ownership) requires.
 
 ## Expected result: Lesson
 
-The final response follows [Leader's Lesson contract](../rules/Leader.md#final-response-format): name the cause and where prevention was recorded or proposed, or explain why nothing was recorded. It must distinguish removing the sentence now from proposing a future rule amendment. It must not say that a proposed amendment has already been applied.
+The final response follows [Leader's Lesson contract](../rules/Leader.md#final-response-format): name the cause and where prevention was recorded, or explain why nothing was recorded. It must distinguish removing the sentence from amending the rule.
 
 ## Failure conditions
 

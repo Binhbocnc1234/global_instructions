@@ -1,6 +1,6 @@
 # RuleMaintenance
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+Use the shared foundation in [AGENTS.md](../AGENTS.development.md).
 
 When to apply: reviewing, proposing, creating, or changing agent instructions.
 
@@ -28,7 +28,7 @@ When writing or editing rules, write for both agent and developer. The reason is
 
 Why --> Examples --> Abstract instructions
 
-Before proposing the wording, check whether the reader can perform the required action using the rule and its explicit references. MUST NOT assume the reader has the author's session context or knows where an unnamed prerequisite is documented.
+Before writing the wording, check whether the reader can perform the required action using the rule and its explicit references. MUST NOT assume the reader has the author's session context or knows where an unnamed prerequisite is documented.
 
 When an instruction requires a particular format, MUST provide the details needed to construct a valid input, or link to the canonical reference that provides them. An example MUST show the format when the format is what the reader needs to learn; explaining only the example's purpose is not enough.
 
@@ -36,7 +36,7 @@ For example, “put excluded directories under `exclude`” leaves the reader to
 
 By contrast, “Open the file” does not need an explanation of files. A missing prerequisite is knowledge needed to carry out this instruction, not every fact related to its topic.
 
-Why: the author can mentally fill in omitted details and mistake that understanding for a usable instruction. Checking the reader's required action exposes those omissions before approval.
+Why: the author can mentally fill in omitted details and mistake that understanding for a usable instruction. Checking the reader's required action exposes those omissions before the rule is written.
 
 Place a rule by what triggers it, not only by its topic. When two owners seem to fit, identify when the agent must act and choose the owner responsible for that action.
 
@@ -60,13 +60,13 @@ Why: these cutoffs are developer-selected placement criteria. Global rules are l
 
 ## Use Project AGENTS.md as a Temporary Owner
 
-When to apply: an approved project-scoped rule is needed, but its canonical owner within the project is not yet clear.
+When to apply: a project-scoped rule is needed, but its canonical owner within the project is not yet clear.
 
 The project `AGENTS.md` MAY temporarily own the rule. Mark the placement as temporary and state which ownership decision remains unresolved.
 
 Once the canonical owner is established, move the rule there. If automation fully enforces the rule, remove the duplicate instruction. Leave a link in the project `AGENTS.md` only when needed for routing.
 
-For example, an approved asset-naming rule may temporarily live in the project `AGENTS.md` while the project decides which document owns asset requirements. Once that owner is chosen, move the rule there. By contrast, do not use temporary placement when an existing document already owns asset requirements.
+For example, an asset-naming rule may temporarily live in the project `AGENTS.md` while the project decides which document owns asset requirements. Once that owner is chosen, move the rule there. By contrast, do not use temporary placement when an existing document already owns asset requirements.
 
 Why: a needed rule must remain discoverable while ownership is unresolved, without turning temporary placement into a second canonical copy.
 
@@ -74,9 +74,9 @@ Why: a needed rule must remain discoverable while ownership is unresolved, witho
 
 When to apply: the developer undoes, rejects, or redoes a result that an agent produced, in this session or an earlier one, or points out a step the agent skipped. A question that comes from the developer not knowing an area gets an answer, and nothing is recorded.
 
-For example (an undo with an unstated reason). The developer writes: "I no longer want markdown guides for testing this Entity. Create a scene that demonstrates its features, and the right arrow shows the next feature." Bad: the agent builds the scene and ends the turn. Good: the agent infers the reason from the profiles: the agent executes fast, so a driver scene stages each state in one frame (a Card dragged to a position, many Entities spawned, an Effect applied), while a guide makes the developer click through every setup step by hand. Testing is not specific to this Entity; every later feature is tested the same way. So the agent proposes reusable knowledge for future testing: manual checks in this project are stepped scenes, not guides, with the route recorded where [Capture Visual Evidence for the Developer](Testing.md#capture-visual-evidence-for-the-developer) says a project keeps it.
+For example (an undo with an unstated reason). The developer writes: "I no longer want markdown guides for testing this Entity. Create a scene that demonstrates its features, and the right arrow shows the next feature." Bad: the agent builds the scene and ends the turn. Good: the agent infers the reason from the profiles: the agent executes fast, so a driver scene stages each state in one frame (a Card dragged to a position, many Entities spawned, an Effect applied), while a guide makes the developer click through every setup step by hand. Testing is not specific to this Entity; every later feature is tested the same way. So the agent records reusable knowledge for future testing: manual checks in this project are stepped scenes, not guides, with the route recorded where [Capture Visual Evidence for the Developer](Testing.md#capture-visual-evidence-for-the-developer) says a project keeps it.
 
-For example (an oversight). The developer writes: "You forgot to update the testing documentation to reflect the new changes." Bad: the agent updates the document and ends the turn. Good: the agent updates the document, then diagnoses why it was missed. Possible causes: nothing links the changed code to the document (routing), no tool lists what references the changed symbol (no LSP reference search), or no workflow step says that a change to this code also updates its testing document (a missing rule). The agent fixes or proposes a fix for the cause it found.
+For example (an oversight). The developer writes: "You forgot to update the testing documentation to reflect the new changes." Bad: the agent updates the document and ends the turn. Good: the agent updates the document, then diagnoses why it was missed. Possible causes: nothing links the changed code to the document (routing), no tool lists what references the changed symbol (no LSP reference search), or no workflow step says that a change to this code also updates its testing document (a missing rule). The agent fixes the cause it found.
 
 For example (a question that is not a correction). The developer asks: "Why does this passive remove every Camouflage?" The agent reads the code and the design. When the design requires it, the agent explains and records nothing. When the design gives no reason, the result was wrong, and the question is a correction.
 
@@ -130,7 +130,7 @@ Use the following table to choose the owner and check the evidence needed for th
 | One tool used across projects | The skill for that tool | The cause lies in the tool, and the tool behaves the same in every project |
 | Any project | A global rule | The cause lies in how the agent works, not in any code, and a second case in a different context can be named without changing the cause |
 
-Before proposing the rule, check it:
+Before writing the rule, check it:
 - The trigger is something the agent can observe in the conversation or the files, such as a kind of message or a file change. A judgement such as "the agent's fault" or "important" is not a trigger, because the agent decides it differently each time.
 - The trigger identifies the conditions where the cause or reason applies, not merely a similar outcome.
 - Include an example where the rule applies and one where it does not. For a rule that applies across contexts, include at least two applicable examples from different contexts, supported by evidence of the same cause or reason. A rule confined to one place does not require a second context. Invented examples MAY illustrate a rule, but MUST NOT count as evidence for widening its scope.
@@ -170,12 +170,4 @@ By contrast, “A download contains 100 MB and the connection transfers 10 MB pe
 Whether an example supports a rule's scope is governed by [Generalize from Why Line](#generalize-from-why-line).
 
 Why: an author remembers the omitted situation and can mistake a fragment for a complete example. Supplying the facts that affect the choice lets a reader understand and judge the example without the author's session context.
-
-## Propose a Rule in Response Before Writing It
-
-Please state your changes exactly, word for word—not a summary.
-
-If developer approve your rule, you can apply it.
-
-Why: agents write poor rules(developer experience)
 

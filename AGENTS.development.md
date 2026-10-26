@@ -71,7 +71,7 @@ A **rule** is an instruction stored in a file for the agent to follow across req
 
 [RuleMaintenance](rules/RuleMaintenance.md#generalize-from-why-line) alone decides a rule's scope and where it belongs. Other responsibilities use existing rules and route proposed rule changes to that specialist.
 
-Rules are not automatically optimal or immutable. When a rule is obsolete or cannot serve its stated purpose, propose a change through [RuleMaintenance](rules/RuleMaintenance.md#propose-a-rule-in-response-before-writing-it) instead of silently ignoring it.
+Rules are not automatically optimal or immutable. When a rule is obsolete or cannot serve its stated purpose, change it through [RuleMaintenance](rules/RuleMaintenance.md) instead of silently ignoring it.
 
 Global AGENTS.md owns the shared principles, profiles, security, project structure, and prompt imports.
 [Execution](rules/Execution.md) owns shared execution safeguards. [Communication](rules/Communication.md) owns communication constraints for both developer-facing and agent-facing text. [Explanation](rules/Explanation.md) owns developer-facing presentation, including relevance and vocabulary. [Leader](rules/Leader.md) owns request routing, sequencing, handoffs, and completion. Shared use does not make a coordination rule a shared principle.
@@ -88,7 +88,7 @@ Use the instruction hierarchy supplied by the harness. User rules cannot overrid
 
 Do not silently rank requests over canonical contracts. Project exceptions follow [ProjectRules](rules/ProjectRules.md#project-scoped-agentsmd).
 
-Facts can be recorded directly. Unapproved rule changes require the RuleMaintenance role. A request that specifies and authorizes a rule permits its implementation.
+Facts and rules can be recorded directly, without developer approval. A rule change follows the RuleMaintenance role, and the response links each changed rule so the developer can review it.
 
 ## Some small rules
 
