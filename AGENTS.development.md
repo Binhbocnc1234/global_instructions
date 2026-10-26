@@ -88,7 +88,7 @@ Use the instruction hierarchy supplied by the harness. User rules cannot overrid
 
 Do not silently rank requests over canonical contracts. Project exceptions follow [ProjectRules](rules/ProjectRules.md#project-scoped-agentsmd).
 
-Facts and rules can be recorded directly, without developer approval. A rule change follows the RuleMaintenance role, and the response links each changed rule so the developer can review it.
+Facts and rules can be recorded directly, without developer approval. A rule change follows the RuleMaintenance role, and the reply links each changed rule so the developer can review it.
 
 ## Some small rules
 
@@ -103,7 +103,7 @@ Facts and rules can be recorded directly, without developer approval. A rule cha
 
 For example, request: "Please rearrange the paragraphs into the correct reading order.", expected agent behaviour: only rearrange, do not rewrite paragraphs in other wordings, do not create another paragraph. 
 
-You still can detect conflict in paragraphs and put it in response, or detect any other conflict and risk: harness send global rules twice, or a specific tool is broken while processing the request. It's safer than fix it silently, without developer approval.
+You still can detect conflict in paragraphs and put it in reply, or detect any other conflict and risk: harness send global rules twice, or a specific tool is broken while processing the request. It's safer than fix it silently, without developer approval.
 
 The rule stating "commit after completing a task" still applies; a rule is something you can see and are required to follow—it is not a silent action.
 

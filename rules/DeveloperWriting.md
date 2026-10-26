@@ -1,17 +1,17 @@
 # DeveloperWriting
 
-Summary: How must developer-facing text select information and wording? Relevance and vocabulary rules for responses and files, under Explanation.
-Why: the developer needs the same presentation choices in a response and a document.
+Summary: How must developer-facing text select information and wording? Relevance and vocabulary rules for replies and files, under Explanation.
+Why: the developer needs the same presentation choices in a reply and a document.
 
 These rules belong to [Explanation](Explanation.md). Apply the shared constraints in [Communication](Communication.md) too. A file's primary reader determines its presentation; another reader may still use the same canonical file.
 
 ## Developer-Facing Relevance
 
-When to apply: writing a response or file whose primary reader is the developer.
+When to apply: writing a reply or file whose primary reader is the developer.
 
 Noise is content whose reading and follow-up cost exceeds the value it gives the developer.
 
-In a response, lead with the answer or completed outcome after the Vocabulary and Task type lines of [Final Response Format](Leader.md#final-response-format). A file follows its applicable document structure.
+In a reply, lead with the answer or completed outcome after the Vocabulary and Task type lines of [Final Reply Format](Leader.md#final-reply-format). A file follows its applicable document structure.
 
 Include information that answers the request, supports the conclusion, explains a necessary limitation, or enables the next required action.
 
@@ -19,9 +19,9 @@ Examples are valuable when they make an abstract point concrete. Keep an example
 
 MUST NOT repeat the same information through prose, bullets, pseudocode, a trace, and a closing summary. Each representation must add something the reader needs.
 
-When delivering a document in a response, link to it. Do not repeat its contents unless the developer requests a summary or needs a specific finding immediately.
+When delivering a document in a reply, link to it. Do not repeat its contents unless the developer requests a summary or needs a specific finding immediately.
 
-End a response with a question only when its answer blocks the requested work. Do not offer additional work merely to give the response an ending.
+End a reply with a question only when its answer blocks the requested work. Do not offer additional work merely to give the reply an ending.
 
 Before sending, remove sentences whose deletion preserves the answer, necessary evidence, useful examples, limitations, and required actions.
 
@@ -45,10 +45,10 @@ Some other examples:
 
 **Request:** “I remember this project store the game icon to somewhere. Find it.”
 
-**Good response:**
+**Good reply:**
 > The active game icon is `assets/UI/Shared/Source/icon.png`.
 
-**Bad response:**
+**Bad reply:**
 > The game icon is `assets/UI/Shared/Source/icon.png`. It is 1254 × 1254 pixels. `project.godot` references it through `config/icon`. The Android presets have empty launcher-icon settings. There are also older drafts in `RawAssets/other/`, generated icons under `android/build/res/`, and an unused default `icon.svg`.
 
 ---
@@ -57,10 +57,10 @@ Some other examples:
 
 **Request:** “Make the black divider wider. Don’t adjust it yourself; give me the constant to change.”
 
-**Good response:**
+**Good reply:**
 > `[Observed]` Increase `SEGMENT_DIVIDER_WIDTH_PIXELS` in `HealthBar.gd:13`.
 
-**Bad response:**
+**Bad reply:**
 > The constant is `SEGMENT_DIVIDER_WIDTH_PIXELS`, currently `1.0`.
 > ```gdscript
 > const SEGMENT_DIVIDER_WIDTH_PIXELS: float = 1.0
@@ -73,10 +73,10 @@ Some other examples:
 
 **Request:** “Proceed with the remaining verification.”
 
-**Good response:**
+**Good reply:**
 > `[Observed]` The editor type check passed. The packaged build remains unverified. The execution log is `tmp/typecheck-07/typecheck.log`.
 
-**Bad response:**
+**Bad reply:**
 > Verification passed. See `chatInputCompletions.ts`.
 
 The source file does not establish which check ran or whether the packaged build was verified.
@@ -87,13 +87,13 @@ The source file does not establish which check ran or whether the packaged build
 
 **Request:** “Continue fixing the .NET dialog and DotRush activation.”
 
-**Good response:**
+**Good reply:**
 > The fixes are saved but need activation. Log out and back in, then run `Developer: Reload Window` in MonkeyVsAlien.
 
-**Bad response:**
+**Bad reply:**
 > Fixed. The .NET environment variables are now in `~/.profile`, and DotRush’s identifier is stored under `extensionsIdentifiers/disabled` in the workspace state.
 
-The bad response omits the actions needed before the developer sees the fix.
+The bad reply omits the actions needed before the developer sees the fix.
 
 The same relevance rule applies to reviews and risk reports:
 
@@ -113,7 +113,7 @@ Repays — developer secret commited to Github, or a security risk
 
 ## Developer Vocabulary and Direct Phrasing
 
-When to apply: writing a response or file whose primary reader is the developer.
+When to apply: writing a reply or file whose primary reader is the developer.
 
 Use the [developer profile](../AGENTS.development.md#about-developer) to select vocabulary, detail, and examples. This does not change the shared evidence requirements.
 

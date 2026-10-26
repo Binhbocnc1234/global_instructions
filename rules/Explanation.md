@@ -2,7 +2,7 @@
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-Apply [DeveloperWriting](DeveloperWriting.md) to developer-facing responses and files. It owns relevance and developer-specific phrasing.
+Apply [DeveloperWriting](DeveloperWriting.md) to developer-facing replies and files. It owns relevance and developer-specific phrasing.
 
 @DeveloperWriting.md
 
@@ -12,7 +12,7 @@ When the request only says “explain this file”, explain its purpose, behavio
 
 ## Use the Most General Name That Stays Clear
 
-When to apply: writing a response or file whose primary reader is the developer.
+When to apply: writing a reply or file whose primary reader is the developer.
 
 Select details under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). This rule governs how to name those details, not whether to omit them.
 
@@ -74,13 +74,13 @@ def inode_position(ino: int, sb: Superblock) -> tuple[int, int]:
 
 Trace for `/home/a.txt` with `inodes_per_group = 8192` (example values): `ino = 2` → `read_dir(2)` finds `home -> 131073` → `inode_position(131073)` = `(16, 0)`, so the `home` directory is in group 16, slot 0 → `read_dir(131073)` finds `a.txt -> 131080` → return `131080`.
 
-**Why**: explaining in python pseudocode is more understandable than natural language(default behaviour) or diagram. The advantage of natural language lies in the extensive vocabulary and syntax; consequently, an algorithm expressed in natural language can sometimes be very concise. But that characteristic also becomes problem: responses sometimes contain unfamiliar words for developer, and some English words only convey their precise meaning within a specific context; Python, however, does not suffer from these issues.
+**Why**: explaining in python pseudocode is more understandable than natural language(default behaviour) or diagram. The advantage of natural language lies in the extensive vocabulary and syntax; consequently, an algorithm expressed in natural language can sometimes be very concise. But that characteristic also becomes problem: replies sometimes contain unfamiliar words for developer, and some English words only convey their precise meaning within a specific context; Python, however, does not suffer from these issues.
 
 ## Teach the Standard Term
 
-When to apply: a developer-facing response addresses a concept the developer describes with a long paraphrase or an unfamiliar word, and the field has a standard name for it.
+When to apply: a developer-facing reply addresses a concept the developer describes with a long paraphrase or an unfamiliar word, and the field has a standard name for it.
 
-Name the term once, as the first line of the response: the term in bold, the developer's words it replaces, and a one-sentence definition. Use the term for the rest of the response.
+Name the term once, as the first line of the reply: the term in bold, the developer's words it replaces, and a one-sentence definition. Use the term for the rest of the reply.
 
 Apply only when all of these hold:
 - The meaning is clear. When it is not, [Requirement elicitation](Design.md#requirement-elicitation) applies instead.
@@ -90,7 +90,7 @@ Apply only when all of these hold:
 
 Do not correct spelling or grammar under this rule.
 
-For example, the developer writes "the test opens the editor, it becomes the active window and blocks my view". The response opens with: `Vocabulary: "becomes the active window and blocks my view" is **stealing focus**: a newly opened window takes keyboard focus from the window the user is working in.`
+For example, the developer writes "the test opens the editor, it becomes the active window and blocks my view". The reply opens with: `Vocabulary: "becomes the active window and blocks my view" is **stealing focus**: a newly opened window takes keyboard focus from the window the user is working in.`
 
 For example, the developer writes "the script that runs by itself before every commit to check my files". The term is **pre-commit hook**.
 
@@ -101,7 +101,7 @@ Why: the developer learns English and the field at the same time. A standard ter
 
 ## Evidence Labels
 
-When to apply: a response or a file states a claim that a decision, a conclusion, or code rests on (a load-bearing claim). Do not apply this rule to decisions whose mistakes fail loudly and quickly.
+When to apply: a reply or a file states a claim that a decision, a conclusion, or code rests on (a load-bearing claim). Do not apply this rule to decisions whose mistakes fail loudly and quickly.
 
 Four labels, from the strongest evidence to the weakest. The effort column is an estimate from typical tool calls, not a measurement. The last column is what the claim carries after its label, so the reader can check it without asking:
 
@@ -125,7 +125,7 @@ For example, request in game project: "How Effect system in this game work?"
 [Documented] Multiple Effect instances can coexist and their durations decrease simultaneously, but only the Effect with the greatest Strength takes effect. See `EffectContainer.ActiveEffect()` in [EffectContainer.cs:57](Scripts/Effects/EffectContainer.cs:57).
 ```
 
-For example (an inference that hides its premises). After a system update, the developer's laptop battery ran out faster, and the agent wrote: "`[Inferred]` The update may be why the battery drains faster." Listing the premises shows the gap: `[Observed]` the battery started draining faster on the day the update was installed, `[Experience]` an update sometimes adds a background service, and nothing links the drain to the update. The agent did not read the power usage per app, so it reads that before sending the response, or says the cause is unknown. Without the premises, the developer had to ask for the power usage per app in the next message.
+For example (an inference that hides its premises). After a system update, the developer's laptop battery ran out faster, and the agent wrote: "`[Inferred]` The update may be why the battery drains faster." Listing the premises shows the gap: `[Observed]` the battery started draining faster on the day the update was installed, `[Experience]` an update sometimes adds a background service, and nothing links the drain to the update. The agent did not read the power usage per app, so it reads that before sending the reply, or says the cause is unknown. Without the premises, the developer had to ask for the power usage per app in the next message.
 
 For example (a decision that hides its premises). The agent proposed dropping old tool results from a resumed chat, and its only premise was their size. The decision needs the premises that the next request does not need them: what the resumed turn actually read, and how cheaply it can read that again.
 
@@ -133,16 +133,16 @@ A stronger label costs more effort, so checking every claim wastes the budget of
 
 It is normal when evidence is unavailable — for instance, agent's brain doesn't have the fact, an undocumented API, closed-source(Claude and GPT model) or an unrecorded history(transaction logs, record of computer temperatures). Agent should not guess the fact
 
-For example (a tool catches the mistake). The agent writes Python and recalls that `str.removeprefix` exists. This falls under the exception for mistakes that fail loudly and quickly: if the method is unavailable, the first run raises `AttributeError` within seconds, before any harm, and the fix is one edit. The response does not need an evidence label for this decision.
+For example (a tool catches the mistake). The agent writes Python and recalls that `str.removeprefix` exists. This falls under the exception for mistakes that fail loudly and quickly: if the method is unavailable, the first run raises `AttributeError` within seconds, before any harm, and the fix is one edit. The reply does not need an evidence label for this decision.
 
 For example (a tool catches the mistake). **Request:** “Copy and downscale the icon into `build/google-play` so I can upload it.”
 
-**Good response (hypothetical output):**
+**Good reply (hypothetical output):**
 ```markdown
 [Observed] Created [app-icon-512.png](../build/google-play/app-icon-512.png): **512 × 512 PNG, 339 KB**.
 ```
 
-**Bad response (unnecessary detail, even with labels before the claims):**
+**Bad reply (unnecessary detail, even with labels before the claims):**
 ```markdown
 [Observed] I made a 512 × 512 copy at [app-icon-512.png](../build/google-play/app-icon-512.png).
 [Observed] The original icon is 1254 × 1254 pixels and 1.46 MB.
@@ -153,7 +153,7 @@ For example (a tool catches the mistake). **Request:** “Copy and downscale the
 [Observed] Nothing was committed, because git ignores the `build/` folder.
 ```
 
-The agent does not need to provide additional Evidence regarding Google Play policies or details about how the image was processed, as a developer can see within seconds whether the upload to Google Play was successful. The agent only needs to adjust their approach and response if the developer complains about the outcome.
+The agent does not need to provide additional Evidence regarding Google Play policies or details about how the image was processed, as a developer can see within seconds whether the upload to Google Play was successful. The agent only needs to adjust their approach and reply if the developer complains about the outcome.
 
 For example (a stable fact that only explains). Developer want to learn about how ext4 filesystem work,the explanation can say: "`[Experience]` ext4 stores the root directory in inode 2." Memory is enough here because a wrong detail misleads one explanation and changes no decision.
 
@@ -163,7 +163,7 @@ The same example with a volatile fact: "`[Experience]` I remember this model cos
 
 For example, the developer asks: “How much RAM do I need for my workload?”
 
-The response can use the following format; the log path, requirement value, and example URLs stand for the evidence collected:
+The reply can use the following format; the log path, requirement value, and example URLs stand for the evidence collected:
 
 ```markdown
 [Observed] During ordinary work, RAM use was 4.2 GB for Windows, 1.8 GB for the IDE, 5.6 GB for the engine, 2.1 GB for the agent, 2.6 GB for a browser with 10 tabs, and 1.2 GB for a chat app and a music player, 17.5 GB in total. See `tmp/ram-measurements.txt`.

@@ -38,11 +38,11 @@ Follow [Generalize from Why Line](../rules/RuleMaintenance.md#generalize-from-wh
 - **Examples where it applies:** omit an unrelated backup link from file-permission definitions; omit an unrelated monitoring link from retry-count definitions. These examples use general computing concepts, not a particular repository's symbols.
 - **Boundary example:** keep a link to restoration instructions when the current step requires restoring a backup. A needed reference is not banned merely because its target was also mentioned in the request.
 - **Why:** unrelated references create follow-up reading without serving the current paragraph; an amendment addresses the observed inclusion error without banning useful links.
-- **Review boundary:** apply the amendment directly, verify its owner, examples, links, and routing, and link the changed rule in the response so the evaluator can review it, as [Rule Ownership](../AGENTS.development.md#rule-ownership) requires.
+- **Review boundary:** apply the amendment directly, verify its owner, examples, links, and routing, and link the changed rule in the reply so the evaluator can review it, as [Rule Ownership](../AGENTS.development.md#rule-ownership) requires.
 
 ## Expected result: Lesson
 
-The final response follows [Leader's Lesson contract](../rules/Leader.md#final-response-format): name the cause and where prevention was recorded, or explain why nothing was recorded. It must distinguish removing the sentence from amending the rule.
+The final reply follows [Leader's Lesson contract](../rules/Leader.md#final-reply-format): name the cause and where prevention was recorded, or explain why nothing was recorded. It must distinguish removing the sentence from amending the rule.
 
 ## Failure conditions
 

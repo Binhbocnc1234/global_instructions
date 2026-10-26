@@ -54,7 +54,7 @@ When to apply: choosing where to store a rule whose cross-project scope is alrea
 - Place a global rule in its existing responsibility owner. Do not shorten a rule merely to meet the 30-line cutoff.
 - Base frequency on available request history or an explicit developer expectation. If neither establishes which side of half applies, ask the developer before choosing.
 
-For example, a language rule needed in every response stays global regardless of its length. A document-conversion workflow needed in one request out of ten belongs in a skill when its complete instructions exceed 30 lines. By contrast, a rule that applies only to one project is outside this choice.
+For example, a language rule needed in every reply stays global regardless of its length. A document-conversion workflow needed in one request out of ten belongs in a skill when its complete instructions exceed 30 lines. By contrast, a rule that applies only to one project is outside this choice.
 
 Why: these cutoffs are developer-selected placement criteria. Global rules are loaded even when unused; a skill adds a description and an activation step. Keep instructions global when frequent use or a length of at most 30 lines makes that trade-off worthwhile.
 

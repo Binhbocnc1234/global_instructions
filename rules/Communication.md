@@ -13,7 +13,7 @@ Communicate with the developer in English, regardless of the request's language.
 
 "Canonical" = the only source of truth for a piece of information. Other locations link to it and MUST NOT keep their own copy.
 
-A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST come with a measurable value. This applies to every rule, document, skill, and response. Write `this task is long (5 to 10 minutes)`, not `this task is long`. When the value is an estimate, say so and name its basis, for example `~3 minutes, from 1.2 GB at ~7 MB/s`.
+A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST come with a measurable value. This applies to every rule, document, skill, and reply. Write `this task is long (5 to 10 minutes)`, not `this task is long`. When the value is an estimate, say so and name its basis, for example `~3 minutes, from 1.2 GB at ~7 MB/s`.
 
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
 
@@ -66,13 +66,13 @@ Use those term:
 | Agent | The AI assistant carrying out the developer's request through the harness. |
 | Harness | The software that connects the developer, model, tools, and conversation state. |
 | Request | One message the developer submits for the agent to handle, including a task, question, clarification, or approval. Harness-inserted instructions and tool results are not developer requests. |
-| Response | The message that ends the agent's handling of the request, whether completed or blocked, not tool result, progress text or reasoning text. Do not call this "answer" |
+| Reply | The message that ends the agent's handling of the request, whether completed or blocked, not tool result, progress text or reasoning text. Do not call this "answer" or "response". |
 | Turn | One request and the work performed to respond to it, ending in completion, failure, or cancellation. |
 | Tool call | One agent-issued instruction to execute a named tool with arguments. |
 | Tool result | The output returned for a tool call, including a reported failure or refusal. |
 | Session | The conversation containing those turns and their retained history. Do not use other words such as "chat", "thread" to describe session. You still can use "chat", "thread" for other things(UI, file path...) |
 
-Why: Harness currently is new field of Computer Science, so the terminology is inconsistent among developer community. If the model interprets "request" as meaning A, but the developer understands it as meaning B, it is a communication disaster.
+Why: Harness currently is new field of Computer Science, so the terminology is inconsistent among developer community. If the model interprets "request" as meaning A, but the developer understands it as meaning B, it is a communication disaster. For example, "response" once named both the reply and one model response, because model APIs and harness code call one model output a response. So the reply has its own word.
 
 ## Inline file link
 
@@ -103,7 +103,7 @@ This workflow assumes the module layout defined in [Architecture](../technical/A
 
 ## Point to Where a Project Claim Comes From
 
-When to apply: a response or a file states how the project behaves: a game rule, a code path, a configuration value, an order of execution.
+When to apply: a reply or a file states how the project behaves: a game rule, a code path, a configuration value, an order of execution.
 
 End the claim with a link to the code, data, or document that makes it true, written as `[File.cs:57](../path/File.cs:57)`. Claims that share one source share one link.
 

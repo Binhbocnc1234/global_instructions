@@ -24,11 +24,11 @@ Proposed rule-shape text for RuleMaintenance:
 
 Example: when a correction reveals that several commands overwrite a developer's log, identify the observable trigger, state the general log-preservation action, show its application, and explain the overwritten evidence it prevents. A file containing only facts is not a rule proposal and does not need this shape.
 
-Preserve the existing ownership of cause diagnosis, example selection, scope evidence, and approval rather than duplicate those constraints. This proposal concerns rule authoring, not the format of every final response.
+Preserve the existing ownership of cause diagnosis, example selection, scope evidence, and approval rather than duplicate those constraints. This proposal concerns rule authoring, not the format of every final reply.
 
 The unrelated-reference example belongs in [Developer-Facing Relevance](../../rules/DeveloperWriting.md#developer-facing-relevance). The observed selection failure was treating a document's relevance to the request as a reason to reference it in a paragraph that did not need it. The proposed example and boundary are exercised by [RuleFromMistake](../../test/RuleFromMistake.md).
 
-No change to [Leader's Lesson contract](../../rules/Leader.md#final-response-format) is proposed: it already requires naming the cause and where it was recorded or proposed, or why nothing was recorded. It does not require examples on the Lesson line.
+No change to [Leader's Lesson contract](../../rules/Leader.md#final-reply-format) is proposed: it already requires naming the cause and where it was recorded or proposed, or why nothing was recorded. It does not require examples on the Lesson line.
 
 ## Step 1: Review and prepare evaluation fixtures
 

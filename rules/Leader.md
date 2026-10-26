@@ -22,7 +22,7 @@ The request, project instructions, current artifacts, and existing approvals.
 5. Once requirements are established and required approvals are satisfied, dispatch construction to Implementation, Authoring, or RuleMaintenance according to the artifact.
 6. Request Testing for executable behavior. Use the artifact specialist's completion checks for documents and rules.
 7. Route failed checks to the responsible specialist. Repeat the affected checks after correction. Do not request routine approval for these transitions.
-8. Assess [Treat Workflow Failures as Improvement Triggers](RuleMaintenance.md#treat-workflow-failures-as-improvement-triggers). Apply [Commit](#commit) when required. Report the result under [Final Response Format](#final-response-format).
+8. Assess [Treat Workflow Failures as Improvement Triggers](RuleMaintenance.md#treat-workflow-failures-as-improvement-triggers). Apply [Commit](#commit) when required. Report the result under [Final Reply Format](#final-reply-format).
 
 A clear request proceeds to the responsible specialist without a separate Design approval checkpoint. Explicit approval requirements elsewhere remain in force. A request that only asks for explanation or review does not enter the construction workflow.
 
@@ -53,14 +53,14 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 
 | Responsibility | Specialist | Output |
 |---|---|---|
-| Present developer-facing responses and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
+| Present developer-facing replies and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
 | Resolve missing or ambiguous requirements | [Design](Design.md) | Established requirements or focused clarification questions |
 | Construct or migrate code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
 | Select and execute verification | [Testing](Testing.md) | Results and evidence limits |
 | Create or maintain non-rule documents | [Authoring](Authoring.md) | Documents and reference checks |
 | Maintain agent instructions | [RuleMaintenance](RuleMaintenance.md) | Rules, ownership, and routing checks |
 
-Explanation governs the presentation of every developer-facing response and file, including completion reports. Apply its rules within the active artifact responsibility, not as a separate final stage. Agent-facing text uses Communication.
+Explanation governs the presentation of every developer-facing reply and file, including completion reports. Apply its rules within the active artifact responsibility, not as a separate final stage. Agent-facing text uses Communication.
 
 Why: presentation depends on the reader, while construction and verification depend on the artifact.
 
@@ -93,7 +93,7 @@ By constrast, consider a request to "implement feature A" which involves multipl
 
 ## Request Budget
 
-The harness owns request-cost accounting, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the cost cutoff, the agent MUST write only the final response and MUST NOT request further tools. Continuing work requires a new developer message.
+The harness owns request-cost accounting, reminders, and the work cutoff. The agent MUST NOT estimate or track elapsed time to enforce the request budget. After the harness announces the cost cutoff, the agent MUST write only the final reply and MUST NOT request further tools. Continuing work requires a new developer message.
 Why: the harness uses the approved cost allowance to require human review before further autonomous work, without depending on the agent's own estimates.
 
 ## Commit
@@ -153,11 +153,11 @@ Write the scope as the affected component, taken from the project vocabulary, su
 
 Write the subject in the imperative mood, and name the resulting behavior instead of the activity: `fix(input): keep jump buffered across a frame drop`, not `fixed some input stuff`.
 
-MUST NOT write a description body. The commit is the header line and nothing else. Reasoning, evidence, trade-offs, and consequences belong in the response to the developer, who is reading them right now, not in a commit message nobody opens again. A change that feels too large to fit in one header line is two commits, not one commit with an essay attached; apply Commit Scope instead of writing a body.
+MUST NOT write a description body. The commit is the header line and nothing else. Reasoning, evidence, trade-offs, and consequences belong in the reply to the developer, who is reading them right now, not in a commit message nobody opens again. A change that feels too large to fit in one header line is two commits, not one commit with an essay attached; apply Commit Scope instead of writing a body.
 
 The single exception is `revert`, whose body carries `This reverts commit <sha>.` and nothing more.
 
-## Final Response Format
+## Final Reply Format
 
 - **Vocabulary**: first, only when Explanation is active and [Teach the Standard Term](Explanation.md#teach-the-standard-term) applies.
 - **Task type**: name the responsibilities Leader selected for the request.
@@ -165,6 +165,6 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 - **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
 - **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
 
-Use the shared scope and evidence rules for every response. Explanation governs developer-facing presentation. Apply its technique rules when the developer requests an algorithm or process explanation.
+Use the shared scope and evidence rules for every reply. Explanation governs developer-facing presentation. Apply its technique rules when the developer requests an algorithm or process explanation.
 
-Why: a fixed order lets the developer find the answer, the lesson, and the open questions in the same place in every response. The Task type line also shows the developer how the agent read the request, so a wrong reading is caught before the work is checked.
+Why: a fixed order lets the developer find the answer, the lesson, and the open questions in the same place in every reply. The Task type line also shows the developer how the agent read the request, so a wrong reading is caught before the work is checked.
