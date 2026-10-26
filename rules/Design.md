@@ -1,6 +1,6 @@
 # Design
 
-Use the shared foundation in [AGENTS.md](../AGENTS.md).
+Use the shared foundation in [AGENTS.md](../AGENTS.development.md).
 
 Design only resolves missing or ambiguous requirements.
 
@@ -42,6 +42,7 @@ Design only resolves missing or ambiguous requirements.
 
 + SOLID, Singleton and PascalCase is well-documented concept in the Internet so you don't need to specify what is SOLID.
 + Developer may accept ambiguity if they feel that requirements elicitation is too time-consuming and want some exploration
++ For example, the developer asks for a chat UI with the features of a reference product. A feature table ("slash commands: /archive, /rename") is not yet a UI requirement, because it says what each command does, not how the user finds and confirms it. Clarify each feature's interaction by describing what the reference product shows: after typing "/", a list of commands with descriptions; a recognized command shown in a different color. Why: on 2026-10-23, a desktop frontend passed every behavior check, but its commands worked only for a user who already knew their exact text.
 
 ## Identify unknown concepts
 
