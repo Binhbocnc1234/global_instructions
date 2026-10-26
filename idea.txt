@@ -4,5 +4,18 @@ agent's disavantage:
 - Rule obligation
 - Archiecture and software-engineering: agent can create a working feature, but it may not satisfy quality attributes
 
+bạn hãy hướng dẫn tôi PR_5_10.md . Ý tôi không phải là nhắc lại nội dung implementation và kiểm thử mà là giờ mình muốn demo sản phẩm cho leader nên mình cần hiểu những gì hiển thị trên màn hình
 
 
+
+mình muốn bạn check lại ## Generalize from Why Line.
+Có lẽ developer profile cần viết kĩ hơn: Binhbocnc đã
+Mình muốn nó cover các case sau:
+- lỗi tu
+
+Design.md cần chỉnh lại rule để stop gate hoạt động đúng dự định, các test case của tôi:
+Request: "tôi nghi ngờ one-harness tốn nhiều usage hơn Codex Desktop khi cả 2 cùng dùng 1 model GPT. Bạn hãy kiểm chứng thông tin này". Expected: Trước khi làm, agent cung cấp cho developer methodology,
+
+
+Chỉnh lại Explanation.md 
+Bạn hãy đọc toàn bộ các response có task type là Design, gom từ tất cả các project trong ~/dev để xem chúng có đang tuân thủ nguyên tắc này của Explanation.md không
