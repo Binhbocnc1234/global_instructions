@@ -88,6 +88,8 @@ For example (nothing to record). The agent mistypes a path in one sentence then 
 
 For example (nothing to record). Initially, the developer wanted to limit each harness turn to a maximum of 15 minutes, but later changed the requirement to a token budget limit. There is no lesson to be learned here; both requests were simply directives, and the agent was not required to evaluate the underlying reasons for the requests.
 
+For example, a bug appear, this is maybe a testing activity defect: test is too weak for detecting the bug. After fixing the bug, agent should take notice on current testing rules
+
 Why: a fix repairs this session, a record repairs every session after it. Without this step the agent fixes each correction separately, and the same cause returns. In one observed session, three corrections that shared one cause were fixed one by one, and the cause was recorded only after the developer named this rule.
 
 ### An Unrelated File Opened Is Also A Correction
@@ -176,3 +178,4 @@ Please state your changes exactly, word for word—not a summary.
 If developer approve your rule, you can apply it.
 
 Why: agents write poor rules(developer experience)
+
