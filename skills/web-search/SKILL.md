@@ -68,22 +68,6 @@ python "$env:USERPROFILE\.agents\skills\web-search\scripts\fetch.py" "https://ex
 
 MUST NOT run a second search round when the result set already answers the question.
 
-## Judge the Result Set
-
-One engine means no automatic corroboration. Put every claim the answer needs into one of three buckets.
-
-| Bucket | Meaning | Action |
-|---|---|---|
-| The canonical page states it | Verified | State it plainly. Link the page. |
-| Only commentary states it | Single-source | Keep it. Mark it as single-source. Open the canonical page when the claim carries weight. |
-| Nothing retrieved states it | Gap | Say that the search did not answer it. MUST NOT fill the gap from memory. |
-
-The canonical page is the one whose owner controls the fact: vendor documentation, release notes, a changelog, a registry page, the project's own repository. A blog post about a release is commentary, however accurate.
-
-Several results repeating one press release are still one source. Collapse them, then judge.
-
-Report which claim came from which page. A reader who cannot tell a verified fact from an inference cannot use the answer.
-
 ## Native Tools
 
 Native web search is disabled in the harness configuration. The Exa CLI replaces it for every search.
