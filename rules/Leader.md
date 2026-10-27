@@ -30,6 +30,22 @@ For example, “Create a boss for game ABC” routes to Design to clarify missin
 
 For example, “Add an export command” routes to Design only when export requirements need clarification. By contrast, “Explain the export command” routes to Explanation without construction.
 
+## Refactor
+
+A **refactor** changes how an existing system is implemented or organized while preserving its established behavior. Use this term for behavior-preserving rewrites, including a change of language, framework, host, or file layout; the size of the rewrite does not authorize a behavior change.
+
+Before a refactor, identify the current source of truth and the behavior the requested scope must preserve. Behavior includes outputs, side effects, state transitions, errors, defaults, user interactions, and instructions that direct a model or another program. Preserve the conditions that trigger an action, required and forbidden actions, and ownership constraints; preserving only function names, tool schemas, or successful execution is insufficient. Existing product decisions define allowed differences. A newly discovered difference that requires an unmade decision returns to Design before dependent work continues.
+
+A refactor MUST NOT silently add, remove, or weaken behavior. Treat an intentional behavior change as a feature or fix and keep it separate under [Commit Scope](#commit-scope). Verification MUST compare the preserved contracts through the affected production entry points; a passing check of callability alone does not establish equivalent behavior. For model-facing instructions, preserve the policy's meaning rather than requiring identical wording or identical sampled model output.
+
+For example, replacing a command-line program with a new implementation preserves its accepted inputs, output format, exit statuses, and file effects. A new implementation that exits successfully after a failed write is not a refactor, even if successful writes produce the same file.
+
+For example, moving a session-renaming tool to another language preserves both the rename operation and the instruction to name a session once its task is clear. Keeping the tool callable while deleting that trigger changes behavior, so the change is not a refactor.
+
+By contrast, changing a prompt from “name the session once its task is clear” to “once the task is clear, name the session” preserves the policy. Adding an instruction to rename after every request changes the policy and requires a separate behavior change.
+
+Why: preserving an interface does not preserve the decisions that govern its use. A rewrite can lose a policy without breaking a function call, so the unchanged behavior must include executable rules and model-facing instructions.
+
 ## Scope and Exceptional Stops
 
 Required supporting work belongs to the requested outcome, even when the developer did not list every step. It does not authorize unrelated changes.
@@ -55,7 +71,7 @@ Classify responsibilities, not the whole request under one fixed task type. All 
 |---|---|---|
 | Present developer-facing replies and files, including requested explanations | [Explanation](Explanation.md) | Text selected and worded for the developer |
 | Resolve missing or ambiguous requirements | [Design](Design.md) | Established requirements or focused clarification questions |
-| Construct or migrate code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
+| Construct or refactor code, assets, folders, or execution tools | [Implementation](Implementation.md) | Artifacts and construction evidence |
 | Select and execute verification | [Testing](Testing.md) | Results and evidence limits |
 | Create or maintain non-rule documents | [Authoring](Authoring.md) | Documents and reference checks |
 | Maintain agent instructions | [RuleMaintenance](RuleMaintenance.md) | Rules, ownership, and routing checks |
@@ -98,7 +114,7 @@ Why: the harness uses the approved cost allowance to require human review before
 
 ## Commit
 
-Commit after you complete each change of the request (bug-fixing/implementation/migration). Tests run once after the last commit, under [Automate Project-Lifetime Tests](Testing.md#automate-project-lifetime-tests).
+Commit after you complete each change of the request (bug-fixing/implementation/refactor). Tests run once after the last commit, under [Automate Project-Lifetime Tests](Testing.md#automate-project-lifetime-tests).
 
 Agent-performed verification is sufficient evidence for committing. Manual or developer verification, visual review, Play Mode confirmation, physical-device checks, usability review, and release approval may remain outstanding; report them as post-commit verification or approval rather than withholding the commit solely for their absence.
 
@@ -124,7 +140,7 @@ Write the subject line before you stage. A subject that needs "and", or that joi
 - Good: `refactor: rename PlayerController to Player`. Twenty files is correct here, because one rename produced all twenty.
 - Bad: `fix: fix jump bug and update UI and format code`. Three files for three reasons. Make three commits.
 
-Keep in one commit the files that are only correct together: a fix and its regression test, a model and its migration, a rename and every call site, a manifest and its lock file.
+Keep in one commit the files that are only correct together: a fix and its regression test, a storage-schema change and its data conversion, a rename and every call site, a manifest and its lock file.
 
 Split a mechanical change from a behavioral one. A rename, a move, or a formatting pass goes in its own commit, because a logic change hidden inside a large mechanical diff escapes review. Split a refactor from the feature that follows it: first the refactor with behavior unchanged, then the new behavior on the clean base.
 
@@ -140,7 +156,7 @@ Use one of these types. The Conventional Commits specification defines only `fea
 |---|---|
 | `feat` | Adds a capability that a user or a calling module can observe. |
 | `fix` | Corrects wrong behavior. |
-| `refactor` | Changes structure and keeps behavior. Covers a rename, a move, and an extraction. |
+| `refactor` | Changes implementation or organization while preserving behavior under [Refactor](#refactor). |
 | `perf` | Improves speed or memory and keeps behavior. |
 | `test` | Adds or corrects tests only, with no production source change. |
 | `docs` | Changes documentation or comments only. |
