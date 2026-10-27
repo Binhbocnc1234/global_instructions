@@ -137,7 +137,11 @@ For example, a save function returns `false` when the disk is full, and the call
 
 For example, a test script launches a program that exits 1, and the script exits 1 with no output, while the details sit in a report file the script never mentions. Good: the script prints "program exited 1; failures in tmp/run-7/report.json".
 
-Why: a failure without its cause makes the reader reproduce it to learn what the error already knew. On 2026-10-20, an editor save API reduced errors to `false`, and a workflow script exited 1 silently with its failures in an unmentioned report; each cost a separate investigation.
+The same record serves the agent when the developer reports an error. The agent MUST find the trace itself, in the program's logs, error files and saved records, and MUST NOT ask the developer to supply it. When no record holds the trace, the missing record is a defect under this rule: the agent reports it and fixes the code so the next failure keeps its trace.
+
+For example, the developer reports that an app shows only "RuntimeError". Bad: the agent asks for the full error text. Good: the agent reads the app's log and finds the stack; when the app kept only the type name, the agent says so and makes the app save the message and stack in a file that the notice names.
+
+Why: a failure without its cause makes the reader reproduce it to learn what the error already knew. On 2026-10-20, an editor save API reduced errors to `false`, and a workflow script exited 1 silently with its failures in an unmentioned report; each cost a separate investigation. On 2026-10-27, a chat app showed only `RuntimeError` for a failed turn, so the agent had to infer the cause by counting tool calls in the session record.
 
 ## Comment rules
 
