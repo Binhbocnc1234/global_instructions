@@ -25,6 +25,14 @@ class InstallationWorkflowTests(unittest.TestCase):
         (self.source / "AGENTS.development.md").write_text("# Global rules\n@rules/Example.md\n")
         (self.source / "rules" / "Example.md").write_text("# Example\n@Nested.md\n")
         (self.source / "rules" / "Nested.md").write_text("Rule content.\n")
+        skill = self.source / "skills" / "example"
+        (skill / "scripts").mkdir(parents=True)
+        (skill / "SKILL.md").write_text("---\nname: example\ndescription: Example skill.\n---\n")
+        (skill / "scripts" / "run.sh").write_text("#!/bin/sh\nprintf 'example\\n'\n")
+        (skill / "scripts" / "run.sh").chmod(0o755)
+        (skill / "asset.bin").write_bytes(b"\x00\xff")
+        (skill / "scripts" / "__pycache__").mkdir()
+        (skill / "scripts" / "__pycache__" / "cached.pyc").write_bytes(b"cache")
         self.destination = self.root / "installed"
 
     def run_installer(self, *options: str, expected: int = 0) -> subprocess.CompletedProcess[str]:
@@ -58,7 +66,15 @@ class InstallationWorkflowTests(unittest.TestCase):
         self.run_installer("--check", expected=1)
         self.assertFalse((self.destination / "AGENTS.md").exists())
         result = self.run_installer()
-        self.assertIn("Updated 3 of 3", result.stdout)
+        self.assertIn("Updated 6 of 6", result.stdout)
+        for relative in ("SKILL.md", "scripts/run.sh", "asset.bin"):
+            self.assertEqual(
+                (self.destination / "skills/example" / relative).read_bytes(),
+                (self.source / "skills/example" / relative).read_bytes(),
+            )
+        executable = self.destination / "skills/example/scripts/run.sh"
+        self.assertEqual(executable.stat().st_mode & 0o777, 0o755)
+        self.assertFalse((self.destination / "skills/example/scripts/__pycache__").exists())
         self.assertEqual((self.destination / "AGENTS.md").read_bytes(),
                          (self.source / "AGENTS.development.md").read_bytes())
         self.assertEqual((self.destination / "rules/Example.md").read_bytes(),
@@ -80,7 +96,18 @@ class InstallationWorkflowTests(unittest.TestCase):
         self.run_installer()
         self.run_installer("--check")
         result = self.run_installer()
-        self.assertIn("Updated 0 of 3", result.stdout)
+        self.assertIn("Updated 0 of 6", result.stdout)
+        executable.chmod(0o644)
+        skill_document = self.destination / "skills/example/SKILL.md"
+        skill_document.write_text("Changed skill.\n")
+        result = self.run_installer("--check", expected=1)
+        self.assertIn("run.sh", result.stderr)
+        self.assertIn("SKILL.md", result.stderr)
+        self.run_installer()
+        self.run_installer("--check")
+        self.assertEqual(executable.stat().st_mode & 0o777, 0o755)
+        self.assertEqual(skill_document.read_bytes(),
+                         (self.source / "skills/example/SKILL.md").read_bytes())
         for relative, content in untouched.items():
             self.assertEqual((self.destination / relative).read_text(), content)
         self.assertFalse((self.destination / "AGENTS.development.md").exists())

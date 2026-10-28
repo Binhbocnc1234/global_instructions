@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install this project's development instructions and rules into ~/.agents/.
+"""Install this project's development instructions, rules and skills into ~/.agents/.
 
 Run from any directory: python3 /path/to/global_instructions/tools/install_agents.py
 Use --check to compare without writing, or --destination for an isolated install.
@@ -26,6 +26,16 @@ def installation_files(destination: Path) -> dict[Path, bytes]:
     paths = sorted(rules.rglob("*"))
     if not any(path.is_file() for path in paths):
         raise ValueError(f"Required rules directory contains no files: {rules}")
+    skills = SOURCE_ROOT / "skills"
+    if not skills.is_dir() or skills.is_symlink():
+        raise ValueError(f"Required skills directory is missing or is a symlink: {skills}")
+    paths.extend(sorted(
+        path for path in skills.rglob("*")
+        if "__pycache__" not in path.relative_to(skills).parts
+        and path.suffix not in {".pyc", ".pyo"}
+    ))
+    if not any(path.name == "SKILL.md" for path in paths if skills in path.parents):
+        raise ValueError(f"Required skills directory contains no SKILL.md files: {skills}")
     files: dict[Path, bytes] = {}
     for path in [source, *paths]:
         if path.is_symlink():
@@ -33,7 +43,7 @@ def installation_files(destination: Path) -> dict[Path, bytes]:
         if path.is_dir():
             continue
         content = path.read_bytes()
-        if path.suffix == ".md":
+        if path.suffix == ".md" and (path == source or rules in path.parents):
             text = content.decode("utf-8")
             if path != source:
                 # The source project brief differs from the installed global document.
@@ -65,9 +75,14 @@ def main() -> int:
         if destination == SOURCE_ROOT or SOURCE_ROOT in destination.parents:
             raise ValueError("Destination must be outside the source project")
         files = installation_files(destination)
+        skill_modes: dict[Path, int] = {
+            path: (SOURCE_ROOT / path.relative_to(destination)).stat().st_mode & 0o777
+            for path in files if path.relative_to(destination).parts[0] == "skills"
+        }
         changed: list[Path] = [
             path for path, content in files.items()
             if not path.is_file() or path.read_bytes() != content
+            or (path in skill_modes and path.stat().st_mode & 0o777 != skill_modes[path])
         ]
         if args.check:
             for path in changed:
@@ -83,7 +98,8 @@ def main() -> int:
                 with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as handle:
                     temporary = Path(handle.name)
                     handle.write(files[path])
-                temporary.chmod(path.stat().st_mode & 0o777 if path.exists() else 0o644)
+                mode = skill_modes.get(path, path.stat().st_mode & 0o777 if path.exists() else 0o644)
+                temporary.chmod(mode)
                 temporary.replace(path)
             finally:
                 if temporary is not None:
