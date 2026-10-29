@@ -59,12 +59,12 @@ class GlobalHookTests(unittest.TestCase):
     def test_existing_and_new_repositories(self) -> None:
         for name in ("existing", "new"):
             self.root = self.base / name if name == "existing" else self.repository(name)
-            for path, boundary in (("Source.py", "pass\n" * 3600), ("Notes.md", "é🙂\r\n" * 4500)):
+            for path, boundary in (("Source.py", "pass\n" * 4800), ("Notes.md", "é🙂\r\n" * 6000)):
                 self.write(path, boundary + "x")
                 self.stage(path)
                 self.write(path, "unstaged text\n")
                 result = self.commit(False)
-                self.assertIn("18001 characters, limit 18000", result.stdout + result.stderr)
+                self.assertIn("24001 characters, limit 24000", result.stdout + result.stderr)
                 self.write(path, boundary)
                 self.stage(path)
                 self.write(path, boundary + "x")
@@ -109,31 +109,31 @@ class GlobalHookTests(unittest.TestCase):
         self.assertNotIn("checkout-index", trace.read_text())
 
     def test_file_already_over_limit_warns_while_new_overflow_fails(self) -> None:
-        self.write("Old.md", "x" * 18001)
-        self.write("Near.md", "x" * 17999)
+        self.write("Old.md", "x" * 24001)
+        self.write("Near.md", "x" * 23999)
         self.stage(".")
         self.assertEqual(self.git("commit", "-q", "--no-verify", "-m", "test: existing oversize file").returncode, 0)
         # Editing and moving a file that HEAD already holds over the limit only warns.
-        self.write("Old.md", "x" * 18010)
+        self.write("Old.md", "x" * 24010)
         self.stage("Old.md")
         result = self.commit(True)
-        self.assertIn("warning: Old.md: 18010 characters, already over", result.stdout + result.stderr)
+        self.assertIn("warning: Old.md: 24010 characters, already over", result.stdout + result.stderr)
         (self.root / "docs").mkdir()
         self.assertEqual(self.git("mv", "Old.md", "docs/Old.md").returncode, 0)
         result = self.commit(True)
         self.assertIn("warning: docs/Old.md", result.stdout + result.stderr)
         # A commit that puts a file over the limit still fails, whether the file is new or grew past it.
-        self.write("Near.md", "x" * 18002)
-        self.write("New.md", "x" * 18001)
+        self.write("Near.md", "x" * 24002)
+        self.write("New.md", "x" * 24001)
         self.stage(".")
         failed = self.commit(False)
-        self.assertIn("Near.md: 18002 characters, limit 18000", failed.stdout + failed.stderr)
-        self.assertIn("New.md: 18001 characters, limit 18000", failed.stdout + failed.stderr)
+        self.assertIn("Near.md: 24002 characters, limit 24000", failed.stdout + failed.stderr)
+        self.assertIn("New.md: 24001 characters, limit 24000", failed.stdout + failed.stderr)
 
     def test_staged_exceptions_exclusions_and_custom_extensions(self) -> None:
-        self.write("Main.custom", "x" * 18001)
-        self.write("Long.md", "é" * 18001)
-        self.write("vendor/Example.md", "[bad](Missing.md)\n" + "x" * 18001)
+        self.write("Main.custom", "x" * 24001)
+        self.write("Long.md", "é" * 24001)
+        self.write("vendor/Example.md", "[bad](Missing.md)\n" + "x" * 24001)
         config = {"source_extensions": [".custom"], "exclude": ["vendor"], "line_exceptions": {"Main.custom": "One generated protocol table", "Long.md": "One cohesive reference table"}}
         self.write(".agent-checks.json", json.dumps(config))
         self.stage(".")
@@ -150,7 +150,7 @@ class GlobalHookTests(unittest.TestCase):
         self.commit(True)
         result = self.command(self.root, sys.executable, str(self.destination / "scripts/check_staged_files.py"), "--all")
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("Long.md: 18001 characters", result.stdout + result.stderr)
+        self.assertIn("Long.md: 24001 characters", result.stdout + result.stderr)
 
     def test_folder_limit_uses_staged_config(self) -> None:
         for index in range(17):
@@ -195,9 +195,9 @@ class GlobalHookTests(unittest.TestCase):
         self.stage("Source.py")
         self.commit(False)
         self.assertTrue((self.root / "local-marker").exists())
-        local.write_text("#!/bin/sh\nyes pass | head -n 3601 > Source.py\ngit add Source.py\n", encoding="utf-8")
+        local.write_text("#!/bin/sh\nyes pass | head -n 4801 > Source.py\ngit add Source.py\n", encoding="utf-8")
         result = self.commit(False)
-        self.assertIn("18005 characters", result.stdout + result.stderr)
+        self.assertIn("24005 characters", result.stdout + result.stderr)
         local.write_text("#!/bin/sh\necho ran > local-marker\n", encoding="utf-8")
         self.write("Source.py", "pass\n")
         self.stage("Source.py")

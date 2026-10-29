@@ -18,7 +18,7 @@ from pathlib import Path, PurePosixPath
 from check_markdown_links import check
 from staged_snapshot import StagedSnapshot, lexical_path
 
-LIMIT_CHARACTERS = 18_000
+LIMIT_CHARACTERS = 24_000
 MARKDOWN = {".md", ".markdown"}
 SOURCE = {".py", ".cs", ".gd", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".sh", ".bash", ".c", ".h", ".cpp", ".hpp", ".cc", ".java", ".go", ".rs", ".rb", ".swift", ".kt", ".lua", ".vue", ".svelte"}
 
