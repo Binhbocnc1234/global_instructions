@@ -4,7 +4,8 @@
 .agent-checks.json may set source_extensions (replaces defaults), exclude (repository-relative directories), and line_exceptions (path -> reason; the existing key now excepts character counts).
 Markdown is always subject to the character limit unless excluded or excepted.
 Count Unicode code points in decoded UTF-8, including whitespace and newlines, without newline normalization. Exactly LIMIT_CHARACTERS passes.
-Character counts cover changed, nondeleted staged files. Link checks also cover incoming links to removed paths or changed Markdown targets. Repository content is read on demand from the index, never exported or read from the working tree.
+Character counts cover changed, nondeleted staged files. A commit fails only for a file it puts over the limit; a file already over it in HEAD (under its old name, for a rename) is reported as a warning.
+Unlike folder_child_limit.py, growth of such a file does not fail: every edit grows a file, even a link rewrite, so failing it would block every edit until the file is split. Link checks also cover incoming links to removed paths or changed Markdown targets. Repository content is read on demand from the index, never exported or read from the working tree.
 """
 from __future__ import annotations
 
@@ -24,6 +25,12 @@ SOURCE = {".py", ".cs", ".gd", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".s
 
 def git(root: Path, *arguments: str) -> str:
     return subprocess.run(["git", "-C", str(root), *arguments], check=True, capture_output=True, text=True).stdout
+
+
+def head_characters(root: Path, name: str) -> int | None:
+    """Character count of `name` in HEAD, or None when HEAD lacks it."""
+    result = subprocess.run(["git", "-C", str(root), "show", f"HEAD:{name}"], capture_output=True)
+    return len(result.stdout.decode("utf-8")) if result.returncode == 0 else None
 
 
 def relative_path(value: str) -> bool:
@@ -55,6 +62,15 @@ def main() -> int:
     try:
         root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel").strip())
         changed = [name for name in git(root, "diff", "--cached", "--name-only", "--diff-filter=ACMRT", "-z").split("\0") if name]
+        # Renamed paths map to their HEAD name, so a moved file keeps the size it had before this commit.
+        status = git(root, "diff", "--cached", "--name-status", "-M", "--diff-filter=ACMRT", "-z").split("\0")
+        head_names: dict[str, str] = {}
+        index = 0
+        while index < len(status) and status[index]:
+            if status[index].startswith(("R", "C")):
+                head_names[status[index + 2]] = status[index + 1]; index += 3
+            else:
+                head_names[status[index + 1]] = status[index + 1]; index += 2
         snapshot = StagedSnapshot(root)
         extensions, excluded, exceptions = settings(snapshot)
         eligible = {path for path in snapshot.entries if not any(
@@ -68,6 +84,10 @@ def main() -> int:
             name = path.relative_to(root).as_posix()
             count = len(snapshot.read_text(path))
             if count > LIMIT_CHARACTERS and name not in exceptions:
+                before = None if args.all else head_characters(root, head_names.get(name, name))
+                if before is not None and before > LIMIT_CHARACTERS:
+                    print(f"warning: {name}: {count} characters, already over the {LIMIT_CHARACTERS} limit before this commit; split by responsibility")
+                    continue
                 print(f"{name}: {count} characters, limit {LIMIT_CHARACTERS}; split by responsibility or record a reason in .agent-checks.json")
                 errors += 1
         print(f"Checked {len(selected)} staged source/Markdown files for the {LIMIT_CHARACTERS}-character limit.")

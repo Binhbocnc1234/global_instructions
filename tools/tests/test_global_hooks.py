@@ -108,6 +108,28 @@ class GlobalHookTests(unittest.TestCase):
         self.assertIn("assets: target does not exist", result.stdout + result.stderr)
         self.assertNotIn("checkout-index", trace.read_text())
 
+    def test_file_already_over_limit_warns_while_new_overflow_fails(self) -> None:
+        self.write("Old.md", "x" * 18001)
+        self.write("Near.md", "x" * 17999)
+        self.stage(".")
+        self.assertEqual(self.git("commit", "-q", "--no-verify", "-m", "test: existing oversize file").returncode, 0)
+        # Editing and moving a file that HEAD already holds over the limit only warns.
+        self.write("Old.md", "x" * 18010)
+        self.stage("Old.md")
+        result = self.commit(True)
+        self.assertIn("warning: Old.md: 18010 characters, already over", result.stdout + result.stderr)
+        (self.root / "docs").mkdir()
+        self.assertEqual(self.git("mv", "Old.md", "docs/Old.md").returncode, 0)
+        result = self.commit(True)
+        self.assertIn("warning: docs/Old.md", result.stdout + result.stderr)
+        # A commit that puts a file over the limit still fails, whether the file is new or grew past it.
+        self.write("Near.md", "x" * 18002)
+        self.write("New.md", "x" * 18001)
+        self.stage(".")
+        failed = self.commit(False)
+        self.assertIn("Near.md: 18002 characters, limit 18000", failed.stdout + failed.stderr)
+        self.assertIn("New.md: 18001 characters, limit 18000", failed.stdout + failed.stderr)
+
     def test_staged_exceptions_exclusions_and_custom_extensions(self) -> None:
         self.write("Main.custom", "x" * 18001)
         self.write("Long.md", "é" * 18001)
