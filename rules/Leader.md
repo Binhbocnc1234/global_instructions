@@ -114,7 +114,7 @@ Why: the harness uses the approved cost allowance to require human review before
 
 ## Commit
 
-Commit after you complete each change of the request (bug-fixing/implementation/refactor). Tests run once after the last commit, under [Automate Project-Lifetime Tests](Testing.md#automate-project-lifetime-tests).
+Commit after you complete each change of the request (bug-fixing/implementation/refactor). Tests run once after the last commit, under [Automate Project-Lifetime Tests](TestingWorkflow.md#automate-project-lifetime-tests).
 
 Agent-performed verification is sufficient evidence for committing. Manual or developer verification, visual review, Play Mode confirmation, physical-device checks, usability review, and release approval may remain outstanding; report them as post-commit verification or approval rather than withholding the commit solely for their absence.
 
