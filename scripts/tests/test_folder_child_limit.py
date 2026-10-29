@@ -17,6 +17,8 @@ class FolderChildLimitTest(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.root = Path(self.directory.name)
         self.git("init", "--quiet")
+        # The backlog fixture deliberately violates the limit; only the checker invoked by the test may inspect it, not an inherited global hook.
+        self.git("config", "core.hooksPath", str(self.root / ".git" / "no-hooks"))
 
     def tearDown(self) -> None:
         self.directory.cleanup()
