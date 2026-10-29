@@ -59,13 +59,16 @@ class GlobalHookTests(unittest.TestCase):
     def test_existing_and_new_repositories(self) -> None:
         for name in ("existing", "new"):
             self.root = self.base / name if name == "existing" else self.repository(name)
-            self.write("Source.py", "pass\n" * 251)
-            self.stage("Source.py")
-            result = self.commit(False)
-            self.assertIn("251 lines", result.stdout + result.stderr)
-            self.write("Source.py", "pass\n" * 250)
-            self.stage("Source.py")
-            self.commit(True)
+            for path, boundary in (("Source.py", "pass\n" * 3600), ("Notes.md", "é🙂\r\n" * 4500)):
+                self.write(path, boundary + "x")
+                self.stage(path)
+                self.write(path, "unstaged text\n")
+                result = self.commit(False)
+                self.assertIn("18001 characters, limit 18000", result.stdout + result.stderr)
+                self.write(path, boundary)
+                self.stage(path)
+                self.write(path, boundary + "x")
+                self.commit(True)
 
     def test_index_links_not_worktree_links(self) -> None:
         trace = self.base / "git-trace"
@@ -106,9 +109,9 @@ class GlobalHookTests(unittest.TestCase):
         self.assertNotIn("checkout-index", trace.read_text())
 
     def test_staged_exceptions_exclusions_and_custom_extensions(self) -> None:
-        self.write("Main.custom", "line\n" * 251)
-        self.write("Long.md", "paragraph\n" * 251)
-        self.write("vendor/Example.md", "[bad](Missing.md)\n")
+        self.write("Main.custom", "x" * 18001)
+        self.write("Long.md", "é" * 18001)
+        self.write("vendor/Example.md", "[bad](Missing.md)\n" + "x" * 18001)
         config = {"source_extensions": [".custom"], "exclude": ["vendor"], "line_exceptions": {"Main.custom": "One generated protocol table", "Long.md": "One cohesive reference table"}}
         self.write(".agent-checks.json", json.dumps(config))
         self.stage(".")
@@ -125,7 +128,7 @@ class GlobalHookTests(unittest.TestCase):
         self.commit(True)
         result = self.command(self.root, sys.executable, str(self.destination / "scripts/check_staged_files.py"), "--all")
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("Long.md: 251 lines", result.stdout + result.stderr)
+        self.assertIn("Long.md: 18001 characters", result.stdout + result.stderr)
 
     def test_folder_limit_uses_staged_config(self) -> None:
         for index in range(17):
@@ -170,9 +173,9 @@ class GlobalHookTests(unittest.TestCase):
         self.stage("Source.py")
         self.commit(False)
         self.assertTrue((self.root / "local-marker").exists())
-        local.write_text("#!/bin/sh\nyes pass | head -n 251 > Source.py\ngit add Source.py\n", encoding="utf-8")
+        local.write_text("#!/bin/sh\nyes pass | head -n 3601 > Source.py\ngit add Source.py\n", encoding="utf-8")
         result = self.commit(False)
-        self.assertIn("251 lines", result.stdout + result.stderr)
+        self.assertIn("18005 characters", result.stdout + result.stderr)
         local.write_text("#!/bin/sh\necho ran > local-marker\n", encoding="utf-8")
         self.write("Source.py", "pass\n")
         self.stage("Source.py")

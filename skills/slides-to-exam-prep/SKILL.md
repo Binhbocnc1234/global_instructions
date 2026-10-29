@@ -136,7 +136,7 @@ $$
 
 ### Step 4 — Verify
 
-- Confirm every file is under 250 lines.
+- Confirm every file follows the shared [File Size Limit](../../rules/FileSize.md).
 - Confirm all slide topics are covered (cross-check extracted slide headings
   against the final notes).
 - Do a final pass to ensure no "According to slide N" references remain.
@@ -157,7 +157,7 @@ $$
 - [ ] Excluded historical/irrelevant details (e.g., internet history, specific performance benchmarks like DFS runtime for $n=1000$).
 - [ ] Concepts are explained clearly, not copied mechanically from slides.
 - [ ] Hard concepts have worked examples.
-- [ ] Every file is under 250 lines.
+- [ ] Every file follows the shared file-size limit.
 - [ ] Math expressions use `$...$` / `$$...$$` and render correctly.
 - [ ] Image references are valid.
 - [ ] Applied human gate for multiple/long lecture tasks, processing them in small batches.

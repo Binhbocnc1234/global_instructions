@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Check staged source line counts and local Markdown links.
+"""Check staged source character counts and local Markdown links.
 
-.agent-checks.json may set source_extensions (replaces defaults), exclude
-(repository-relative directories), and line_exceptions (path -> reason).
-Markdown is always subject to the line limit unless excluded or excepted.
-Line counts cover changed, nondeleted staged files. Link checks also cover
-incoming links to removed paths or changed Markdown targets. Repository content
-is read on demand from the index, never exported or read from the working tree.
+.agent-checks.json may set source_extensions (replaces defaults), exclude (repository-relative directories), and line_exceptions (path -> reason; the existing key now excepts character counts).
+Markdown is always subject to the character limit unless excluded or excepted.
+Count Unicode code points in decoded UTF-8, including whitespace and newlines, without newline normalization. Exactly LIMIT_CHARACTERS passes.
+Character counts cover changed, nondeleted staged files. Link checks also cover incoming links to removed paths or changed Markdown targets. Repository content is read on demand from the index, never exported or read from the working tree.
 """
 from __future__ import annotations
 
@@ -19,7 +17,7 @@ from pathlib import Path, PurePosixPath
 from check_markdown_links import check
 from staged_snapshot import StagedSnapshot, lexical_path
 
-LIMIT = 250
+LIMIT_CHARACTERS = 18_000
 MARKDOWN = {".md", ".markdown"}
 SOURCE = {".py", ".cs", ".gd", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".sh", ".bash", ".c", ".h", ".cpp", ".hpp", ".cc", ".java", ".go", ".rs", ".rb", ".swift", ".kt", ".lua", ".vue", ".svelte"}
 
@@ -68,11 +66,11 @@ def main() -> int:
         errors = 0
         for path in selected:
             name = path.relative_to(root).as_posix()
-            count = len(snapshot.read_text(path).splitlines())
-            if count > LIMIT and name not in exceptions:
-                print(f"{name}: {count} lines, limit {LIMIT}; split by responsibility or record a reason in .agent-checks.json")
+            count = len(snapshot.read_text(path))
+            if count > LIMIT_CHARACTERS and name not in exceptions:
+                print(f"{name}: {count} characters, limit {LIMIT_CHARACTERS}; split by responsibility or record a reason in .agent-checks.json")
                 errors += 1
-        print(f"Checked {len(selected)} staged source/Markdown files for the {LIMIT}-line limit.")
+        print(f"Checked {len(selected)} staged source/Markdown files for the {LIMIT_CHARACTERS}-character limit.")
         markdown = [path for path in selected if path.suffix.lower() in MARKDOWN]
         callbacks = dict(read_text=snapshot.read_text, exists=snapshot.exists,
                          is_file=snapshot.is_file, resolve=lexical_path)

@@ -125,7 +125,7 @@ Agent-performed verification is sufficient evidence for committing. Manual or de
 5. Verify the resulting commit and the remaining worktree state.
 6. After the last commit of the request, run the project's test-selection command. Fix a failure in a new commit and run the command again.
 
-When the configured pre-commit hook runs the 250-line, local Markdown-link, and folder-child checks, MUST rely on `git commit` to run them. MUST NOT run these scripts separately merely to repeat the hook's verification. Separate runs MAY be used to diagnose a failure.
+When the configured pre-commit hook runs the file-size, local Markdown-link, and folder-child checks, MUST rely on `git commit` to run them. MUST NOT run these scripts separately merely to repeat the hook's verification. Separate runs MAY be used to diagnose a failure.
 
 Why: one command runs all configured checks, instead of requiring the agent to remember and run each script individually.
 
