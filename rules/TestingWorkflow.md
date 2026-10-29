@@ -1,6 +1,6 @@
 # Testing Workflow
 
-Summary: Rules for automated test execution, change-based selection and whether regression coverage justifies its run time.
+Summary: Rules for automated test execution, change-based selection, the 20-second mean development and 60-second full-suite budgets, and whether regression coverage justifies its run time.
 
 These rules belong to [Testing](Testing.md).
 
@@ -53,7 +53,13 @@ Why: verification must cover the committed behavior without repeating unrelated 
 
 ## Keep a Test Only When Its Regression Value Exceeds Its Run Time
 
-When to apply: adding a test to the project's permanent tests, or reviewing them because commits or publishing take too long.
+When to apply: adding a test to the project's permanent tests, selecting a verification workflow, or reviewing verification time.
+
+Treat development feedback time as a quality criterion alongside regression detection. Target a mean end-to-end wall time of at most 20 seconds for routine development verification runs; the full automated suite MUST finish within 60 seconds on the development machine. Measure from starting the verification entry point through selection, setup, process startup, execution and cleanup; parallel tests contribute elapsed wall time, not the sum of their durations. Report the sample count and environment with a measured mean; one run establishes only that run's duration. A project MAY set different budgets through an explicit project override with its reason.
+
+First remove avoidable work, reuse supporting processes where test isolation permits, and select checks by affected workflow under [Automate Project-Lifetime Tests](#automate-project-lifetime-tests). When retaining every check would exceed the budget, development speed MAY take priority over additional regression coverage: remove checks whose regression value does not justify their cost, or move them to a documented event such as merge, release or dependency upgrade. Record the omitted coverage and the failure that could then go undetected; MUST NOT silently skip a selected check or describe unverified behavior as passing. Report an unresolved overrun with measured times rather than weakening assertions or test isolation merely to meet the clock.
+
+For example, reuse one loaded test process across 40 cases while giving each case fresh storage; there is no reason to reload the same libraries 40 times unless a case verifies startup. By contrast, a test of crash recovery must exercise the crash and restart, so keeping its process alive would remove the behavior under test.
 
 A permanent test costs its run time on every commit that selects it, for the life of the project. It pays back only when a later change breaks the behavior it checks. Verify a new behavior in `tmp/` first. Promote the test to the permanent tests only when at least one of these holds:
 
