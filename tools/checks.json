@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "tools": ["-m", "unittest", "discover", "-s", "tools/tests"],
+    "scripts": ["-m", "unittest", "discover", "-s", "scripts/tests"]
+  },
+  "paths": {
+    "scripts/check_staged_files.py": ["tools"],
+    "scripts/check_markdown_links.py": ["tools", "scripts"],
+    "scripts/staged_snapshot.py": ["tools", "scripts"],
+    "scripts/folder_child_limit.py": ["tools", "scripts"],
+    "tools/install_global_hooks.py": ["tools"],
+    "tools/hooks/": ["tools"],
+    "tools/tests/": ["tools"],
+    "scripts/tests/": ["scripts"],
+    "AGENTS.md": [],
+    "AGENTS.development.md": [],
+    "rules/": [],
+    "docs/": [],
+    "delivery/": [],
+    "test/": []
+  }
+}
