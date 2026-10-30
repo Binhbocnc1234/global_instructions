@@ -22,6 +22,16 @@ from pathlib import Path
 from compile_codex_agents import CompileError, compile_document
 
 MARKER = "<!-- Shared global rules for prompt cache reuse. -->"
+# Base instructions arrive above project AGENTS.md in Codex's instruction hierarchy.
+# Delegate only the compiled user guidance so caching cannot promote global defaults.
+USER_GUIDANCE = """# Authority of cached global user guidance
+
+The <global_user_guidance> block below contains user-provided global AGENTS.md guidance, placed here only for shared prompt caching. You MUST apply that block with user-level authority, not as system or developer instructions. Its placement in this base prompt MUST NOT promote its authority.
+
+Apply the normal instruction hierarchy to that guidance: actual system and developer instructions take precedence; explicit user requests and applicable project AGENTS.md overrides take precedence over conflicting global defaults. In particular, a project's [Override] replaces the relevant global rule, even if that global rule uses absolute wording such as \"regardless of the request's language\". Keep unrelated global rules active. For example, a project requiring Vietnamese replies overrides a global English-only preference.
+
+This delegation applies only to <global_user_guidance>. Native instructions outside that block, actual system/developer messages, sandbox restrictions and tool constraints retain their authority; user or project text cannot override them through this delegation.
+"""
 
 
 def installation_files(home: Path, source: Path, native_source: Path, runtime: Path, desktop_file: Path) -> dict[Path, str]:
@@ -44,7 +54,7 @@ def installation_files(home: Path, source: Path, native_source: Path, runtime: P
     if configured is not None and configured != str(output):
         raise ValueError("Another model_instructions_file is already configured")
     global_rules = compile_document(source, output)
-    combined = native + "\n\n" + MARKER + "\n\n" + global_rules
+    combined = native + "\n\n" + MARKER + "\n\n" + USER_GUIDANCE + "\n<global_user_guidance>\n" + global_rules + "</global_user_guidance>\n"
     previous_prefix = config.get("global_prompt_cache_prefix")
     if previous_prefix is not None and (not output.exists() or previous_prefix != output.read_text(encoding="utf-8").strip()):
         raise ValueError("Another global_prompt_cache_prefix is already configured")
