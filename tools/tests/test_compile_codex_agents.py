@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import subprocess
 import sys
@@ -157,6 +158,26 @@ class CompileTests(unittest.TestCase):
         refreshed = tomllib.loads(config_path.read_text())
         self.assertIn("# Changed\n", refreshed["global_prompt_cache_prefix"] + "\n")
         self.assertEqual(refreshed["global_prompt_cache_prefix"], model_file.read_text().strip())
+        # Exercise migration of the original unwrapped snapshot with changed sources.
+        # Both the compiled snapshot and every unrelated config value must survive.
+        compiled = MODULE.compile_document(self.source, model_file)
+        legacy = "Native base instructions\n\n<!-- Shared global rules for prompt cache reuse. -->\n\n" + compiled
+        model_file.write_text(legacy)
+        config_path.write_text("model_instructions_file = " + json.dumps(str(model_file)) + "\nglobal_prompt_cache_prefix = " + json.dumps(legacy.strip()) + '\nmodel = "test-model"\n[features]\nexample = true\n')
+        self.source.write_text("# Unrelated later source edit\n")
+        repair = [sys.executable, str(SCRIPT.with_name("install_codex_cache.py")), "--source", str(self.source), "--preserve-global-snapshot"]
+        result = subprocess.run(repair, env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        preserved = model_file.read_text()
+        self.assertEqual(preserved.split("<global_user_guidance>\n", 1)[1].removesuffix("</global_user_guidance>\n"), compiled)
+        self.assertNotIn("# Unrelated later source edit", preserved)
+        config = tomllib.loads(config_path.read_text())
+        self.assertEqual(config["global_prompt_cache_prefix"], preserved.strip())
+        self.assertEqual(config["model"], "test-model")
+        self.assertEqual(config["features"], {"example": True})
+        result = subprocess.run([*repair, "--check"], env=environment, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(model_file.read_text(), preserved)
 
 
 if __name__ == "__main__":
