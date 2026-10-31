@@ -222,6 +222,10 @@ class GlobalHookTests(unittest.TestCase):
             self.assertTrue(body.startswith("fix: attribution\n"), body)
             self.assertIn("Local body", body)
             self.assertEqual(body.count(f"Agent-Session: {session}"), 1, body)
+        self.env["AGENT_SESSION_ID"] = "1f3b5389"
+        result = self.git("commit", "--allow-empty", "-m", "fix: compact attribution")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Agent-Session: 1f3b5389", self.git("log", "-1", "--format=%B").stdout)
         self.env["AGENT_SESSION_ID"] = "not-a-session"
         result = self.git("commit", "--allow-empty", "-m", "fix: invalid")
         self.assertNotEqual(result.returncode, 0)

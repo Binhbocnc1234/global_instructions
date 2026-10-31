@@ -11,10 +11,11 @@ from pathlib import Path
 
 def main() -> int:
     session = os.environ.get("AGENT_SESSION_ID")
+    # one-harness v2 names sessions with 8 hex characters; other harnesses use full UUIDs.
     if session is not None and not re.fullmatch(
-        r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", session
+        r"[0-9a-fA-F]{8}(?:(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})?", session
     ):
-        print("Malformed AGENT_SESSION_ID: expected a full UUID", file=sys.stderr)
+        print("Malformed AGENT_SESSION_ID: expected a full UUID or an 8-character hex ID", file=sys.stderr)
         return 1
     local = Path(subprocess.run(
         ["git", "rev-parse", "--git-common-dir"], capture_output=True,
