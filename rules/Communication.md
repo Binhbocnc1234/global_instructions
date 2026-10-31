@@ -17,7 +17,7 @@ A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST com
 
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
 
-Limit the use of pronouns such as "it," "that" and "those".
+Limit the use of pronouns such as "it," "that" and "those". For example, if agent mention two parameters (A and B) in one paragraph, and then several paragraphs later, agent use the phrase "the second parameter" to refer to B, it forces the developer to spend time deducing what you mean. This also creates a risk of error, as the developer might mistakenly interpret "the second parameter" as referring to something else. The best approach is to be explicit by saying "parameter B" or "the second parameter (B)."
 
 When developer say "I recommend/suggest implementing .... because ...", this is not an order that agent must adhere, this is suggestion agent should assess before execution
 
@@ -161,4 +161,4 @@ For example, a 300-character Markdown paragraph stays one line, and the editor w
 
 For example, a 150-character Python tool description stays one literal, `"Run a command in Core's shell. Each command starts in the working directory; a cd does not carry over to the next command. ..."`, not two adjacent literals joined across a line break.
 
-Why: agents wrap at about 95 characters by habit, observed in Claude's Markdown and, on 2026-10-26, in a Python tool description whose split literal the developer had to ask about. A wrapped sentence cannot be found by searching for a phrase across the break, and a one-word edit changes several lines of the diff.
+Why: agents wrap at about 95 characters by habit, observed by both claude and codex. VSCode already have feature to wrap the line if the line is too long so this habit is redundant

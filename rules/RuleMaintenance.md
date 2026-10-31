@@ -2,7 +2,7 @@
 
 Use the shared foundation in [AGENTS.md](../AGENTS.development.md).
 
-When to apply: reviewing, proposing, creating, or changing agent instructions.
+When to apply: reviewing, proposing, creating, or changing agent rules.
 
 Most rules are added from agent mistake, and that mistake lead to consequences. Some rules come from developer preferences, or for the sake of consistency. For example, if we don't have a rule requiring Markdown filenames to be in PascalCase, the agent will name files arbitrarily; consistency makes reading the data faster.
 

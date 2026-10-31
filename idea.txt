@@ -19,3 +19,40 @@ Request: "tôi nghi ngờ one-harness tốn nhiều usage hơn Codex Desktop khi
 
 Chỉnh lại Explanation.md 
 Bạn hãy đọc toàn bộ các response có task type là Design, gom từ tất cả các project trong ~/dev để xem chúng có đang tuân thủ nguyên tắc này của Explanation.md không
+
+
+currently, this chat use instruction for everything model receive from harness(global rule+project rule+developer request)
+and "instruction" is undefined harness vocabulary
+this is defect, that make me ask you "what is instruction"
+solve this problem
+
+Task type: Rule maintenance (proposal only). This side chat can only read files inside the project folder, so I can’t make the edits here. The edits below need to be applied in the main session.
+
+The defect
+
+[Documented] The Harness Vocabulary table in ~/.agents/rules/Communication.md doesn’t define “instruction”. Even so, the rules use the word with three different meanings:
+A stored rule. For example, “agent instructions”, “global instructions”, “project instructions”, and AGENTS.md itself: “A rule is an instruction stored in a file”. So the definition of “rule” depends on the undefined word.
+Everything the model receives. For example, “Use the instruction hierarchy supplied by the harness”.
+The harness’s own name for rule files. Claude Code’s notices say “Instruction files were re-read”.
+[Inferred] Meaning 1 makes “rule” and “instruction” two words for one thing. The Communication rule against two synonymous terms forbids that, and the overlap is why the word was unclear to you.
+
+Proposed fix
+
+Add these rows to the Harness Vocabulary table:
+Term	Meaning
+Prompt	Everything the model receives for one model response: the harness’s system prompt, tool definitions, rules (global, project, skill), session history and the request.
+System prompt	The text the harness writes for the model before any rule or request. The developer does not edit it.
+
+Then add this line under the table: “Instruction” is not a term. Write “rule” for text stored in a file, “request” for what the developer sent, “system prompt” for what the harness wrote, and “prompt” for all of them together. When the harness’s own text says “instruction files”, it means rule files.
+
+[Observed] The project already uses “prompt” for this meaning, for example HarnessPrompt and prepare_session_prompt in RuleFiles.md:17. Choosing “prompt” therefore adds no new word.
+
+Rewrite the definition in AGENTS.md as: “A rule is text stored in a file that tells the agent what to do across requests.”
+Replace the remaining uses of “instruction”:
+Global rules. “agent instructions” becomes “rules”. “global instructions” and “project instructions” become “global rules” and “project rules”. “Loaded instructions” becomes “Loaded rules”. “Use the instruction hierarchy supplied by the harness” becomes “Follow the priority order the harness gives the system prompt, rules and request”.
+Project docs. [Observed] “harness instructions” becomes “harness rules” in AGENTS.md:5, Architecture.md:5, Architecture.md:81, ProductVision.md:15 and ProductVision.md:23. The same change applies to the matching lines in RuleFiles.md (5, 13 and 17), DesktopFrontend.md:17, Ownership.md:8 and Codex.md:51. In Compaction.md:7, “continuation instruction” becomes “continuation prompt”, which matches continuation_prompt.
+Keep: EditorBuild.md:97, because “prompt instruction references” is VS Code’s own API name.
+
+Lesson: The cause is that the vocabulary table leaves out a word the rules use with three meanings. The new table row records the fix once it’s applied, so later sessions use one term.
+
+Question: Should “prompt” be the umbrella term? I recommend it because the code and docs already use it. The other choice, “context”, is also standard, but it usually means the context window, a size limit, so it would be ambiguous. If you agree, ask the main session to apply steps 1–3 as one docs commit.
