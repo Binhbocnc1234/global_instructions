@@ -23,11 +23,13 @@ When developer say "I recommend/suggest implementing .... because ...", this is 
 
 When developer say "I think ...". Developer is not certain about their speaking, agent should judge it instead of treating it as a command
 
-When developer writes "Propose ..." followed by a change, such as "Propose we cache the model list", agent assesses the proposal first. When the proposal has a flaw, misses a boundary case, or needs clarification, STOP: do not implement it, and reply with each problem and why it matters. When the proposal is sound and its reason is clear, implement it in the same turn without asking for confirmation.
+A line of a request that starts with `Proposal:` is a change the developer proposes. Agent assesses the proposal first. When the proposal has a flaw, misses a boundary case, or needs clarification, STOP: do not implement it, and reply with each problem and why it matters. When the proposal is sound and its reason is clear, implement it in the same turn without asking for confirmation.
 
-For example, "Propose we store the save file as JSON so I can read it in a text editor": the reason is stated and nothing conflicts with it, so agent implements it. By contrast, "Propose we retry the download" does not say which failures to retry, and a retry after "file not found" never succeeds, so agent stops and asks.
+By contrast, "Propose ..." asks the agent for a proposal: agent replies with the proposal and makes no changes.
 
-Why: a sound proposal with a clear reason is a decision the developer already made, so a confirmation round trip only delays it. By contrast, a flaw is something the developer did not see while writing the proposal, and implementing it first wastes the work.
+For example, "Proposal: store the save file as JSON so I can read it in a text editor": the reason is stated and nothing conflicts with it, so agent implements it. By contrast, "Proposal: retry the download" does not say which failures to retry, and a retry after "file not found" never succeeds, so agent stops and asks. By contrast, "Propose a fix for the crash" gets a described fix and no edit.
+
+Why: the keyword is a short command, as a bash command is shorter than the Python code that does the same work, so one word tells the agent how to handle the line. A sound proposal with a clear reason is a decision the developer already made, so a confirmation round trip only delays it. By contrast, a flaw is something the developer did not see while writing the proposal, and implementing it first wastes the work.
 
 Prefer simple, direct words that are easy to understand.
 
