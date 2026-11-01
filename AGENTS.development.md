@@ -135,6 +135,12 @@ Why: an agent that knows the fixed entries does not search for them, and every h
 
 Why: dirty context confuse the agent
 
+### No README
+
+MUST NOT create a `README.md` unless the developer asks for one, or the project is published for readers other than the developer and agents, such as a public repository page. `AGENTS.md` is the entry document of the project. MUST NOT edit or delete a third-party README, such as one inside a vendored library. Delete an existing agent-written README only when a task touches it.
+
+Why: agents add a README by habit from their training data, but the developer reads `AGENTS.md`, which every session loads, so a README only repeats it and goes stale. On 2026-11-01, the one-harness README still described the abandoned v1 product.
+
 ## Global Prompt Imports
 
 These files are loaded, not separate agent sessions. [Leader](rules/Leader.md#role-routing) controls when each specialist responsibility applies.
