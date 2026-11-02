@@ -17,11 +17,7 @@ A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST com
 
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
 
-MUST NOT use a pronoun such as "it", "that" or "those", or a position phrase such as "the second parameter", when the passage names more than one entity it could refer to. Name the entity instead. For example, if agent mention two parameters (A and B) in one paragraph, and then several paragraphs later, agent use the phrase "the second parameter" to refer to B, it forces the developer to spend time deducing what you mean. This also creates a risk of error, as the developer might mistakenly interpret "the second parameter" as referring to something else. The best approach is to be explicit by saying "parameter B" or "the second parameter (B)."
-
-For example, a table row describes a file lock: one column names the program that holds the lock, and the next column says "It gave up after 2 minutes". The reader takes "It" as the program that holds the lock, because that program is the nearest name, while the writer meant the program that waited. Write "The waiting program gave up after 2 minutes".
-
-Why: a reader tends to resolve a pronoun to the nearest matching name, even when the intended name is only one sentence or one table cell further away. On 2026-11-02, a reply's table cell used "It" for the second of two named sessions, and the developer read it as the first.
+Limit the use of pronouns such as "it," "that" and "those". For example, if agent mention two parameters (A and B) in one paragraph, and then several paragraphs later, agent use the phrase "the second parameter" to refer to B, it forces the developer to spend time deducing what you mean. This also creates a risk of error, as the developer might mistakenly interpret "the second parameter" as referring to something else. The best approach is to be explicit by saying "parameter B" or "the second parameter (B)."
 
 When developer say "I recommend/suggest implementing .... because ...", this is not an order that agent must adhere, this is suggestion agent should assess before execution
 
