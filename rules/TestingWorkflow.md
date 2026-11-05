@@ -20,7 +20,7 @@ When to apply: adding or maintaining automated tests intended to remain useful b
 
 Maintained tests MUST have a documented automated entry point. Adding a maintained test MUST NOT automatically add its execution to every commit.
 
-A project-owned selection command MUST select checks from the changed files using project-owned test-selection configuration. Selection MUST include directly changed tests and tests for workflows that depend directly or indirectly on changed components. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
+A project-owned selection command MUST select checks from the changed files using project-owned test-selection configuration. Selection MUST include directly changed tests. Explicitly classified non-executable changes MAY select only the applicable non-executable checks. An unmapped change MUST select the full relevant suite.
 
 The pre-commit hook MUST NOT run tests; it runs only the staged-file checks. The agent runs the selection command once, after the last commit of the request, against the last commit, and runs exactly the checks it selects. The agent MUST NOT add, skip, or replace a selected check by its own judgement. It MAY run another check only to diagnose a failure.
 
@@ -28,11 +28,6 @@ For example, a request implements two features in two commits. The selection com
 
 Why: a hook runs the selected tests at every commit, so a request with two commits pays for two runs, and in one project a single run took 144 s. A command still selects from the changed files, so selection does not depend on the agent's judgement.
 
-A workflow depends on a component when the workflow executes the component’s code or reads a value the component defines. A module the workflow loads but never calls or reads is not a dependency. Establish what a workflow executes from evidence, such as a coverage run, before mapping it.
-
-For example, an editor workflow loads a Codex configuration module because the extension’s entry file imports it, but Codex is turned off in that workflow, so none of the module’s functions run. Selecting the workflow for a change to that module costs 30 s and checks nothing the change did.
-
-By contrast, a Python test that imports a settings module and reads TIMEOUT_SECONDS on the path it runs depends on that module.
 Changes to the test-selection configuration, shared test runner, or dependency configuration MUST select the full relevant suite unless the project defines and verifies a narrower dependency boundary.
 
 The selector MUST print the selected checks and the reason for each selection, deduplicate checks, and execute them against the same candidate snapshot used for selection.
@@ -47,7 +42,7 @@ Tests that are only valid for the current session MUST remain in the git-ignored
 
 For example, a documentation-only commit runs the applicable staged-file checks without launching an editor when no executable behavior or test configuration changes.
 
-By contrast, a change to shared session storage runs the workflows that depend on that storage. A passing run that included an unstaged storage fix does not verify a commit that omits the fix.
+By contrast, a passing run that included an unstaged storage fix does not verify a commit that omits the fix.
 
 Why: verification must cover the committed behavior without repeating unrelated workflows or allowing uncommitted changes to hide a broken commit.
 
