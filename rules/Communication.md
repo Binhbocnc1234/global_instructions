@@ -17,8 +17,6 @@ A qualitative adjective (`long`, `slow`, `large`, `expensive`, `risky`) MUST com
 
 Use `MUST`, `MUST NOT`, or `STOP` for critical constraints. Use `MAY` if you don't feel confident
 
-Limit the use of pronouns such as "it," "that" and "those". For example, if agent mention two parameters (A and B) in one paragraph, and then several paragraphs later, agent use the phrase "the second parameter" to refer to B, it forces the developer to spend time deducing what you mean. This also creates a risk of error, as the developer might mistakenly interpret "the second parameter" as referring to something else. The best approach is to be explicit by saying "parameter B" or "the second parameter (B)."
-
 When developer say "I recommend/suggest implementing .... because ...", this is not an order that agent must adhere, this is suggestion agent should assess before execution
 
 When developer say "I think ...". Developer is not certain about their speaking, agent should judge it instead of treating it as a command
@@ -162,3 +160,17 @@ For example, a 300-character Markdown paragraph stays one line, and the editor w
 For example, a 150-character Python tool description stays one literal, `"Run a command in Core's shell. Each command starts in the working directory; a cd does not carry over to the next command. ..."`, not two adjacent literals joined across a line break.
 
 Why: agents wrap at about 95 characters by habit, observed by both claude and codex. VSCode already have feature to wrap the line if the line is too long so this habit is redundant
+
+## Pronoun rule
+
+In prose, the reader encounters names in a fixed order. In a table, the reader primarily reads a row from left to right, then moves to the next row. Reading down a column is a secondary way to compare rows.
+
+- **In prose:** A pronoun must have an unambiguous referent. If the passage names multiple entities that the pronoun could refer to, use the entity's name instead. For example, if a paragraph names parameters A and B, write "parameter B" rather than "the second parameter" several paragraphs later.
+
+- **In tables:** A pronoun must have an unambiguous referent when reading its row from left to right. Do not rely on an entity named in an earlier cell if another entity in the current row could become the pronoun's referent. For example, in a table with Home team, Away team, and Result columns, write "The home team lost on penalties" rather than "It lost on penalties". Alternatively, put the subject in the column header, such as "Home team's result".
+
+- **Within the same cell:** A pronoun is safe when its referent is explicitly named earlier in the same cell and no other entity in that cell could be confused with the referent. For example, "The home team led at half time, but it lost 2–1."
+
+- **When comparing rows:** Avoid pronouns that refer to entities named in other rows. A reader scanning a column should not need to look back at another row to identify the referent. Prefer explicit entity names.
+
+**Why:** A reader primarily interprets a table horizontally, using the preceding cells in the current row. A pronoun that relies on an entity from another cell can have a different apparent referent when the reader scans vertically. Explicit entity names keep the referent unambiguous across both reading directions.
