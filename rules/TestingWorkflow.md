@@ -38,7 +38,7 @@ Verification MUST test the committed files. When uncommitted changes could affec
 
 A failed selected check MUST be fixed in a new commit, followed by another run of the selection command, before the final reply. When a blocker prevents the fix, the reply names the failing check. Each selected check MUST run for the same snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure; a later pass MUST NOT silently erase an earlier failure.
 
-Tests that are only valid for the current session MUST remain in the git-ignored `tmp/` folder. MUST NOT add them to the project's permanent test workflow.
+Tests that are only valid for the current session MUST remain in the session's scratch folder, under [Typical Project Structure](../AGENTS.development.md#typical-project-structure). MUST NOT add them to the project's permanent test workflow.
 
 For example, a documentation-only commit runs the applicable staged-file checks without launching an editor when no executable behavior or test configuration changes.
 
@@ -56,17 +56,17 @@ First remove avoidable work, reuse supporting processes where test isolation per
 
 For example, reuse one loaded test process across 40 cases while giving each case fresh storage; there is no reason to reload the same libraries 40 times unless a case verifies startup. By contrast, a test of crash recovery must exercise the crash and restart, so keeping its process alive would remove the behavior under test.
 
-A permanent test costs its run time on every commit that selects it, for the life of the project. It pays back only when a later change breaks the behavior it checks. Verify a new behavior in `tmp/` first. Promote the test to the permanent tests only when at least one of these holds:
+A permanent test costs its run time on every commit that selects it, for the life of the project. It pays back only when a later change breaks the behavior it checks. Verify a new behavior in the scratch folder first. Promote the test to the permanent tests only when at least one of these holds:
 
 - Code that other tasks change often runs the behavior, so an unrelated change can break it.
 - The behavior has regressed before.
 - A break would stay unnoticed in daily use, or would damage data, such as a lost chat or a file written by the wrong owner.
 
-Assume a later agent edits only the code its task names. A test of behavior that only that code runs, and whose break the developer sees on first use, stays in `tmp/`.
+Assume a later agent edits only the code its task names. A test of behavior that only that code runs, and whose break the developer sees on first use, stays in the scratch folder.
 
 A permanent test whose behavior breaks only at a known event, such as an editor upgrade, runs at that event and not on every commit, under [Automate Project-Lifetime Tests](#automate-project-lifetime-tests).
 
-For example, a new label shows the session id in the chat header. The agent checks it once through the editor, from a script in `tmp/`. Only the label's own code shows it, and a missing label is visible at once, so the script stays in `tmp/`.
+For example, a new label shows the session id in the chat header. The agent checks it once through the editor, from a script in the scratch folder. Only the label's own code shows it, and a missing label is visible at once, so the script stays there.
 
 For example, a change to how turn logs are written gets a permanent test, because every chat writes through that code, and a bad write loses history without any visible error.
 
