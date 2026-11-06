@@ -87,7 +87,7 @@ Use concise relative Markdown links, such as `[Layer 2](00-pipeline.md)` or `[de
 
 - Keep each Markdown link on one line so parsers and VS Code recognize it.
 - Do not write absolute or machine-specific paths in documentation.
-- `@path` is not a link. It loads the file into the agent's context, so it belongs in an instruction file that the harness reads, such as `AGENTS.md` or a `SKILL.md`. Everywhere else, a reference to another document is a Markdown link.
+- `@path` is not a link. It loads the file into the agent's context, so it belongs in `AGENTS.md` or a Markdown file that `AGENTS.md` imports. A `SKILL.md` does not expand it. Everywhere else, a reference to another document is a Markdown link.
 
 ### Document references belong in the body
 
