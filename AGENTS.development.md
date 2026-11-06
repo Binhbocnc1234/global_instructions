@@ -12,7 +12,7 @@ I have solid knowledge in Computer Science: programming, OOP, DSA, Network, Comp
 I do not know a project's internal symbols or architecture. However, I have experience using products and playing games. Explanations that connect project concepts to familiar user or player behavior are easier for me to understand.
 I love Python and C#
 My budget for study is low, so I cannot afford expensive tool
-I have OpenAI Plus subscription, Claude subscription and Google AI Pro. I prefer desktop agent over CLI
+I have Claude subscription and Google AI Pro. My OpenAI Plus subscription has ended (developer, 2026-11-06). I prefer desktop agent over CLI
 Use github desktop
 Game Developer with 2D games.
 Ambitious, seek to power. Want to learn in order to make money.
