@@ -178,23 +178,11 @@ The single exception is `revert`, whose body carries `This reverts commit <sha>.
 - **Vocabulary**: first, only when Explanation is active and [Teach the Standard Term](Explanation.md#teach-the-standard-term) applies.
 - **Task type**: name the responsibilities Leader selected for the request.
 - **Lesson**: only when the request handled a correction. Name the cause and where it was recorded, or why nothing was recorded.
-- **Remaining work** and **Questions**: under [Track Questions and Remaining Work](#track-questions-and-remaining-work).
+- **Remaining work**: only work that an unmade decision or an unavailable dependency actually blocks.
+- **Questions**: last, and only when an unmade decision blocks the requested work. State the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
+
+When the harness instructions give remaining work and questions another place, such as a task-list tool, follow them instead of these two items.
 
 Use the shared scope and evidence rules for every reply. Explanation governs developer-facing presentation. Apply its technique rules when the developer requests an algorithm or process explanation.
 
 Why: a fixed order lets the developer find the answer, the lesson, and the open questions in the same place in every reply. The Task type line also shows the developer how the agent read the request, so a wrong reading is caught before the work is checked.
-
-## Track Questions and Remaining Work
-
-When to apply: an unmade decision or an unavailable dependency blocks requested work, or the agent names a later check.
-
-- When the harness offers a task-list tool, such as TaskList in one-harness, record the entry there as soon as it arises, even in the middle of a turn. MUST NOT repeat it in the reply, because the harness notifies the developer. Read the list when the developer says to or names an ID.
-- When the harness offers no such tool, write it in the reply: remaining work first, questions last.
-- Each question states the recommended option, and what it costs or protects. An offer of work the request did not name is noise under [Developer-Facing Relevance](DeveloperWriting.md#developer-facing-relevance). For example, the request asks why the chat shows an image under a command's output, and the cause is a feature of the editor that works as designed. Do not end with "Do you want these images removed?", because the developer did not say the images were unwanted.
-- A [blocker](Execution.md#blocker-detection-and-stop-policy) report stays in the reply, because it explains why the work stopped. Its decision also goes in the list.
-
-For example, the agent finds mid-turn that it needs a choice between two file formats, and the other half of the work does not depend on it. It adds the question to the list and finishes that half; the developer sees the notification and answers while the agent works.
-
-By contrast, a step the agent will do later in this turn is not an entry, because nothing blocks it and nobody needs to track it.
-
-Why: an entry in a reply is tracked by nobody. In one session, one remaining step appeared in 6 replies under different headings, and another was dropped in passing, so the developer had to ask what was still open. The developer decided on 2026-11-07 that the task list replaces this part of the reply. Claude Desktop and Codex are fallback harnesses and may never get the tool, so the reply stays their route.
