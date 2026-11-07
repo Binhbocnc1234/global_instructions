@@ -21,7 +21,7 @@ MUST NOT repeat the same information through prose, bullets, pseudocode, a trace
 
 When delivering a document in a reply, link to it. Do not repeat its contents unless the developer requests a summary or needs a specific finding immediately.
 
-End a reply with a question only when its answer blocks the requested work. Do not offer additional work merely to give the reply an ending.
+A question goes where [Track Questions and Remaining Work](Leader.md#track-questions-and-remaining-work) says, and only when its answer blocks the requested work. Do not offer additional work merely to give the reply an ending.
 
 Before sending, remove sentences whose deletion preserves the answer, necessary evidence, useful examples, limitations, and required actions.
 
