@@ -2,8 +2,6 @@
 
 Use the shared foundation in [AGENTS.md](../AGENTS.md).
 
-Learning materials activate the learning-material skill.
-
 ## Markdown Document Kind
 
 When to apply: creating a documentation file, or adding a section to one.
