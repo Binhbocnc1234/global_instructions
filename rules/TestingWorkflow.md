@@ -12,8 +12,6 @@ Leave physical-device checks, performance measurement, usability review, and rel
 
 A result is evidence only when the intended fixture was discovered and a nonzero test count executed. A skipped or silently excluded test script is a failure of evidence, even if the runner exits successfully.
 
-A failed run stays in the report, including a run of a session-only test. MUST read why a run failed before changing the test or running it again. The reply names each failed run, its cause and what changed afterwards, or says that the cause is unknown. For example, a temporary test step times out, the agent adds data to the test, and the next run passes. The reply still says that the first run timed out and why, because the pass alone cannot show whether the test or the product was wrong. Why: on 2026-11-08, an agent changed a temporary test after a timeout without reading the failure, and reported only the later pass, so the developer had to point out the timeout.
-
 A script that tests or reproduces a behavior prints every error it catches and exits non-zero when anything fails. Its cleanup MUST NOT call `exit(0)` or swallow the exception: a `finally { process.exit(0) }` turns a crash into a silent pass. Exit code 0 with missing output is a failure of evidence, not a pass.
 
 ## Automate Project-Lifetime Tests
@@ -38,7 +36,7 @@ Workflows not selected for every commit MUST remain available through the projec
 
 Verification MUST test the committed files. When uncommitted changes could affect the result, run verification in an isolated checkout of the last commit. MUST NOT treat a passing test against different working-folder content as evidence that the commit passes.
 
-A failed selected check MUST be fixed in a new commit, followed by another run of the selection command, before the final reply. When a blocker prevents the fix, the reply names the failing check. Each selected check MUST run for the same snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure, and [Execute Tests by Default](#execute-tests-by-default) owns how the failure is reported.
+A failed selected check MUST be fixed in a new commit, followed by another run of the selection command, before the final reply. When a blocker prevents the fix, the reply names the failing check. Each selected check MUST run for the same snapshot. MUST NOT repeat a passing check when its checked content, dependencies, configuration, and selection remain unchanged. Failed checks MAY be rerun to diagnose the failure; a later pass MUST NOT silently erase an earlier failure.
 
 Tests that are only valid for the current session MUST remain in the session's scratch folder, under [Typical Project Structure](../AGENTS.development.md#typical-project-structure). MUST NOT add them to the project's permanent test workflow.
 
