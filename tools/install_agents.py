@@ -3,7 +3,8 @@
 
 Run from any directory: python3 /path/to/global_instructions/tools/install_agents.py
 Use --check to compare without writing, or --destination for an isolated install.
-Other destination files are neither updated nor deleted.
+The destination's rules/ and skills/ mirror the source: files the source lacks are deleted.
+Every other destination folder holds files this installer does not own, such as the Git hooks, and is left alone.
 """
 from __future__ import annotations
 
@@ -16,6 +17,27 @@ from pathlib import Path
 from compile_codex_agents import CompileError, compile_document
 
 SOURCE_ROOT = Path(__file__).resolve().parent.parent
+# Another tool writes inside these skills folders, so a file the source lacks is not stale there.
+EXTERNALLY_MANAGED_SKILLS: frozenset[str] = frozenset({".trash", "synced"})
+
+
+def is_bytecode_cache(relative: Path) -> bool:
+    return "__pycache__" in relative.parts or relative.suffix in {".pyc", ".pyo"}
+
+
+def stale_files(destination: Path, installed: set[Path]) -> list[Path]:
+    """Return files in the installer-owned folders that the source no longer provides."""
+    stale: list[Path] = []
+    for owned in (destination / "rules", destination / "skills"):
+        for path in sorted(owned.rglob("*")):
+            relative = path.relative_to(owned)
+            # This installer never writes a symlink or a cache file, so neither can be left over from it.
+            if path in installed or path.is_symlink() or not path.is_file() or is_bytecode_cache(relative):
+                continue
+            if owned.name == "skills" and relative.parts[0] in EXTERNALLY_MANAGED_SKILLS:
+                continue
+            stale.append(path)
+    return stale
 
 
 def installation_files(destination: Path) -> dict[Path, bytes]:
@@ -31,8 +53,7 @@ def installation_files(destination: Path) -> dict[Path, bytes]:
         raise ValueError(f"Required skills directory is missing or is a symlink: {skills}")
     paths.extend(sorted(
         path for path in skills.rglob("*")
-        if "__pycache__" not in path.relative_to(skills).parts
-        and path.suffix not in {".pyc", ".pyo"}
+        if not is_bytecode_cache(path.relative_to(skills))
     ))
     if not any(path.name == "SKILL.md" for path in paths if skills in path.parents):
         raise ValueError(f"Required skills directory contains no SKILL.md files: {skills}")
@@ -84,10 +105,13 @@ def main() -> int:
             if not path.is_file() or path.read_bytes() != content
             or (path in skill_modes and path.stat().st_mode & 0o777 != skill_modes[path])
         ]
+        stale: list[Path] = stale_files(destination, set(files))
         if args.check:
             for path in changed:
                 print(f"Missing or changed: {path}", file=sys.stderr)
-            if changed:
+            for path in stale:
+                print(f"Stale: {path}", file=sys.stderr)
+            if changed or stale:
                 return 1
             print(f"Up to date: {len(files)} instruction files in {destination}")
             return 0
@@ -105,7 +129,14 @@ def main() -> int:
                 if temporary is not None:
                     temporary.unlink(missing_ok=True)
             print(f"Installed: {path}")
-        print(f"Updated {len(changed)} of {len(files)} instruction files in {destination}")
+        for path in stale:
+            path.unlink()
+            for parent in path.parents:
+                if parent in (destination / "rules", destination / "skills") or any(parent.iterdir()):
+                    break
+                parent.rmdir()
+            print(f"Removed: {path}")
+        print(f"Updated {len(changed)} of {len(files)} instruction files and removed {len(stale)} stale files in {destination}")
         return 0
     except (CompileError, OSError, UnicodeError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)

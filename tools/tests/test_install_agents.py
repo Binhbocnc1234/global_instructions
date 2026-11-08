@@ -44,7 +44,7 @@ class InstallationWorkflowTests(unittest.TestCase):
         self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
         return result
 
-    def test_install_check_drift_and_reinstall_preserve_unrelated_files(self) -> None:
+    def test_install_check_drift_and_reinstall_remove_stale_and_preserve_unrelated_files(self) -> None:
         source_rule = self.source / "rules" / "Nested.md"
         source_content = (
             "Rule content.\n"
@@ -55,18 +55,25 @@ class InstallationWorkflowTests(unittest.TestCase):
         source_rule.write_text(source_content)
         self.destination.mkdir()
         untouched = {
-            "rules/DestinationOnly.md": "Local-only rule.\n",
-            "skills/Example.md": "Installed skill.\n",
             "tools/local.py": "Local tool.\n",
+            "skills/.trash/old/SKILL.md": "Trashed by another tool.\n",
+            "skills/synced/.marker": "Written by another tool.\n",
+            "skills/example/scripts/__pycache__/local.pyc": "Cache.\n",
         }
-        for relative, content in untouched.items():
+        stale = ("rules/DestinationOnly.md", "skills/removed/nested/SKILL.md")
+        for relative, content in [*untouched.items(), *((name, "Old.\n") for name in stale)]:
             path = self.destination / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
-        self.run_installer("--check", expected=1)
+        result = self.run_installer("--check", expected=1)
         self.assertFalse((self.destination / "AGENTS.md").exists())
+        for relative in stale:
+            self.assertIn(relative, result.stderr)
+            self.assertTrue((self.destination / relative).exists())
         result = self.run_installer()
         self.assertIn("Updated 6 of 6", result.stdout)
+        self.assertFalse((self.destination / "rules/DestinationOnly.md").exists())
+        self.assertFalse((self.destination / "skills/removed").exists())
         for relative in ("SKILL.md", "scripts/run.sh", "asset.bin"):
             self.assertEqual(
                 (self.destination / "skills/example" / relative).read_bytes(),
@@ -74,7 +81,7 @@ class InstallationWorkflowTests(unittest.TestCase):
             )
         executable = self.destination / "skills/example/scripts/run.sh"
         self.assertEqual(executable.stat().st_mode & 0o777, 0o755)
-        self.assertFalse((self.destination / "skills/example/scripts/__pycache__").exists())
+        self.assertFalse((self.destination / "skills/example/scripts/__pycache__/cached.pyc").exists())
         self.assertEqual((self.destination / "AGENTS.md").read_bytes(),
                          (self.source / "AGENTS.development.md").read_bytes())
         self.assertEqual((self.destination / "rules/Example.md").read_bytes(),

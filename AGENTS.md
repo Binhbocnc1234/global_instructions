@@ -25,7 +25,7 @@ Failure condition: The agent edits the rule file without approval.
 
 This is done by developer, agent don't need to do that
 
-Run `python3 tools/install_agents.py` to install the development document as `~/.agents/AGENTS.md` and copy `rules/` and `skills/` into the matching directories under `~/.agents/`. Skills include supporting files and source permissions, but exclude Python bytecode caches. The installer preserves `@` imports and leaves destination-only files untouched.
+Run `python3 tools/install_agents.py` to install the development document as `~/.agents/AGENTS.md` and copy `rules/` and `skills/` into the matching directories under `~/.agents/`. Skills include supporting files and source permissions, but exclude Python bytecode caches. The installer preserves `@` imports and deletes files from the destination's `rules/` and `skills/` that the source no longer has, so a deleted rule or skill stops loading. Every other destination folder, such as `hooks/` and `scripts/`, and the `skills/.trash` and `skills/synced` folders that another tool writes to, keep their extra files.
 
 Run `python3 tools/install_agents.py --check` to compare without writing. Use `--destination /path/to/directory` for an isolated installation.
 
