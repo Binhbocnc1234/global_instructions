@@ -120,7 +120,7 @@ When to apply: creating a project, or deciding where a top-level file or folder 
 Almost every project root holds these entries. Each row names the rule that owns what goes inside; this table owns only the location.
 
 | Path | Holds |
-|---|---|---|
+|---|---|
 | `AGENTS.md` | Project instructions |
 | `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) |
 | `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | [ProjectRules](rules/ProjectRules.md#project-index) |
@@ -129,12 +129,6 @@ Almost every project root holds these entries. Each row names the rule that owns
 | `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. |
 
 A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. Project-specific navigation follows [ProjectRules](rules/ProjectRules.md#project-index).
-
-Why: a folder inside the project belongs to one copy of the project, so a link into it stops opening after the session loses that copy to another session; on 2026-11-10 an image in a copy's `tmp/` broke that way. The scratchpad and the per-user folder sit outside every copy (developer decision, 2026-11-11).
-
-Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
-
-Why: dirty context confuse the agent
 
 ### No README
 
