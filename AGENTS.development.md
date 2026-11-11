@@ -119,19 +119,16 @@ When to apply: creating a project, or deciding where a top-level file or folder 
 
 Almost every project root holds these entries. Each row names the rule that owns what goes inside; this table owns only the location.
 
-| Path | Holds | Owner |
+| Path | Holds |
 |---|---|---|
-| `AGENTS.md` | Project instructions | [ProjectRules](rules/ProjectRules.md) |
-
-| `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | [ProjectRules](rules/ProjectRules.md#project-index) |
+| `AGENTS.md` | Project instructions |
+| `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) |
 | `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | [ProjectRules](rules/ProjectRules.md#project-index) |
-| `docs/` | Project documentation and its index | [Documentation Audit](rules/Authoring.md#documentation-audit) and [Documentation Index](rules/Authoring.md#documentation-index) |
-| `tests/` | Automated tests and the fixtures they own | [Select Valuable Tests](rules/Testing.md) |
-| `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. | [ProjectRules](rules/ProjectRules.md#project-index) |
+| `docs/` | Project documentation and its index |
+| `tests/` | Automated tests and the fixtures they own |
+| `releases/` | Builds made from the code, one subfolder per platform, such as `windows/`, `linux/`, or `android/`. Git ignores it, because a build is regenerated from the code. |
 
 A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. Project-specific navigation follows [ProjectRules](rules/ProjectRules.md#project-index).
-
-A project holds no `tmp/` or other output folder. Files that one session makes, such as scratch scripts, driver scenes, and captures linked in a reply, go in the folder named by `$AGENT_SCRATCHPAD`, which the harness deletes with the session. In a harness that does not set the variable, they go in that harness's own scratch folder, otherwise in a new folder under the system temp folder. Output that no session owns, written by a program that also runs without a session, goes in a per-user folder outside the project: a game's error log in the engine's user-data folder, a tool's logs in `~/.local/state/<project>/`. Such a program writes to `$AGENT_SCRATCHPAD` instead when a session runs it.
 
 Why: a folder inside the project belongs to one copy of the project, so a link into it stops opening after the session loses that copy to another session; on 2026-11-10 an image in a copy's `tmp/` broke that way. The scratchpad and the per-user folder sit outside every copy (developer decision, 2026-11-11).
 
