@@ -135,7 +135,7 @@ An expected outcome that the caller handles as a normal result, such as a search
 
 For example, a save function returns `false` when the disk is full, and the caller reports "Save failed". The reader cannot tell a full disk from a read-only file. Good: the caller uses the save operation that throws, and reports `ENOSPC: no space left on device, write 'notes.txt'` with its stack.
 
-For example, a test script launches a program that exits 1, and the script exits 1 with no output, while the details sit in a report file the script never mentions. Good: the script prints "program exited 1; failures in tmp/run-7/report.json".
+For example, a test script launches a program that exits 1, and the script exits 1 with no output, while the details sit in a report file the script never mentions. Good: the script prints "program exited 1; failures in <scratchpad>/run-7/report.json".
 
 The same record serves the agent when the developer reports an error. The agent MUST find the trace itself, in the program's logs, error files and saved records, and MUST NOT ask the developer to supply it. When no record holds the trace, the missing record is a defect under this rule: the agent reports it and fixes the code so the next failure keeps its trace.
 

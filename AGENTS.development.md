@@ -122,7 +122,7 @@ Almost every project root holds these entries. Each row names the rule that owns
 | Path | Holds | Owner |
 |---|---|---|
 | `AGENTS.md` | Project instructions | [ProjectRules](rules/ProjectRules.md) |
-| `tmp/` | Output that no session owns, written by a program that also runs without a session, such as a game's error log or a check runner's logs, ignored by git. Nothing deletes it automatically | This table |
+
 | `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | [ProjectRules](rules/ProjectRules.md#project-index) |
 | `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | [ProjectRules](rules/ProjectRules.md#project-index) |
 | `docs/` | Project documentation and its index | [Documentation Audit](rules/Authoring.md#documentation-audit) and [Documentation Index](rules/Authoring.md#documentation-index) |
@@ -131,7 +131,9 @@ Almost every project root holds these entries. Each row names the rule that owns
 
 A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. Project-specific navigation follows [ProjectRules](rules/ProjectRules.md#project-index).
 
-Files that one session makes, such as scratch scripts, driver scenes, and captures linked in a reply, go in the folder named by `$AGENT_SCRATCHPAD`, which the harness deletes with the session. In a harness that does not set the variable, they go in `tmp/`. Why: the scratchpad sits outside the project copy, so a link to it still opens after the session loses its copy of the project to another session; on 2026-11-10 an image in a copy's `tmp/` stopped opening for that reason (developer decision, 2026-11-11).
+A project holds no `tmp/` or other output folder. Files that one session makes, such as scratch scripts, driver scenes, and captures linked in a reply, go in the folder named by `$AGENT_SCRATCHPAD`, which the harness deletes with the session. In a harness that does not set the variable, they go in that harness's own scratch folder, otherwise in a new folder under the system temp folder. Output that no session owns, written by a program that also runs without a session, goes in a per-user folder outside the project: a game's error log in the engine's user-data folder, a tool's logs in `~/.local/state/<project>/`. Such a program writes to `$AGENT_SCRATCHPAD` instead when a session runs it.
+
+Why: a folder inside the project belongs to one copy of the project, so a link into it stops opening after the session loses that copy to another session; on 2026-11-10 an image in a copy's `tmp/` broke that way. The scratchpad and the per-user folder sit outside every copy (developer decision, 2026-11-11).
 
 Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
 

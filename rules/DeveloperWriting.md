@@ -76,7 +76,7 @@ Some other examples:
 **Request:** “Proceed with the remaining verification.”
 
 **Good reply:**
-> `[Observed]` The editor type check passed. The packaged build remains unverified. The execution log is `tmp/typecheck-07/typecheck.log`.
+> `[Observed]` The editor type check passed. The packaged build remains unverified. The execution log is `<scratchpad>/typecheck-07/typecheck.log`.
 
 **Bad reply:**
 > Verification passed. See `chatInputCompletions.ts`.

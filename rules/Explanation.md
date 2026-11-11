@@ -166,7 +166,7 @@ For example, the developer asks: “How much RAM do I need for my workload?”
 The reply can use the following format; the log path, requirement value, and example URLs stand for the evidence collected:
 
 ```markdown
-[Observed] During ordinary work, RAM use was 4.2 GB for Windows, 1.8 GB for the IDE, 5.6 GB for the engine, 2.1 GB for the agent, 2.6 GB for a browser with 10 tabs, and 1.2 GB for a chat app and a music player, 17.5 GB in total. See `tmp/ram-measurements.txt`.
+[Observed] During ordinary work, RAM use was 4.2 GB for Windows, 1.8 GB for the IDE, 5.6 GB for the engine, 2.1 GB for the agent, 2.6 GB for a browser with 10 tabs, and 1.2 GB for a chat app and a music player, 17.5 GB in total. See `<scratchpad>/ram-measurements.txt`.
 [Observed] During a build, the engine rose to 10 GB, so the total peaked at 22 GB.
 [Documented] The game requirements specify 16 GB is minimum, 32GB for smooth experience. See [game requirements](https://example.com/requirements).
 [Experience] When RAM is full, Windows moves memory pages to the paging file on disk, and reading them back is slower than reading RAM.
