@@ -147,4 +147,4 @@ For example, a new game character: the driver spawns it beside an enemy, then sh
 
 For example, a new button in an editor's side panel: the driver opens the panel, and one screenshot of it answers whether the button looks right. A video adds nothing, because nothing moves.
 
-Why: checking a visual by hand costs the developer a launch, a route through menus, and a staged state, and some states cannot be staged by hand at all. A capture costs seconds of looking, and the driver reaches every state the same way each time. A capture sits in the scratchpad because a link into a project copy breaks when that copy passes to another session: on 2026-11-10 a before-and-after image in a worktree's `tmp/` stopped opening for that reason.
+Why: checking a visual by hand costs the developer a launch, a route through menus, and a staged state, and some states cannot be staged by hand at all. A capture costs seconds of looking, and the driver reaches every state the same way each time.

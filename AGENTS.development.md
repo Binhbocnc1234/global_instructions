@@ -122,7 +122,7 @@ Almost every project root holds these entries. Each row names the rule that owns
 | Path | Holds | Owner |
 |---|---|---|
 | `AGENTS.md` | Project instructions | [ProjectRules](rules/ProjectRules.md) |
-| `tmp/` | Output of project tools that no session owns, such as reports and captures, ignored by git. Nothing deletes it automatically | This table |
+| `tmp/` | Output that no session owns, written by a program that also runs without a session, such as a game's error log or a check runner's logs, ignored by git. Nothing deletes it automatically | This table |
 | `scripts/` | The project's source code, commented under [Comment rules](rules/Implementation.md#comment-rules) | [ProjectRules](rules/ProjectRules.md#project-index) |
 | `tools/` | Developer scripts that build, check, convert, or test-drive the project and never ship in a release, such as a build script, a linter, a pre-commit hook, an asset converter, or a documentation index generator | [ProjectRules](rules/ProjectRules.md#project-index) |
 | `docs/` | Project documentation and its index | [Documentation Audit](rules/Authoring.md#documentation-audit) and [Documentation Index](rules/Authoring.md#documentation-index) |
@@ -131,7 +131,7 @@ Almost every project root holds these entries. Each row names the rule that owns
 
 A file goes in `scripts/` when a release contains it or runs it, and in `tools/` otherwise. Project-specific navigation follows [ProjectRules](rules/ProjectRules.md#project-index).
 
-Scratch files of one session go in the folder named by `$AGENT_SCRATCHPAD`, which the harness deletes with the session. In a harness that does not set the variable, they go in `tmp/`.
+Files that one session makes, such as scratch scripts, driver scenes, and captures linked in a reply, go in the folder named by `$AGENT_SCRATCHPAD`, which the harness deletes with the session. In a harness that does not set the variable, they go in `tmp/`. Why: the scratchpad sits outside the project copy, so a link to it still opens after the session loses its copy of the project to another session; on 2026-11-10 an image in a copy's `tmp/` stopped opening for that reason (developer decision, 2026-11-11).
 
 Why: an agent that knows the fixed entries does not search for them, and every harness and model that works in the project reads and writes the same paths.
 
